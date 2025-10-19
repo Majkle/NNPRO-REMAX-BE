@@ -15,6 +15,12 @@ public class Image {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "filename", nullable = false)
+    private String filename;
+
+    @Column(name = "content_type", nullable = false)
+    private String contentType;
+
     @Lob
     @Column(name = "data", nullable = false)
     private byte[] data;

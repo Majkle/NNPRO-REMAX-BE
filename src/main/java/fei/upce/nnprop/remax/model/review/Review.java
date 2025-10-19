@@ -1,5 +1,7 @@
 package fei.upce.nnprop.remax.model.review;
 
+import fei.upce.nnprop.remax.model.users.Client;
+import fei.upce.nnprop.remax.model.users.Realtor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -43,5 +45,13 @@ public class Review {
 
     @Column(name = "text", nullable = false, length = 500)
     private String text;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_client_id", nullable = false)
+    private Client author;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "reviewed_realtor_id", nullable = false)
+    private Realtor realtor;
 
 }

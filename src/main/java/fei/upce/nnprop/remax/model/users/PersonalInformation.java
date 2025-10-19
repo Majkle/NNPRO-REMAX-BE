@@ -1,13 +1,12 @@
 package fei.upce.nnprop.remax.model.users;
 
 import fei.upce.nnprop.remax.model.Image;
-import fei.upce.nnprop.remax.model.real_estates.Address;
+import fei.upce.nnprop.remax.model.realestates.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -32,15 +31,15 @@ public class PersonalInformation {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "brith_date", nullable = false)
-    private ZonedDateTime brithDate;
+    @Column(name = "birth_date", nullable = false)
+    private ZonedDateTime birthDate;
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
     @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "civic_anemities_id")
+    @JoinColumn(name = "image_id")
     private Image image;
 
 }

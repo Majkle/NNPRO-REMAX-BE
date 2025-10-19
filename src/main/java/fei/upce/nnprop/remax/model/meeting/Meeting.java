@@ -1,8 +1,8 @@
 package fei.upce.nnprop.remax.model.meeting;
 
-import fei.upce.nnprop.remax.model.meeting.enums.MeetingStatusEnum;
-import fei.upce.nnprop.remax.model.meeting.enums.MeetingTypeEnum;
-import fei.upce.nnprop.remax.model.real_estates.RealEstate;
+import fei.upce.nnprop.remax.model.meeting.enums.MEETING_STATUS;
+import fei.upce.nnprop.remax.model.meeting.enums.MEETING_TYPE;
+import fei.upce.nnprop.remax.model.realestates.RealEstate;
 import fei.upce.nnprop.remax.model.users.Client;
 import fei.upce.nnprop.remax.model.users.Realtor;
 import jakarta.persistence.*;
@@ -33,21 +33,21 @@ public class Meeting {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MeetingTypeEnum meetingTypeEnum;
+    private MEETING_TYPE meetingType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MeetingStatusEnum meetingStatusEnum;
+    private MEETING_STATUS meetingStatus;
 
-    @OneToOne(optional = false, orphanRemoval = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "real_estate_id", nullable = false)
     private RealEstate realEstate;
 
-    @OneToOne(optional = false, orphanRemoval = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "realtor_id", nullable = false)
     private Realtor realtor;
 
-    @OneToOne(optional = false, orphanRemoval = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 }

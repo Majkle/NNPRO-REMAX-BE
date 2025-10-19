@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.users;
 
-import fei.upce.nnprop.remax.model.users.enums.UserAccountStatus;
+import fei.upce.nnprop.remax.model.users.enums.ACCOUNT_STATUS;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 @Setter
 @Entity
 @Table(name = "remax_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class RemaxUser {
 
     @Id
@@ -27,7 +28,7 @@ public abstract class RemaxUser {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_status", nullable = false)
-    private UserAccountStatus accountStatus = UserAccountStatus.NORMAL;
+    private ACCOUNT_STATUS accountStatus = ACCOUNT_STATUS.NORMAL;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
