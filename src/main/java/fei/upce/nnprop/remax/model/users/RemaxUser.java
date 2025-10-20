@@ -12,7 +12,8 @@ import java.time.OffsetDateTime;
 @Setter
 @Entity
 @Table(name = "remax_user")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class RemaxUser {
 
     @Id
