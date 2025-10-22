@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum CONSTRUCTION_MATERIAL {
+public enum ConstructionMaterial {
     BRICK,
     PANEL,
     WOOD,

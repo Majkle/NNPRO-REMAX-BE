@@ -32,29 +32,29 @@ public abstract class RealEstate {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private STATUS status;
+    private Status status;
 
     @Column(name = "usableArea", nullable = false)
     private double usableArea;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "contract_type", nullable = false)
-    private CONTRACT_TYPE contractType;
+    private ContractType contractType;
 
     @Column(name = "price")
     private double price;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "price_disclosure", nullable = false)
-    private PRICE_DISCLOSURE priceDisclosure;
+    private PriceDisclosure priceDisclosure;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "commission", nullable = false)
-    private COMMISSION commission;
+    private Commission commission;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "taxes", nullable = false)
-    private TAXES taxes;
+    private Taxes taxes;
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "address_id", nullable = false)
@@ -68,7 +68,7 @@ public abstract class RealEstate {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "equipment", nullable = false)
-    private EQUIPMENT equipment;
+    private Equipment equipment;
 
     @Embedded
     private Utilities utilities;

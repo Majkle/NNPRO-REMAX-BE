@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum HOUSE_TYPE {
+public enum HouseType {
     DETACHED,
     SEMI_DETACHED,
     TERRACED,

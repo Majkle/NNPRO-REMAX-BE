@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum BUILDING_CONDITION {
+public enum BuildingCondition {
     NEW,
     RENOVATED,
     GOOD,

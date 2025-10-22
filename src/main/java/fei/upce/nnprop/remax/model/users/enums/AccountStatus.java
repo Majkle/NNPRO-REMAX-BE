@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.users.enums;
 
-public enum ACCOUNT_STATUS {
+public enum AccountStatus {
     NORMAL,
     BLOCKED;
 }

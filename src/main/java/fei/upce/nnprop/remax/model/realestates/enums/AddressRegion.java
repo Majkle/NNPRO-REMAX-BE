@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum ADDRESS_REGION {
+public enum AddressRegion {
     PRAHA,
     STREDOCESKY,
     JIHOCESKY,

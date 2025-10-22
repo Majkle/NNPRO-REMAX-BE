@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates;
 
-import fei.upce.nnprop.remax.model.realestates.enums.ADDRESS_REGION;
+import fei.upce.nnprop.remax.model.realestates.enums.AddressRegion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +33,5 @@ public class Address {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
-    private ADDRESS_REGION region;
+    private AddressRegion region;
 }

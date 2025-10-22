@@ -1,5 +1,5 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum STATUS {
+public enum Status {
     AVAILABLE,RESERVED,BOUGHT
 }

@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum INTERNET_CONNECTION_TYPE {
+public enum InternetConnectionType {
     NONE,
     DSL,
     CABLE,

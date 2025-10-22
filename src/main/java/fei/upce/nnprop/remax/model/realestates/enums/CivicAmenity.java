@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum CIVIC_AMENITY {
+public enum CivicAmenity {
     BUS_STOP,
     TRAIN_STATION,
     SUBWAY,

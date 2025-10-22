@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum TAXES {
-    INCLUDED,
-    EXCLUDED
+public enum ContractType {
+    SALE,
+    RENTAL
 }

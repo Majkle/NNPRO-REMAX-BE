@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum APARTMENT_OWNERSHIP_TYPE {
+public enum ApartmentOwnershipType {
     OWNERSHIP,
     COOPERATIVE_OWNERSHIP
 }

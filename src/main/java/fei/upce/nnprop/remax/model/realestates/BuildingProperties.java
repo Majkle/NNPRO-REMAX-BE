@@ -1,9 +1,9 @@
 package fei.upce.nnprop.remax.model.realestates;
 
-import fei.upce.nnprop.remax.model.realestates.enums.BUILDING_CONDITION;
-import fei.upce.nnprop.remax.model.realestates.enums.BUILDING_LOCATION;
-import fei.upce.nnprop.remax.model.realestates.enums.CONSTRUCTION_MATERIAL;
-import fei.upce.nnprop.remax.model.realestates.enums.ENERGY_EFFICIENCY_CLASS;
+import fei.upce.nnprop.remax.model.realestates.enums.BuildingCondition;
+import fei.upce.nnprop.remax.model.realestates.enums.BuildingLocation;
+import fei.upce.nnprop.remax.model.realestates.enums.ConstructionMaterial;
+import fei.upce.nnprop.remax.model.realestates.enums.EnergyEfficiencyClass;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,19 +15,19 @@ public class BuildingProperties {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "construction_material", nullable = false)
-    private CONSTRUCTION_MATERIAL constructionMaterial;
+    private ConstructionMaterial constructionMaterial;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "building_condition", nullable = false)
-    private BUILDING_CONDITION buildingCondition;
+    private BuildingCondition buildingCondition;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "energy_efficiency_class", nullable = false)
-    private ENERGY_EFFICIENCY_CLASS energyEfficiencyClass;
+    private EnergyEfficiencyClass energyEfficiencyClass;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "building_location", nullable = false)
-    private BUILDING_LOCATION buildingLocation;
+    private BuildingLocation buildingLocation;
 
     @Column(name = "is_in_protection_zone", nullable = false)
     private boolean isInProtectionZone;

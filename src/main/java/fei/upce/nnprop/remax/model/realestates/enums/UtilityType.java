@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum UTILITY_TYPE {
+public enum UtilityType {
     WATER,
     WELL,
     ELECTRICITY,

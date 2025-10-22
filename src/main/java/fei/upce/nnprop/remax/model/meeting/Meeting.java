@@ -1,7 +1,7 @@
 package fei.upce.nnprop.remax.model.meeting;
 
-import fei.upce.nnprop.remax.model.meeting.enums.MEETING_STATUS;
-import fei.upce.nnprop.remax.model.meeting.enums.MEETING_TYPE;
+import fei.upce.nnprop.remax.model.meeting.enums.MeetingStatus;
+import fei.upce.nnprop.remax.model.meeting.enums.MeetingType;
 import fei.upce.nnprop.remax.model.realestates.RealEstate;
 import fei.upce.nnprop.remax.model.users.Client;
 import fei.upce.nnprop.remax.model.users.Realtor;
@@ -33,11 +33,11 @@ public class Meeting {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MEETING_TYPE meetingType;
+    private MeetingType meetingType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MEETING_STATUS meetingStatus;
+    private MeetingStatus meetingStatus;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "real_estate_id", nullable = false)

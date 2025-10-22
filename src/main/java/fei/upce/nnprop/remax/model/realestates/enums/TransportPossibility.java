@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum TRANSPORT_POSIBILITY {
+public enum TransportPossibility {
     ROAD,
     HIGHWAY,
     TRAIN,

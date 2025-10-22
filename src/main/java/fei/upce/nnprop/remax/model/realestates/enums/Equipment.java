@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.enums;
 
-public enum EQUIPMENT {
+public enum Equipment {
     FURNISHED,
     UNFURNISHED,
     PARTIALLY_FURNISHED

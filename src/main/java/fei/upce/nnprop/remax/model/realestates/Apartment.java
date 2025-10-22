@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates;
 
-import fei.upce.nnprop.remax.model.realestates.enums.APARTMENT_OWNERSHIP_TYPE;
+import fei.upce.nnprop.remax.model.realestates.enums.ApartmentOwnershipType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +15,7 @@ public class Apartment extends RealEstate {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ownership", nullable = false)
-    private APARTMENT_OWNERSHIP_TYPE ownershipType;
+    private ApartmentOwnershipType ownershipType;
 
     @Column(name = "floor", nullable = false)
     private int floor;

@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates;
 
-import fei.upce.nnprop.remax.model.realestates.enums.HOUSE_TYPE;
+import fei.upce.nnprop.remax.model.realestates.enums.HouseType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,7 +18,7 @@ public class House extends RealEstate {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "house_type", nullable = false)
-    private HOUSE_TYPE houseType;
+    private HouseType houseType;
 
     @Column(name = "stories", nullable = false)
     private int stories;
