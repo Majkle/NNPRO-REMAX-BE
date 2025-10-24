@@ -41,8 +41,9 @@ public abstract class RealEstate {
     @Column(name = "contract_type", nullable = false)
     private ContractType contractType;
 
-    @Column(name = "price")
-    private double price;
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "price_history_id", nullable = false)
+    private List<PriceHistory> priceHistory;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "price_disclosure", nullable = false)

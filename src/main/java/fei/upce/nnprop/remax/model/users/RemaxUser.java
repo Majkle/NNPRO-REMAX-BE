@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 @Setter
@@ -42,4 +43,9 @@ public abstract class RemaxUser {
     @JoinColumn(name = "personal_information_id", nullable = false)
     private PersonalInformation personalInformation;
 
+    @Column(name = "failed_login_Attempts", nullable = false)
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "blocked_until")
+    private ZonedDateTime blockedUntil;
 }

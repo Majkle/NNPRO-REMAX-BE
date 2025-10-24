@@ -7,3 +7,6 @@ services:
       - 'POSTGRES_USER=myuser'
     ports:
       - '5432'
+
+#TODO přidat BE
+#TODO přidat FE

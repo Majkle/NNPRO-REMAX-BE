@@ -13,7 +13,7 @@ import java.util.Set;
 @Embeddable
 public class CivicAmenities {
 
-    @ElementCollection(targetClass = CivicAmenity.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = CivicAmenity.class, fetch = FetchType.LAZY)
     @CollectionTable(
             name = "real_estate_civic_amenities",
             joinColumns = @JoinColumn(name = "real_estate_id")

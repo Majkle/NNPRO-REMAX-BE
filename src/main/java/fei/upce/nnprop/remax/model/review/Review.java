@@ -46,8 +46,11 @@ public class Review {
     @Column(name = "text", nullable = false, length = 500)
     private String text;
 
+    @Column(name = "clientDisplayName", nullable = false, length = 50)
+    private String clientDisplayName;
+
     @ManyToOne(optional = false)
-    @JoinColumn(name = "author_client_id", nullable = false)
+    @JoinColumn(name = "author_client_id")
     private Client author;
 
     @ManyToOne(optional = false)

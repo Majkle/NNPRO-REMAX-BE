@@ -14,7 +14,7 @@ import java.util.Set;
 @Embeddable
 public class Utilities {
 
-    @ElementCollection(targetClass = UtilityType.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = UtilityType.class, fetch = FetchType.LAZY)
     @CollectionTable(
             name = "real_estate_utilities",
             joinColumns = @JoinColumn(name = "real_estate_id")

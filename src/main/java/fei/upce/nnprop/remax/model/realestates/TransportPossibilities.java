@@ -13,7 +13,7 @@ import java.util.Set;
 @Embeddable
 public class TransportPossibilities {
 
-    @ElementCollection(targetClass = TransportPossibility.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = TransportPossibility.class, fetch = FetchType.LAZY)
     @CollectionTable(
             name = "real_estate_transport_possibilities",
             joinColumns = @JoinColumn(name = "real_estate_id")
