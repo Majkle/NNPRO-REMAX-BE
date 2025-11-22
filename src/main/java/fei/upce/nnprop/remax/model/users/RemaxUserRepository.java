@@ -1,6 +1,9 @@
 package fei.upce.nnprop.remax.model.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 public interface RemaxUserRepository extends JpaRepository<RemaxUser, Long> {
+    Optional<RemaxUser> findByUsername(String username);
+    Optional<RemaxUser> findByEmail(String email);
 }
