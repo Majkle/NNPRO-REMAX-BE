@@ -2,7 +2,7 @@ package fei.upce.nnprop.remax.model.meeting;
 
 import fei.upce.nnprop.remax.model.meeting.enums.MeetingStatus;
 import fei.upce.nnprop.remax.model.meeting.enums.MeetingType;
-import fei.upce.nnprop.remax.model.realestates.RealEstate;
+import fei.upce.nnprop.remax.model.realestates.entity.RealEstate;
 import fei.upce.nnprop.remax.model.users.Client;
 import fei.upce.nnprop.remax.model.users.Realtor;
 import jakarta.persistence.*;

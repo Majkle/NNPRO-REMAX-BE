@@ -1,7 +1,7 @@
 package fei.upce.nnprop.remax.model.users;
 
 import fei.upce.nnprop.remax.model.Image;
-import fei.upce.nnprop.remax.model.realestates.Address;
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

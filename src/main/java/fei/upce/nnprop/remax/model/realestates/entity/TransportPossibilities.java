@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.model.realestates;
+package fei.upce.nnprop.remax.model.realestates.entity;
 
 import fei.upce.nnprop.remax.model.realestates.enums.TransportPossibility;
 import jakarta.persistence.*;

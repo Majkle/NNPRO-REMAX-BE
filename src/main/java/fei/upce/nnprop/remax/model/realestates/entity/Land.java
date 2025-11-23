@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.model.realestates;
+package fei.upce.nnprop.remax.model.realestates.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
