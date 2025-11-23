@@ -1,10 +1,10 @@
-package fei.upce.nnprop.remax.model.realestates.controller;
+package fei.upce.nnprop.remax.realestates.controller;
 
 import fei.upce.nnprop.remax.model.realestates.entity.RealEstate;
-import fei.upce.nnprop.remax.model.realestates.RealEstateMapper;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateDto;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateFilterDto;
-import fei.upce.nnprop.remax.model.realestates.service.RealEstateService;
+import fei.upce.nnprop.remax.realestates.RealEstateMapper;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateDto;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateFilterDto;
+import fei.upce.nnprop.remax.realestates.service.RealEstateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;

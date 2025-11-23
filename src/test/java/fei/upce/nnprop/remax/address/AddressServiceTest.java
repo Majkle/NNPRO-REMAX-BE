@@ -1,8 +1,7 @@
-package fei.upce.nnprop.remax.model.realestates.service;
+package fei.upce.nnprop.remax.address;
 
 import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.model.realestates.enums.AddressRegion;
-import fei.upce.nnprop.remax.model.realestates.repository.AddressRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -11,7 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AddressServiceTest {
@@ -27,7 +28,7 @@ class AddressServiceTest {
         // Arrange
         Address address = new Address();
         address.setCity("Prague");
-
+        when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
         // Act
         addressService.save(address);
 

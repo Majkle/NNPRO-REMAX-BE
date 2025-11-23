@@ -1,13 +1,13 @@
 package fei.upce.nnprop.remax.security.auth;
 
-import fei.upce.nnprop.remax.model.realestates.Address;
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
+import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.model.users.PersonalInformation;
 import fei.upce.nnprop.remax.model.users.RemaxUser;
 import fei.upce.nnprop.remax.model.users.RemaxUserRepository;
 import fei.upce.nnprop.remax.security.auth.request.RegisterRequest;
 import fei.upce.nnprop.remax.security.config.SecurityProperties;
 import fei.upce.nnprop.remax.security.jwt.JwtUtil;
-import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.personalInformation.PersonalInformationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

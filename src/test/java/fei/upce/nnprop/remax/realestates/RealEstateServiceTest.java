@@ -1,15 +1,17 @@
-package fei.upce.nnprop.remax.model.realestates.service;
+package fei.upce.nnprop.remax.realestates;
 
+import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.model.Image;
 import fei.upce.nnprop.remax.model.ImageRepository;
-import fei.upce.nnprop.remax.model.realestates.RealEstateMapper;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateDto;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateFilterDto;
+import fei.upce.nnprop.remax.realestates.RealEstateMapper;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateDto;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.model.realestates.entity.Apartment;
 import fei.upce.nnprop.remax.model.realestates.entity.PriceHistory;
 import fei.upce.nnprop.remax.model.realestates.entity.RealEstate;
-import fei.upce.nnprop.remax.model.realestates.repository.RealEstateRepository;
+import fei.upce.nnprop.remax.realestates.repository.RealEstateRepository;
+import fei.upce.nnprop.remax.realestates.service.RealEstateService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

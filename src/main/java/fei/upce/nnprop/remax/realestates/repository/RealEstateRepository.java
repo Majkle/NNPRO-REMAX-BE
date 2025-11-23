@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.model.realestates.repository;
+package fei.upce.nnprop.remax.realestates.repository;
 
 import fei.upce.nnprop.remax.model.realestates.entity.RealEstate;
 import org.springframework.data.jpa.repository.JpaRepository;

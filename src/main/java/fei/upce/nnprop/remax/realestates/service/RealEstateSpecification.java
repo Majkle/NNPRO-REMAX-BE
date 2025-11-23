@@ -1,6 +1,6 @@
-package fei.upce.nnprop.remax.model.realestates.service;
+package fei.upce.nnprop.remax.realestates.service;
 
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateFilterDto;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnprop.remax.model.realestates.entity.*;
 import fei.upce.nnprop.remax.model.realestates.enums.CivicAmenity;
 import fei.upce.nnprop.remax.model.realestates.enums.TransportPossibility;
@@ -34,9 +34,7 @@ public class RealEstateSpecification {
                     case LAND -> Land.class;
                 };
 
-                if (targetClass != RealEstate.class) {
-                    predicates.add(cb.equal(root.type(), targetClass));
-                }
+                predicates.add(cb.equal(root.type(), targetClass));
             }
 
             // ---------------------------------------------------------

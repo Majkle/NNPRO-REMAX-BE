@@ -1,12 +1,13 @@
-package fei.upce.nnprop.remax.model.realestates.service;
+package fei.upce.nnprop.remax.realestates.service;
 
+import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.model.Image;
 import fei.upce.nnprop.remax.model.ImageRepository;
-import fei.upce.nnprop.remax.model.realestates.*;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateDto;
-import fei.upce.nnprop.remax.model.realestates.dto.RealEstateFilterDto;
+import fei.upce.nnprop.remax.realestates.RealEstateMapper;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateDto;
+import fei.upce.nnprop.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnprop.remax.model.realestates.entity.*;
-import fei.upce.nnprop.remax.model.realestates.repository.RealEstateRepository;
+import fei.upce.nnprop.remax.realestates.repository.RealEstateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

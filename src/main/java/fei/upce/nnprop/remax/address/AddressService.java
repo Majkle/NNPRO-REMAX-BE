@@ -1,23 +1,18 @@
 package fei.upce.nnprop.remax.address;
 
-import fei.upce.nnprop.remax.model.realestates.Address;
-import fei.upce.nnprop.remax.model.realestates.AddressRepository;
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.model.realestates.enums.AddressRegion;
 import fei.upce.nnprop.remax.security.auth.request.RegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AddressService {
-
-    private static final Logger log = LoggerFactory.getLogger(AddressService.class);
-
     private final AddressRepository addressRepository;
-
-    public AddressService(AddressRepository addressRepository) {
-        this.addressRepository = addressRepository;
-    }
+    private static final Logger log = LoggerFactory.getLogger(AddressService.class);
 
     public Address save(Address address) {
         Address saved = addressRepository.save(address);
@@ -25,7 +20,17 @@ public class AddressService {
         return saved;
     }
 
-    // Initialize Address from RegisterRequest and persist it
+    public void update(Address newAddrData, Address existingAddr) {
+        existingAddr.setCity(newAddrData.getCity());
+        existingAddr.setStreet(newAddrData.getStreet());
+        existingAddr.setPostalCode(newAddrData.getPostalCode());
+        existingAddr.setCountry(newAddrData.getCountry());
+        existingAddr.setFlatNumber(newAddrData.getFlatNumber());
+        existingAddr.setRegion(newAddrData.getRegion());
+
+        addressRepository.save(existingAddr);
+    }
+
     public Address createFrom(RegisterRequest request) {
         Address address = new Address();
         address.setStreet(request.getStreet());

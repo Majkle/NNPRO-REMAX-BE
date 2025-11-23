@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.security.profile;
 
-import fei.upce.nnprop.remax.model.realestates.Address;
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.model.users.PersonalInformation;
 import fei.upce.nnprop.remax.model.users.RemaxUser;
 import fei.upce.nnprop.remax.profile.ProfileController;

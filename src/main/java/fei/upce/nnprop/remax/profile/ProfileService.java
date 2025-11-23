@@ -1,11 +1,11 @@
 package fei.upce.nnprop.remax.profile;
 
-import fei.upce.nnprop.remax.model.realestates.Address;
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
+import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.model.users.PersonalInformation;
 import fei.upce.nnprop.remax.model.users.RemaxUser;
 import fei.upce.nnprop.remax.model.users.RemaxUserRepository;
 import fei.upce.nnprop.remax.profile.request.ProfileUpdateRequest;
-import fei.upce.nnprop.remax.address.AddressService;
 import fei.upce.nnprop.remax.personalInformation.PersonalInformationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

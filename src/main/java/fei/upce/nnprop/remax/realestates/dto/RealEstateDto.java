@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.model.realestates.dto;
+package fei.upce.nnprop.remax.realestates.dto;
 
 import fei.upce.nnprop.remax.model.realestates.entity.*;
 import fei.upce.nnprop.remax.model.realestates.enums.*;
