@@ -1,6 +1,6 @@
 package fei.upce.nnprop.remax.model.realestates.entity;
 
-import fei.upce.nnprop.remax.model.Image;
+import fei.upce.nnprop.remax.model.image.Image;
 import fei.upce.nnprop.remax.model.realestates.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;

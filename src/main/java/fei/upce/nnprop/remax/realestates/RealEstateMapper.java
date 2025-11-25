@@ -1,7 +1,7 @@
 package fei.upce.nnprop.remax.realestates;
 
-import fei.upce.nnprop.remax.model.Image;
-import fei.upce.nnprop.remax.model.ImageRepository;
+import fei.upce.nnprop.remax.model.image.Image;
+import fei.upce.nnprop.remax.images.repository.ImageRepository;
 import fei.upce.nnprop.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnprop.remax.model.realestates.entity.*;
 import fei.upce.nnprop.remax.model.realestates.enums.RealEstateType;
@@ -48,7 +48,7 @@ public class RealEstateMapper {
 
         List<PriceHistory> history = entity.getPriceHistory();
         if (history != null && !history.isEmpty()) {
-            dto.setPrice(history.get(history.size() - 1).getPrice());
+            dto.setPrice(history.getLast().getPrice());
         }
 
         if (entity.getImage() != null && !entity.getImage().isEmpty()) {

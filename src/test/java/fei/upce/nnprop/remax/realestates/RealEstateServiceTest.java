@@ -1,9 +1,8 @@
 package fei.upce.nnprop.remax.realestates;
 
 import fei.upce.nnprop.remax.address.AddressService;
-import fei.upce.nnprop.remax.model.Image;
-import fei.upce.nnprop.remax.model.ImageRepository;
-import fei.upce.nnprop.remax.realestates.RealEstateMapper;
+import fei.upce.nnprop.remax.model.image.Image;
+import fei.upce.nnprop.remax.images.repository.ImageRepository;
 import fei.upce.nnprop.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnprop.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnprop.remax.model.realestates.entity.Address;

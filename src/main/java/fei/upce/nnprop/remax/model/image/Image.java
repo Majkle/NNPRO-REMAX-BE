@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.model;
+package fei.upce.nnprop.remax.model.image;
 
 import jakarta.persistence.*;
 import lombok.Getter;
