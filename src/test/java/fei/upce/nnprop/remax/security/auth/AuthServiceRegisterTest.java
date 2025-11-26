@@ -60,7 +60,7 @@ class AuthServiceRegisterTest {
         });
 
         // createFrom returns a PersonalInformation (persisted by createFrom in service implementation)
-        Mockito.when(piService.createFrom(Mockito.any(RegisterRequest.class))).thenAnswer(i -> {
+        Mockito.when(piService.createFrom(Mockito.any(RegisterRequest.class), Mockito.any(Address.class))).thenAnswer(i -> {
             PersonalInformation p = new PersonalInformation();
             p.setFirstName(((RegisterRequest)i.getArgument(0)).getFirstName());
             p.setLastName(((RegisterRequest)i.getArgument(0)).getLastName());
@@ -88,7 +88,7 @@ class AuthServiceRegisterTest {
         assertEquals("encoded", created.getPassword());
 
         Mockito.verify(addressService).createFrom(Mockito.any(RegisterRequest.class));
-        Mockito.verify(piService).createFrom(Mockito.any(RegisterRequest.class));
+        Mockito.verify(piService).createFrom(Mockito.any(RegisterRequest.class), Mockito.any(Address.class));
         Mockito.verify(piService).save(Mockito.any(PersonalInformation.class));
         Mockito.verify(userRepo).save(Mockito.any(RemaxUser.class));
     }

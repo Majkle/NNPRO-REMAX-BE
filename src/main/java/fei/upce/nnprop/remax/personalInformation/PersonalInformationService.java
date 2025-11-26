@@ -1,5 +1,6 @@
 package fei.upce.nnprop.remax.personalInformation;
 
+import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.model.users.PersonalInformation;
 import fei.upce.nnprop.remax.model.users.PersonalInformationRepository;
 import fei.upce.nnprop.remax.security.auth.request.RegisterRequest;
@@ -27,7 +28,7 @@ public class PersonalInformationService {
         return saved;
     }
 
-    public PersonalInformation createFrom(RegisterRequest request) {
+    public PersonalInformation createFrom(RegisterRequest request, Address address) {
         PersonalInformation pi = new PersonalInformation();
         pi.setFirstName(request.getFirstName());
         pi.setLastName(request.getLastName());
@@ -38,6 +39,7 @@ public class PersonalInformationService {
             log.warn("Invalid birthDate format: {}", request.getBirthDate());
             throw new IllegalArgumentException("Invalid birthDate format. Use ISO-8601 date-time");
         }
+        pi.setAddress(address);
         PersonalInformation saved = save(pi);
         log.info("Created PersonalInformation id={}", saved.getId());
         return saved;

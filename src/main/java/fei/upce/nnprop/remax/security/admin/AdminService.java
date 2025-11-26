@@ -79,9 +79,7 @@ public class AdminService {
         }
 
         Address address = addressService.createFrom(mapToRegisterRequest(req));
-        PersonalInformation pi = personalInformationService.createFrom(mapToRegisterRequest(req));
-        pi.setAddress(address);
-        PersonalInformation savedPi = personalInformationService.save(pi);
+        PersonalInformation pi = personalInformationService.createFrom(mapToRegisterRequest(req), address);
 
         Realtor realtor = new Realtor();
         realtor.setUsername(req.getUsername());
@@ -89,7 +87,7 @@ public class AdminService {
         realtor.setPassword(passwordEncoder.encode(req.getPassword()));
         realtor.setCreatedAt(java.time.OffsetDateTime.now());
         realtor.setAccountStatus(AccountStatus.NORMAL);
-        realtor.setPersonalInformation(savedPi);
+        realtor.setPersonalInformation(pi);
         realtor.setLicenseNumber(req.getLicenseNumber());
         realtor.setAbout(req.getAbout());
 

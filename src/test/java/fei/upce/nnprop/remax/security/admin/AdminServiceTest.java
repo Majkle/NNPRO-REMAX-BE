@@ -110,7 +110,7 @@ class AdminServiceTest {
         Mockito.when(addressService.createFrom(Mockito.any())).thenAnswer(i -> {
             Address a = new Address(); a.setId(1L); return a;
         });
-        Mockito.when(piService.createFrom(Mockito.any())).thenAnswer(i -> {
+        Mockito.when(piService.createFrom(Mockito.any(), Mockito.any(Address.class))).thenAnswer(i -> {
             PersonalInformation p = new PersonalInformation(); p.setId(2L); return p;
         });
         Mockito.when(piService.save(Mockito.any(PersonalInformation.class))).thenAnswer(i -> i.getArgument(0));

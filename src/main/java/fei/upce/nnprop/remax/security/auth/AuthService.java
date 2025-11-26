@@ -109,10 +109,7 @@ public class AuthService {
         }
 
         Address savedAddress = addressService.createFrom(request);
-
-        PersonalInformation pi = personalInformationService.createFrom(request);
-        pi.setAddress(savedAddress);
-        PersonalInformation savedPi = personalInformationService.save(pi);
+        PersonalInformation pi = personalInformationService.createFrom(request, savedAddress);
 
         RemaxUser newUser = new fei.upce.nnprop.remax.model.users.Client();
         newUser.setUsername(request.getUsername());
@@ -120,7 +117,7 @@ public class AuthService {
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         newUser.setCreatedAt(OffsetDateTime.now());
         newUser.setAccountStatus(AccountStatus.NORMAL);
-        newUser.setPersonalInformation(savedPi);
+        newUser.setPersonalInformation(pi);
 
         RemaxUser savedUser = userRepository.save(newUser);
         log.info("Registered new user username={} id={}", savedUser.getUsername(), savedUser.getId());
