@@ -13,9 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -94,6 +97,14 @@ public class AdminService {
         Realtor saved = userRepository.save(realtor);
         log.info("Admin created realtor username={} id={}", saved.getUsername(), saved.getId());
         return saved;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RemaxUser> listAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .peek((user) -> user.setPassword("*********"))
+                .collect(Collectors.toList());
     }
 
     private RegisterRequest mapToRegisterRequest(CreateRealtorRequest r) {

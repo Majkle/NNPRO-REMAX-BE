@@ -1,5 +1,7 @@
 package fei.upce.nnprop.remax.security.admin;
 
+import fei.upce.nnprop.remax.model.users.RemaxUser;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -38,6 +41,12 @@ public class AdminController {
     public ResponseEntity<?> unblockUser(@PathVariable String username) {
         log.info("Admin request to unblock user {}", username);
         return ResponseEntity.ok(adminService.unblockUser(username));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<RemaxUser>> getAllUsers() {
+        log.info("Admin request to list all users");
+        return ResponseEntity.ok(adminService.listAllUsers());
     }
 
     @DeleteMapping("/users/{username}")
