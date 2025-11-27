@@ -52,4 +52,9 @@ public class ReviewController {
     public ResponseEntity<ReviewStatisticsDto> getRealtorStatistics(@PathVariable Long realtorId) {
         return ResponseEntity.ok(reviewService.getRealtorStatistics(realtorId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+        return ResponseEntity.ok(reviewService.listAllReviews());
+    }
 }

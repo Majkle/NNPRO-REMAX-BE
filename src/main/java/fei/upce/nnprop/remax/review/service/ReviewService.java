@@ -92,6 +92,13 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
+    public List<ReviewDto> listAllReviews() {
+        return reviewRepository.findAll().stream()
+                .map(reviewMapper::toDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public ReviewStatisticsDto getRealtorStatistics(Long realtorId) {
         // Verify realtor exists
         if (!userRepository.existsById(realtorId)) {

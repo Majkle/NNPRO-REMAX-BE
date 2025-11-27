@@ -1,8 +1,6 @@
 package fei.upce.nnprop.remax.security.admin;
 
-import fei.upce.nnprop.remax.model.users.RemaxUser;
 import fei.upce.nnprop.remax.model.users.RemaxUserResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,8 +56,14 @@ public class AdminController {
     }
 
     @PostMapping("/realtors")
-    public ResponseEntity<?> createRealtor(@RequestBody CreateRealtorRequest request) {
+    public ResponseEntity<?> createRealtor(@RequestBody CreateUserRequest request) {
         log.info("Admin request to create realtor {}", request.getUsername());
         return ResponseEntity.ok(adminService.createRealtor(request));
+    }
+
+    @PostMapping("/admins")
+    public ResponseEntity<?> createAdmin(@RequestBody CreateUserRequest request) {
+        log.info("Admin request to create admin {}", request.getUsername());
+        return ResponseEntity.ok(adminService.createAdmin(request));
     }
 }

@@ -67,7 +67,7 @@ public class AdminService {
         log.info("Admin deleted user {}", username);
     }
 
-    public Realtor createRealtor(CreateRealtorRequest req) {
+    public Realtor createRealtor(CreateUserRequest req) {
         // ensure username/email unique
         if (userRepository.findByUsername(req.getUsername()).isPresent()) {
             log.warn("Attempt to create realtor with existing username={}", req.getUsername());
@@ -96,6 +96,33 @@ public class AdminService {
         return saved;
     }
 
+    public Admin createAdmin(CreateUserRequest req) {
+        // ensure username/email unique
+        if (userRepository.findByUsername(req.getUsername()).isPresent()) {
+            log.warn("Attempt to create admin with existing username={}", req.getUsername());
+            throw new IllegalArgumentException("Username exists");
+        }
+        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+            log.warn("Attempt to create admin with existing email={}", req.getEmail());
+            throw new IllegalArgumentException("Email exists");
+        }
+
+        Address address = addressService.createFrom(mapToRegisterRequest(req));
+        PersonalInformation pi = personalInformationService.createFrom(mapToRegisterRequest(req), address);
+
+        Admin admin = new Admin();
+        admin.setUsername(req.getUsername());
+        admin.setEmail(req.getEmail());
+        admin.setPassword(passwordEncoder.encode(req.getPassword()));
+        admin.setCreatedAt(java.time.OffsetDateTime.now());
+        admin.setAccountStatus(AccountStatus.NORMAL);
+        admin.setPersonalInformation(pi);
+
+        Admin saved = userRepository.save(admin);
+        log.info("Admin created realtor username={} id={}", saved.getUsername(), saved.getId());
+        return saved;
+    }
+
     @Transactional(readOnly = true)
     public List<RemaxUserResponse> listAllUsers() {
         return userRepository.findAll()
@@ -107,7 +134,7 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    private RegisterRequest mapToRegisterRequest(CreateRealtorRequest r) {
+    private RegisterRequest mapToRegisterRequest(CreateUserRequest r) {
         RegisterRequest reg = new RegisterRequest();
         reg.setUsername(r.getUsername());
         reg.setEmail(r.getEmail());

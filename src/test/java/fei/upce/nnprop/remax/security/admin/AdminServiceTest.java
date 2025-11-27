@@ -89,7 +89,7 @@ class AdminServiceTest {
 
         AdminService svc = new AdminService(userRepo, addressService, piService, encoder);
 
-        CreateRealtorRequest req = new CreateRealtorRequest();
+        CreateUserRequest req = new CreateUserRequest();
         req.setUsername("r");
         req.setEmail("r@example.com");
         req.setPassword("p");

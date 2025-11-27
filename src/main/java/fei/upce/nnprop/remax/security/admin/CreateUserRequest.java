@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateRealtorRequest {
+public class CreateUserRequest {
     @NotBlank
     private String username;
 
