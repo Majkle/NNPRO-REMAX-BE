@@ -2,9 +2,7 @@ package fei.upce.nnprop.remax.security.auth;
 
 import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.address.AddressService;
-import fei.upce.nnprop.remax.model.users.PersonalInformation;
-import fei.upce.nnprop.remax.model.users.RemaxUser;
-import fei.upce.nnprop.remax.model.users.RemaxUserRepository;
+import fei.upce.nnprop.remax.model.users.*;
 import fei.upce.nnprop.remax.model.users.enums.AccountStatus;
 import fei.upce.nnprop.remax.security.auth.request.RegisterRequest;
 import fei.upce.nnprop.remax.security.auth.response.AuthResponse;
@@ -77,7 +75,7 @@ public class AuthService {
             // compute expiry
             long expiresAt = System.currentTimeMillis() + securityProperties.getJwtExpirationMs();
             log.info("User {} logged in successfully", username);
-            return new AuthResponse(token, expiresAt);
+            return new AuthResponse(token, expiresAt, getRole(user));
         } catch (AuthenticationException ex) {
             // failed login -> increment counter, possibly block
             int attempts = user.getFailedLoginAttempts() + 1;
@@ -122,5 +120,15 @@ public class AuthService {
         RemaxUser savedUser = userRepository.save(newUser);
         log.info("Registered new user username={} id={}", savedUser.getUsername(), savedUser.getId());
         return savedUser;
+    }
+
+    private String getRole(RemaxUser user) {
+        if (user instanceof Admin) {
+            return "ADMIN";
+        }
+        if (user instanceof Realtor) {
+            return "AGENT";
+        }
+        return "CLIENT";
     }
 }
