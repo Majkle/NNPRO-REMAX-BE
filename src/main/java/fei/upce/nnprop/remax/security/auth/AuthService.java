@@ -75,7 +75,7 @@ public class AuthService {
             // compute expiry
             long expiresAt = System.currentTimeMillis() + securityProperties.getJwtExpirationMs();
             log.info("User {} logged in successfully", username);
-            return new AuthResponse(token, expiresAt, getRole(user));
+            return new AuthResponse(token, expiresAt, RemaxUserResponse.getRole(user));
         } catch (AuthenticationException ex) {
             // failed login -> increment counter, possibly block
             int attempts = user.getFailedLoginAttempts() + 1;
@@ -120,15 +120,5 @@ public class AuthService {
         RemaxUser savedUser = userRepository.save(newUser);
         log.info("Registered new user username={} id={}", savedUser.getUsername(), savedUser.getId());
         return savedUser;
-    }
-
-    private String getRole(RemaxUser user) {
-        if (user instanceof Admin) {
-            return "ADMIN";
-        }
-        if (user instanceof Realtor) {
-            return "AGENT";
-        }
-        return "CLIENT";
     }
 }

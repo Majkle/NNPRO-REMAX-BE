@@ -2,10 +2,7 @@ package fei.upce.nnprop.remax.security.admin;
 
 import fei.upce.nnprop.remax.model.realestates.entity.Address;
 import fei.upce.nnprop.remax.address.AddressService;
-import fei.upce.nnprop.remax.model.users.PersonalInformation;
-import fei.upce.nnprop.remax.model.users.Realtor;
-import fei.upce.nnprop.remax.model.users.RemaxUser;
-import fei.upce.nnprop.remax.model.users.RemaxUserRepository;
+import fei.upce.nnprop.remax.model.users.*;
 import fei.upce.nnprop.remax.model.users.enums.AccountStatus;
 import fei.upce.nnprop.remax.security.auth.request.RegisterRequest;
 import fei.upce.nnprop.remax.personalInformation.PersonalInformationService;
@@ -100,10 +97,13 @@ public class AdminService {
     }
 
     @Transactional(readOnly = true)
-    public List<RemaxUser> listAllUsers() {
+    public List<RemaxUserResponse> listAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .peek((user) -> user.setPassword("*********"))
+                .map((user) -> {
+                    user.setPassword("********");
+                    return RemaxUserResponse.createFrom(user);
+                })
                 .collect(Collectors.toList());
     }
 

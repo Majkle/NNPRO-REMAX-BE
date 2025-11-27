@@ -1,6 +1,7 @@
 package fei.upce.nnprop.remax.security.admin;
 
 import fei.upce.nnprop.remax.model.users.RemaxUser;
+import fei.upce.nnprop.remax.model.users.RemaxUserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<RemaxUser>> getAllUsers() {
+    public ResponseEntity<List<RemaxUserResponse>> getAllUsers() {
         log.info("Admin request to list all users");
         return ResponseEntity.ok(adminService.listAllUsers());
     }
