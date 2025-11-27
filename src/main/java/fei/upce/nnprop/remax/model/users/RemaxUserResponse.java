@@ -19,6 +19,8 @@ public class RemaxUserResponse {
 
     private PersonalInformation personalInformation;
 
+    private Boolean isBlocked;
+
     private ZonedDateTime blockedUntil;
 
     private String role;
@@ -41,6 +43,7 @@ public class RemaxUserResponse {
         rur.setPassword(user.getPassword());
         rur.setCreatedAt(user.getCreatedAt());
         rur.setBlockedUntil(user.getBlockedUntil());
+        rur.setIsBlocked(user.getBlockedUntil() != null);
         rur.setPersonalInformation(user.getPersonalInformation());
         rur.setRole(getRole(user));
         return rur;
