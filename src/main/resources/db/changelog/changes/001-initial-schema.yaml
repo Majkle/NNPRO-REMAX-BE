@@ -1,0 +1,1008 @@
+databaseChangeLog:
+- changeSet:
+    id: 1764615246335-1
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: address_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: city
+            type: VARCHAR(100)
+        - column:
+            constraints:
+              nullable: false
+            name: country
+            type: VARCHAR(255)
+        - column:
+            name: flat_number
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: postal_code
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: region
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: street
+            type: VARCHAR(100)
+        tableName: address
+- changeSet:
+    id: 1764615246335-2
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: balcony
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: elevator
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: floor
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: ownership
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: rooms
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: total_floors
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: apartment_pkey
+            name: id
+            type: BIGINT
+        tableName: apartment
+- changeSet:
+    id: 1764615246335-3
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: house_type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: plot_area
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: stories
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: house_pkey
+            name: id
+            type: BIGINT
+        tableName: house
+- changeSet:
+    id: 1764615246335-4
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: meeting_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: description
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: meeting_status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: meeting_time
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: meeting_type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: title
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: client_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: real_estate_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: realtor_id
+            type: BIGINT
+        tableName: meeting
+- changeSet:
+    id: 1764615246335-5
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: available_from
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: basement
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: building_condition
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: building_location
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: construction_material
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: energy_efficiency_class
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: is_in_protection_zone
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: commission
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: contract_type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: description
+            type: VARCHAR(4000)
+        - column:
+            constraints:
+              nullable: false
+            name: equipment
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: listed_at
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: price_disclosure
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: taxes
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: usable_area
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: internet_connection
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: parking_places
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: address_id
+            type: BIGINT
+        tableName: real_estate
+- changeSet:
+    id: 1764615246335-6
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_civic_amenities_pkey
+            name: real_estate_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_civic_amenities_pkey
+            name: amenity
+            type: VARCHAR(255)
+        tableName: real_estate_civic_amenities
+- changeSet:
+    id: 1764615246335-7
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_transport_possibilities_pkey
+            name: real_estate_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_transport_possibilities_pkey
+            name: possibility
+            type: VARCHAR(255)
+        tableName: real_estate_transport_possibilities
+- changeSet:
+    id: 1764615246335-8
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_utilities_pkey
+            name: real_estate_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: real_estate_utilities_pkey
+            name: utility
+            type: VARCHAR(255)
+        tableName: real_estate_utilities
+- changeSet:
+    id: 1764615246335-9
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: user_type
+            type: VARCHAR(31)
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: remax_user_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: account_status
+            type: VARCHAR(255)
+        - column:
+            name: blocked_until
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: email
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: failed_login_attempts
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: password
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: username
+            type: VARCHAR(255)
+        - column:
+            name: about
+            type: VARCHAR(2000)
+        - column:
+            name: license_number
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: personal_information_id
+            type: BIGINT
+        tableName: remax_user
+- changeSet:
+    id: 1764615246335-10
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: review_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: client_display_name
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: communication
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: fairness
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: overall
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: professionality
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: speed
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: text
+            type: VARCHAR(500)
+        - column:
+            constraints:
+              nullable: false
+            name: author_client_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: reviewed_realtor_id
+            type: BIGINT
+        tableName: review
+- changeSet:
+    id: 1764615246335-11
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: personal_information_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: birth_date
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            name: degree
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: first_name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: last_name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: phone_number
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: address_id
+            type: BIGINT
+        - column:
+            name: image_id
+            type: BIGINT
+        tableName: personal_information
+- changeSet:
+    id: 1764615246335-12
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: address_id
+        constraintName: ukk958w4nr51ao4xj4llm72yhy2
+        tableName: real_estate
+- changeSet:
+    id: 1764615246335-13
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: license_number
+        constraintName: uk17k09xknc23jc89jea1ek0b0l
+        tableName: remax_user
+- changeSet:
+    id: 1764615246335-14
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: personal_information_id
+        constraintName: ukkdix9rqp4khjb9epmm8eu84eq
+        tableName: remax_user
+- changeSet:
+    id: 1764615246335-15
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: ukllu1safxmni3m0ew4v1b0fvs8
+        tableName: remax_user
+- changeSet:
+    id: 1764615246335-16
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: username
+        constraintName: ukmli8fk8k8svkmskpjha69dhhi
+        tableName: remax_user
+- changeSet:
+    id: 1764615246335-17
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: address_id
+        constraintName: uk2spugjpm7vf19gotyvpue8b8r
+        tableName: personal_information
+- changeSet:
+    id: 1764615246335-18
+    author: tomas (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: image_id
+        constraintName: ukqqgnk2fjawstna2wcypfctek2
+        tableName: personal_information
+- changeSet:
+    id: 1764615246335-19
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: address_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-20
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: image_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-21
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: meeting_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-22
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: personal_information_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-23
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: price_history_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-24
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: real_estate_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-25
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: remax_user_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-26
+    author: tomas (generated)
+    changes:
+    - createSequence:
+        cacheSize: 1
+        cycle: false
+        dataType: bigint
+        incrementBy: 50
+        maxValue: 9223372036854775807
+        minValue: 1
+        sequenceName: review_seq
+        startValue: 1
+- changeSet:
+    id: 1764615246335-27
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: image_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: content_type
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: data
+            type: OID
+        - column:
+            constraints:
+              nullable: false
+            name: filename
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: real_estate_id
+            type: BIGINT
+        tableName: image
+- changeSet:
+    id: 1764615246335-28
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: is_for_housing
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: land_pkey
+            name: id
+            type: BIGINT
+        tableName: land
+- changeSet:
+    id: 1764615246335-29
+    author: tomas (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: price_history_pkey
+            name: id
+            type: BIGINT
+        - column:
+            name: price
+            type: FLOAT8
+        - column:
+            constraints:
+              nullable: false
+            name: timestamp
+            type: TIMESTAMP WITH TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: price_history_id
+            type: BIGINT
+        tableName: price_history
+- changeSet:
+    id: 1764615246335-30
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: real_estate_id
+        baseTableName: real_estate_transport_possibilities
+        constraintName: fk1couis7cbs51yw07x5igt3vvw
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-31
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: personal_information_id
+        baseTableName: remax_user
+        constraintName: fk1ryqwb9tchemrnfgrm1ct2ox4
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: personal_information
+        validate: true
+- changeSet:
+    id: 1764615246335-32
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: price_history_id
+        baseTableName: price_history
+        constraintName: fk3yfsa9t215iiybpqdav10v32c
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-33
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: real_estate_id
+        baseTableName: meeting
+        constraintName: fk92qtlct9ugyhkcj8fbu915kyr
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-34
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: client_id
+        baseTableName: meeting
+        constraintName: fk9tiiqi2r711r9trhs8ymi2csk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: remax_user
+        validate: true
+- changeSet:
+    id: 1764615246335-35
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: address_id
+        baseTableName: real_estate
+        constraintName: fkcwb8g3j343oj14dcgmb2afs6s
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: address
+        validate: true
+- changeSet:
+    id: 1764615246335-36
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: id
+        baseTableName: land
+        constraintName: fkdgra4n4i7s40j7k2tpyebf31k
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-37
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: address_id
+        baseTableName: personal_information
+        constraintName: fkejfoagb9ssqjja03wt8nl3b72
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: address
+        validate: true
+- changeSet:
+    id: 1764615246335-38
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: author_client_id
+        baseTableName: review
+        constraintName: fkgnnia0ub3591h9ypceajcx2ly
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: remax_user
+        validate: true
+- changeSet:
+    id: 1764615246335-39
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: image_id
+        baseTableName: personal_information
+        constraintName: fkinh278i2h07e38o7kt2dmo42b
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: image
+        validate: true
+- changeSet:
+    id: 1764615246335-40
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reviewed_realtor_id
+        baseTableName: review
+        constraintName: fklhww57evdti82iq2paq6nxe7t
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: remax_user
+        validate: true
+- changeSet:
+    id: 1764615246335-41
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: id
+        baseTableName: apartment
+        constraintName: fklm5j8so23qifbqo6rsqjgqxv7
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-42
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: real_estate_id
+        baseTableName: image
+        constraintName: fkmfm6ojv3rbvpngu4gt9kqlip8
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-43
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: real_estate_id
+        baseTableName: real_estate_civic_amenities
+        constraintName: fkr6cpvegw47ja1f5mqg4jyctpf
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-44
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: realtor_id
+        baseTableName: meeting
+        constraintName: fkrsbha24y00psr577pf9b40c5e
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: remax_user
+        validate: true
+- changeSet:
+    id: 1764615246335-45
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: id
+        baseTableName: house
+        constraintName: fks4dlvvoffq2s3u60v4a58d5x4
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+- changeSet:
+    id: 1764615246335-46
+    author: tomas (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: real_estate_id
+        baseTableName: real_estate_utilities
+        constraintName: fkt03ukvm4i33bt2m65u52ugjba
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: real_estate
+        validate: true
+
