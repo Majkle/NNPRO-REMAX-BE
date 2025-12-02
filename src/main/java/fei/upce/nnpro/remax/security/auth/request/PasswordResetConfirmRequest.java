@@ -8,6 +8,8 @@ import lombok.Setter;
 @Setter
 public class PasswordResetConfirmRequest {
     @NotBlank
+    private String username;
+    @NotBlank
     private String code;
     @NotBlank
     private String newPassword;

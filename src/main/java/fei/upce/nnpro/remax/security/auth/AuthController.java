@@ -55,7 +55,7 @@ public class AuthController {
 
     @PostMapping("/password-reset/confirm")
     public ResponseEntity<?> confirmPasswordReset(@Valid @RequestBody PasswordResetConfirmRequest request) {
-        authService.resetPassword(request.getCode(), request.getNewPassword());
+        authService.resetPassword(request.getUsername(), request.getCode(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
 }

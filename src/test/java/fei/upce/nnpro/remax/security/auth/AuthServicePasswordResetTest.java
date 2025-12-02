@@ -63,16 +63,18 @@ public class AuthServicePasswordResetTest {
 
         AuthService svc = new AuthService(userRepo, addressService, piService, authManager, jwt, encoder, props, mailService);
 
-        RemaxUser user = new RemaxUser(){};
+        RemaxUser user = new RemaxUser() {
+        };
+        user.setUsername("pepazdepa");
         user.setEmail("u@example.com");
         user.setPasswordResetCode("ABC12345");
         user.setPasswordResetCodeDeadline(ZonedDateTime.now().plusHours(1));
 
-        when(userRepo.findAll()).thenReturn(List.of(user));
+        when(userRepo.findByUsername("pepazdepa")).thenReturn(Optional.of(user));
         when(encoder.encode("newpass")).thenReturn("encoded");
         when(userRepo.save(any(RemaxUser.class))).thenAnswer(i -> i.getArgument(0));
 
-        svc.resetPassword("ABC12345", "newpass");
+        svc.resetPassword("pepazdepa", "ABC12345", "newpass");
 
         verify(encoder).encode("newpass");
         assertEquals("encoded", user.getPassword());
@@ -95,7 +97,7 @@ public class AuthServicePasswordResetTest {
 
         when(userRepo.findAll()).thenReturn(List.of());
 
-        assertThrows(IllegalArgumentException.class, () -> svc.resetPassword("NOPE", "p"));
+        assertThrows(IllegalArgumentException.class, () -> svc.resetPassword("pepazdepa", "NOPE", "p"));
     }
 
     @Test
@@ -111,13 +113,15 @@ public class AuthServicePasswordResetTest {
 
         AuthService svc = new AuthService(userRepo, addressService, piService, authManager, jwt, encoder, props, mailService);
 
-        RemaxUser user = new RemaxUser(){};
+        RemaxUser user = new RemaxUser() {
+        };
+        user.setUsername("pepazdepa");
         user.setPasswordResetCode("OLD12345");
         user.setPasswordResetCodeDeadline(ZonedDateTime.now().minusHours(1));
 
         when(userRepo.findAll()).thenReturn(List.of(user));
 
-        assertThrows(IllegalArgumentException.class, () -> svc.resetPassword("OLD12345", "p"));
+        assertThrows(IllegalArgumentException.class, () -> svc.resetPassword("pepazdepa", "OLD12345", "p"));
     }
 }
 

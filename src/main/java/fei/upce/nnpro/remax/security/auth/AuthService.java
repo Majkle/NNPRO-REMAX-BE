@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -144,24 +145,27 @@ public class AuthService {
         RemaxUser user = maybe.get();
         String code = java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase(); // FIXME more user-friendly and secure code - in DB encrypted/hashed
         user.setPasswordResetCode(code);
-        user.setPasswordResetCodeDeadline(ZonedDateTime.now().plusHours(1)); // FIXME config property
+        user.setPasswordResetCodeDeadline(ZonedDateTime.now().plus(securityProperties.getPasswordResetTokenExpirationMs(), ChronoUnit.MILLIS));
         userRepository.save(user);
 
         mailService.sendPasswordResetCode(user.getEmail(), code);
         log.info("Password reset code generated for email={}", email);
     }
 
-    public void resetPassword(String code, String newPassword) { // FIXME include email/username?
+    public void resetPassword(String username, String code, String newPassword) {
         log.info("Attempting password reset with code={}", code);
-        // find user by code
-        Optional<RemaxUser> maybe = userRepository.findAll().stream()
-                .filter(u -> code.equals(u.getPasswordResetCode()))
-                .findFirst();
+
+        Optional<RemaxUser> maybe = userRepository.findByUsername(username);
         if (maybe.isEmpty()) {
-            log.warn("Invalid password reset code={}", code);
-            throw new IllegalArgumentException("Invalid code");
+            log.warn("Invalid username={}", username);
+            throw new IllegalArgumentException("Invalid username");
         }
         RemaxUser user = maybe.get();
+        if (user.getPasswordResetCode() == null || !user.getPasswordResetCode().equals(code)) {
+            log.warn("Invalid password reset code={}", code);
+            throw new IllegalArgumentException("Code invalid");
+        }
+
         if (user.getPasswordResetCodeDeadline() == null || user.getPasswordResetCodeDeadline().isBefore(ZonedDateTime.now())) {
             log.warn("Password reset code expired for user={}", user.getEmail());
             throw new IllegalArgumentException("Code expired");

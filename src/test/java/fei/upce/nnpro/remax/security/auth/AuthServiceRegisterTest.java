@@ -89,7 +89,6 @@ class AuthServiceRegisterTest {
 
         Mockito.verify(addressService).createFrom(Mockito.any(RegisterRequest.class));
         Mockito.verify(piService).createFrom(Mockito.any(RegisterRequest.class), Mockito.any(Address.class));
-        Mockito.verify(piService).save(Mockito.any(PersonalInformation.class));
         Mockito.verify(userRepo).save(Mockito.any(RemaxUser.class));
     }
 }

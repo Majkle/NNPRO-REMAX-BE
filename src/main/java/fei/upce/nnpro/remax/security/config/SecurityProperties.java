@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 public class SecurityProperties {
 
     private String jwtSecret;
-    private long jwtExpirationMs = 3600000;
+    private long jwtExpirationMs = 60 * 60 * 1000L;
     private String corsAllowedOrigins =  "*";
     private int failedLoginThreshold = 3;
     private long lockDurationHours = 24;
+    private long passwordResetTokenExpirationMs = 10 * 60 * 1000L;
 }
