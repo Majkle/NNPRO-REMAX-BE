@@ -29,6 +29,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ReviewDto> updateReview(@PathVariable Long id,
                                                   @Valid @RequestBody ReviewDto dto,
                                                   Authentication authentication) {
@@ -37,6 +38,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id, Authentication authentication) {
         boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         reviewService.deleteReview(id, authentication.getName(), isAdmin);

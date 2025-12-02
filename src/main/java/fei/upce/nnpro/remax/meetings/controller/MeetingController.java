@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,12 +35,14 @@ public class MeetingController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_REALTOR') or hasRole('ROLE_USER')")
     public ResponseEntity<MeetingDto> updateMeeting(@PathVariable Long id, @Valid @RequestBody MeetingDto dto) {
         Meeting updated = meetingService.updateMeeting(id, dto);
         return ResponseEntity.ok(meetingMapper.toDto(updated));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_REALTOR') or hasRole('ROLE_USER')")
     public ResponseEntity<Page<MeetingDto>> listMeetings(@ParameterObject Pageable pageable) {
         Page<Meeting> page = meetingService.searchMeetings(pageable);
         Page<MeetingDto> dtos = page.map(meetingMapper::toDto);

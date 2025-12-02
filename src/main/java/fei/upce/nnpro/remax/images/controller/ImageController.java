@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class ImageController {
      * Use form-data with key 'file'.
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('REALTOR')")
     public ResponseEntity<ImageDto> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             ImageDto imageDto = imageService.uploadImage(file);
@@ -54,6 +56,7 @@ public class ImageController {
      * Delete an image by ID.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('REALTOR')")
     public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
         imageService.deleteImage(id);
         return ResponseEntity.noContent().build();

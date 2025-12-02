@@ -28,8 +28,7 @@ public class AdminController {
     public ResponseEntity<?> blockUser(@PathVariable String username,
                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime until) {
         if (until == null) {
-            // default: block indefinitely (set some far future date)
-            until = ZonedDateTime.now().plusYears(100);
+            until = ZonedDateTime.now().plusYears(666);
         }
         log.info("Admin request to block user {} until {}", username, until);
         return ResponseEntity.ok(adminService.blockUser(username, until));

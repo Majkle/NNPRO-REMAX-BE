@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class ProfileController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getProfile(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
@@ -35,6 +37,7 @@ public class ProfileController {
     }
 
     @PatchMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> updateProfile(Authentication authentication, @Valid @RequestBody ProfileUpdateRequest request) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
@@ -50,6 +53,7 @@ public class ProfileController {
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_USER')") //FIXME can do only admin for REALTOR
     public ResponseEntity<?> deleteProfile(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
