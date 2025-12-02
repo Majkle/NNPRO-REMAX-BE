@@ -28,8 +28,8 @@ services:
   backend:
     container_name: remax-backend
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: deployment/Dockerfile
     restart: on-failure
     ports:
       - "8080:8080"
@@ -54,7 +54,7 @@ services:
     container_name: remax-frontend
     build:
       # Goes up one level, then into the Frontend folder
-      context: ../NNPRO-REMAX-FE
+      context: ../../NNPRO-REMAX-FE
       dockerfile: Dockerfile
       args:
         # Browser accesses API via Localhost, not internal container network
