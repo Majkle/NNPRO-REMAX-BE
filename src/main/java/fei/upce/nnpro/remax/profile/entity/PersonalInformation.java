@@ -1,7 +1,7 @@
 package fei.upce.nnpro.remax.profile.entity;
 
-import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.images.entity.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

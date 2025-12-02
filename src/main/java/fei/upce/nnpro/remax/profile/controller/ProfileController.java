@@ -1,7 +1,7 @@
 package fei.upce.nnpro.remax.profile.controller;
 
-import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.service.ProfileService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;

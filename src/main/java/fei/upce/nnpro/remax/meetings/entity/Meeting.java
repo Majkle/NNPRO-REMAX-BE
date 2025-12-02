@@ -2,9 +2,9 @@ package fei.upce.nnpro.remax.meetings.entity;
 
 import fei.upce.nnpro.remax.meetings.entity.enums.MeetingStatus;
 import fei.upce.nnpro.remax.meetings.entity.enums.MeetingType;
-import fei.upce.nnpro.remax.realestates.entity.RealEstate;
 import fei.upce.nnpro.remax.profile.entity.Client;
 import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.realestates.entity.RealEstate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

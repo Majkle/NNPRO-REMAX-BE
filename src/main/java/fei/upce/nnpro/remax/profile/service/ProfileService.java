@@ -1,12 +1,12 @@
 package fei.upce.nnpro.remax.profile.service;
 
-import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.address.entity.Address;
-import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
+import fei.upce.nnpro.remax.address.service.AddressService;
+import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
-import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
+import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package fei.upce.nnpro.remax.meetings.service;
 
-import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
+import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
 import fei.upce.nnpro.remax.meetings.entity.Meeting;
 import fei.upce.nnpro.remax.meetings.repository.MeetingRepository;
 import fei.upce.nnpro.remax.profile.entity.Client;

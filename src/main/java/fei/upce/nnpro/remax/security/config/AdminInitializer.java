@@ -1,12 +1,12 @@
 package fei.upce.nnpro.remax.security.config;
 
-import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.address.entity.Address;
-import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
+import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.profile.entity.Admin;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
+import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;

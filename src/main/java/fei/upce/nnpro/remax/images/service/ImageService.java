@@ -1,8 +1,8 @@
 package fei.upce.nnpro.remax.images.service;
 
 import fei.upce.nnpro.remax.images.dto.ImageDto;
-import fei.upce.nnpro.remax.images.repository.ImageRepository;
 import fei.upce.nnpro.remax.images.entity.Image;
+import fei.upce.nnpro.remax.images.repository.ImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

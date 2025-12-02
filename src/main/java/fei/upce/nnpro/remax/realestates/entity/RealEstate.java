@@ -2,7 +2,6 @@ package fei.upce.nnpro.remax.realestates.entity;
 
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.images.entity.Image;
-import fei.upce.nnpro.remax.model.realestates.entity.enums.*;
 import fei.upce.nnpro.remax.realestates.entity.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
