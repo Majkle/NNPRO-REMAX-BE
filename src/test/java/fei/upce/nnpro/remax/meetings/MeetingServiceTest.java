@@ -1,14 +1,15 @@
 package fei.upce.nnpro.remax.meetings;
 
-import fei.upce.nnpro.remax.model.realestates.entity.Apartment;
+import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
+import fei.upce.nnpro.remax.realestates.entity.Apartment;
 import fei.upce.nnpro.remax.meetings.service.MeetingService;
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
-import fei.upce.nnpro.remax.model.meeting.Meeting;
-import fei.upce.nnpro.remax.model.meeting.MeetingRepository;
+import fei.upce.nnpro.remax.meetings.entity.Meeting;
+import fei.upce.nnpro.remax.meetings.repository.MeetingRepository;
 import fei.upce.nnpro.remax.realestates.repository.RealEstateRepository;
-import fei.upce.nnpro.remax.model.users.RemaxUserRepository;
-import fei.upce.nnpro.remax.model.users.Realtor;
-import fei.upce.nnpro.remax.model.users.Client;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.profile.entity.Client;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

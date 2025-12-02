@@ -1,10 +1,15 @@
 package fei.upce.nnpro.remax.security.admin;
 
-import fei.upce.nnpro.remax.address.AddressService;
-import fei.upce.nnpro.remax.model.realestates.entity.Address;
-import fei.upce.nnpro.remax.model.users.*;
-import fei.upce.nnpro.remax.model.users.enums.AccountStatus;
-import fei.upce.nnpro.remax.personalInformation.PersonalInformationService;
+import fei.upce.nnpro.remax.address.service.AddressService;
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
+import fei.upce.nnpro.remax.profile.dto.RemaxUserResponse;
+import fei.upce.nnpro.remax.profile.entity.Admin;
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
+import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

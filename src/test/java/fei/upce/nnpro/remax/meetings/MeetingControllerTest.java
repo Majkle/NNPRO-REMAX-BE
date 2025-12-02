@@ -2,8 +2,9 @@ package fei.upce.nnpro.remax.meetings;
 
 import fei.upce.nnpro.remax.meetings.controller.MeetingController;
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
+import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
 import fei.upce.nnpro.remax.meetings.service.MeetingService;
-import fei.upce.nnpro.remax.model.meeting.Meeting;
+import fei.upce.nnpro.remax.meetings.entity.Meeting;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;

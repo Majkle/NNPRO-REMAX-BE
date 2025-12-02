@@ -1,7 +1,11 @@
 package fei.upce.nnpro.remax.realestates.dto;
 
-import fei.upce.nnpro.remax.model.realestates.entity.*;
-import fei.upce.nnpro.remax.model.realestates.enums.*;
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.realestates.entity.BuildingProperties;
+import fei.upce.nnpro.remax.realestates.entity.CivicAmenities;
+import fei.upce.nnpro.remax.realestates.entity.TransportPossibilities;
+import fei.upce.nnpro.remax.realestates.entity.Utilities;
+import fei.upce.nnpro.remax.realestates.entity.enums.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;

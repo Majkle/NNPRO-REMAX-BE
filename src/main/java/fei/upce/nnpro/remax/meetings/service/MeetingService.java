@@ -1,12 +1,12 @@
 package fei.upce.nnpro.remax.meetings.service;
 
-import fei.upce.nnpro.remax.meetings.MeetingMapper;
+import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
-import fei.upce.nnpro.remax.model.meeting.Meeting;
-import fei.upce.nnpro.remax.model.meeting.MeetingRepository;
-import fei.upce.nnpro.remax.model.users.Client;
-import fei.upce.nnpro.remax.model.users.Realtor;
-import fei.upce.nnpro.remax.model.users.RemaxUserRepository;
+import fei.upce.nnpro.remax.meetings.entity.Meeting;
+import fei.upce.nnpro.remax.meetings.repository.MeetingRepository;
+import fei.upce.nnpro.remax.profile.entity.Client;
+import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.realestates.repository.RealEstateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.review.repository;
 
-import fei.upce.nnpro.remax.model.review.Review;
+import fei.upce.nnpro.remax.review.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

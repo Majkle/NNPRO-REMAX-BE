@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.realestates.dto;
 
-import fei.upce.nnpro.remax.model.realestates.enums.*;
+import fei.upce.nnpro.remax.realestates.entity.enums.*;
 import lombok.Data;
 
 import java.util.Set;

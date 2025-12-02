@@ -1,9 +1,9 @@
 package fei.upce.nnpro.remax.security.auth;
 
-import fei.upce.nnpro.remax.model.users.Admin;
-import fei.upce.nnpro.remax.model.users.Realtor;
-import fei.upce.nnpro.remax.model.users.RemaxUser;
-import fei.upce.nnpro.remax.model.users.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.entity.Admin;
+import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,9 @@
 package fei.upce.nnpro.remax.address;
 
-import fei.upce.nnpro.remax.model.realestates.entity.Address;
-import fei.upce.nnpro.remax.model.realestates.enums.AddressRegion;
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.address.repository.AddressRepository;
+import fei.upce.nnpro.remax.address.service.AddressService;
+import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

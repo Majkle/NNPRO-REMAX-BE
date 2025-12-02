@@ -1,7 +1,7 @@
 package fei.upce.nnpro.remax.realestates.controller;
 
-import fei.upce.nnpro.remax.model.realestates.entity.RealEstate;
-import fei.upce.nnpro.remax.realestates.RealEstateMapper;
+import fei.upce.nnpro.remax.realestates.entity.RealEstate;
+import fei.upce.nnpro.remax.realestates.dto.RealEstateMapper;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnpro.remax.realestates.service.RealEstateService;

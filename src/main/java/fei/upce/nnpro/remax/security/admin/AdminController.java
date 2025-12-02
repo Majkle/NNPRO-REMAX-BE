@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.security.admin;
 
-import fei.upce.nnpro.remax.model.users.RemaxUserResponse;
+import fei.upce.nnpro.remax.profile.dto.RemaxUserResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;

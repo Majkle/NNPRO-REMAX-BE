@@ -1,9 +1,10 @@
 package fei.upce.nnpro.remax.realestates.service;
 
-import fei.upce.nnpro.remax.model.realestates.entity.*;
-import fei.upce.nnpro.remax.model.realestates.enums.CivicAmenity;
-import fei.upce.nnpro.remax.model.realestates.enums.TransportPossibility;
-import fei.upce.nnpro.remax.model.realestates.enums.UtilityType;
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.realestates.entity.*;
+import fei.upce.nnpro.remax.realestates.entity.enums.CivicAmenity;
+import fei.upce.nnpro.remax.realestates.entity.enums.TransportPossibility;
+import fei.upce.nnpro.remax.realestates.entity.enums.UtilityType;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateFilterDto;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;

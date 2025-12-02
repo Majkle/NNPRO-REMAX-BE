@@ -1,9 +1,9 @@
 package fei.upce.nnpro.remax.security.auth;
 
-import fei.upce.nnpro.remax.address.AddressService;
-import fei.upce.nnpro.remax.model.users.RemaxUser;
-import fei.upce.nnpro.remax.model.users.RemaxUserRepository;
-import fei.upce.nnpro.remax.personalInformation.PersonalInformationService;
+import fei.upce.nnpro.remax.address.service.AddressService;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import fei.upce.nnpro.remax.security.jwt.JwtUtil;
 import fei.upce.nnpro.remax.mail.MailService;

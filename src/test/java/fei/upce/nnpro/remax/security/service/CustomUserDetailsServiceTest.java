@@ -1,9 +1,9 @@
 package fei.upce.nnpro.remax.security.service;
 
-import fei.upce.nnpro.remax.model.users.Client;
-import fei.upce.nnpro.remax.model.users.RemaxUserRepository;
-import fei.upce.nnpro.remax.model.users.PersonalInformation;
-import fei.upce.nnpro.remax.model.users.enums.AccountStatus;
+import fei.upce.nnpro.remax.profile.entity.Client;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
+import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
 import fei.upce.nnpro.remax.security.auth.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

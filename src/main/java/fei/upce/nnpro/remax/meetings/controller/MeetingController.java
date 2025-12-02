@@ -1,9 +1,9 @@
 package fei.upce.nnpro.remax.meetings.controller;
 
-import fei.upce.nnpro.remax.meetings.MeetingMapper;
+import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
 import fei.upce.nnpro.remax.meetings.service.MeetingService;
-import fei.upce.nnpro.remax.model.meeting.Meeting;
+import fei.upce.nnpro.remax.meetings.entity.Meeting;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;

@@ -1,11 +1,11 @@
 package fei.upce.nnpro.remax.security.profile;
 
-import fei.upce.nnpro.remax.model.realestates.entity.Address;
-import fei.upce.nnpro.remax.model.users.PersonalInformation;
-import fei.upce.nnpro.remax.model.users.RemaxUser;
-import fei.upce.nnpro.remax.profile.ProfileController;
-import fei.upce.nnpro.remax.profile.ProfileService;
-import fei.upce.nnpro.remax.profile.request.ProfileUpdateRequest;
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.controller.ProfileController;
+import fei.upce.nnpro.remax.profile.service.ProfileService;
+import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;

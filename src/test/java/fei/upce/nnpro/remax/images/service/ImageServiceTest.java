@@ -2,7 +2,7 @@ package fei.upce.nnpro.remax.images.service;
 
 import fei.upce.nnpro.remax.images.dto.ImageDto;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
-import fei.upce.nnpro.remax.model.image.Image;
+import fei.upce.nnpro.remax.images.entity.Image;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

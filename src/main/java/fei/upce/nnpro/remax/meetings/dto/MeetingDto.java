@@ -1,7 +1,7 @@
 package fei.upce.nnpro.remax.meetings.dto;
 
-import fei.upce.nnpro.remax.model.meeting.enums.MeetingStatus;
-import fei.upce.nnpro.remax.model.meeting.enums.MeetingType;
+import fei.upce.nnpro.remax.meetings.entity.enums.MeetingStatus;
+import fei.upce.nnpro.remax.meetings.entity.enums.MeetingType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
