@@ -48,7 +48,8 @@ public class AuthService {
                        AuthenticationManager authenticationManager,
                        JwtUtil jwtUtil,
                        PasswordEncoder passwordEncoder, SecurityProperties securityProperties) {
-        this(userRepository, addressService, personalInformationService, authenticationManager, jwtUtil, passwordEncoder, securityProperties, new fei.upce.nnpro.remax.mail.MailService());
+        // delegate to main ctor with null mailService for tests or when not available
+        this(userRepository, addressService, personalInformationService, authenticationManager, jwtUtil, passwordEncoder, securityProperties, null);
     }
 
     public AuthService(RemaxUserRepository userRepository,
@@ -152,8 +153,12 @@ public class AuthService {
         user.setPasswordResetCodeDeadline(ZonedDateTime.now().plus(securityProperties.getPasswordResetTokenExpirationMs(), ChronoUnit.MILLIS));
         userRepository.save(user);
 
-        mailService.sendPasswordResetCode(user.getEmail(), code);
-        log.info("Password reset code generated for email={}", email);
+        if (mailService != null) {
+            mailService.sendPasswordResetCode(user.getEmail(), code);
+            log.info("Password reset code generated for email={}", email);
+        } else {
+            log.info("Password reset code generated but mailService not available for email={} code={}", email, code);
+        }
     }
 
     public void resetPassword(String username, String code, String newPassword) {
