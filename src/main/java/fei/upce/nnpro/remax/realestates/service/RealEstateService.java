@@ -1,5 +1,6 @@
 package fei.upce.nnpro.remax.realestates.service;
 
+import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
@@ -10,6 +11,8 @@ import fei.upce.nnpro.remax.realestates.entity.*;
 import fei.upce.nnpro.remax.realestates.repository.RealEstateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,6 +31,7 @@ public class RealEstateService {
     private final AddressService addressService;
     private final RealEstateMapper realEstateMapper;
     private final ImageRepository imageRepository;
+    private static final Logger log = LoggerFactory.getLogger(RealEstateService.class);
 
     /**
      * Creates a new Real Estate property.
@@ -35,12 +39,14 @@ public class RealEstateService {
      */
     @Transactional
     public RealEstate createRealEstate(RealEstateDto dto) {
+        log.info("Creating RealEstate name={} price={}", dto.getName(), dto.getPrice());
         // 1. Map DTO to new Entity
         RealEstate realEstate = realEstateMapper.toEntity(dto);
 
         // 2. Persist Address first (OneToOne)
         if (realEstate.getAddress() != null) {
-            addressService.save(realEstate.getAddress());
+            Address savedAddr = addressService.save(realEstate.getAddress());
+            log.debug("Saved address id={} for new realEstate", savedAddr.getId());
         }
 
         // 3. Initialize Price History
@@ -52,10 +58,13 @@ public class RealEstateService {
             List<PriceHistory> history = new ArrayList<>();
             history.add(initialPrice);
             realEstate.setPriceHistory(history);
+            log.debug("Initialized price history with price={}", dto.getPrice());
         }
 
         // 4. Save and Return Entity
-        return realEstateRepository.save(realEstate);
+        RealEstate saved = realEstateRepository.save(realEstate);
+        log.info("Created RealEstate id={} name={}", saved.getId(), saved.getName());
+        return saved;
     }
 
     /**
@@ -64,12 +73,17 @@ public class RealEstateService {
      */
     @Transactional
     public RealEstate updateRealEstate(Long id, RealEstateDto dto) {
+        log.info("Updating RealEstate id={}", id);
         RealEstate existing = realEstateRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("RealEstate with ID " + id + " not found"));
+                .orElseThrow(() -> {
+                    log.warn("RealEstate not found id={}", id);
+                    return new EntityNotFoundException("RealEstate with ID " + id + " not found");
+                });
 
         // 1. Handle Address Updates
         if (dto.getAddress() != null && existing.getAddress() != null) {
             addressService.update(dto.getAddress(), existing.getAddress());
+            log.debug("Updated address for realEstate id={}", id);
         }
 
         // 2. Handle Price History
@@ -89,6 +103,7 @@ public class RealEstateService {
                     existing.setPriceHistory(new ArrayList<>());
                 }
                 existing.getPriceHistory().add(newPrice);
+                log.info("Price changed for realEstate id={} from={} to={}", id, currentPrice, dto.getPrice());
             }
         }
 
@@ -99,7 +114,9 @@ public class RealEstateService {
         updateSubclassFields(existing, dto);
 
         // 5. Save and Return Entity
-        return realEstateRepository.save(existing);
+        RealEstate saved = realEstateRepository.save(existing);
+        log.info("Updated RealEstate id={} name={}", saved.getId(), saved.getName());
+        return saved;
     }
 
     private void updateCommonFields(RealEstate existing, RealEstateDto dto) {
@@ -185,8 +202,14 @@ public class RealEstateService {
      */
     @Transactional(readOnly = true)
     public RealEstate getRealEstate(Long id) {
-        return realEstateRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("RealEstate with ID " + id + " not found"));
+        log.info("Fetching RealEstate id={}", id);
+        RealEstate found = realEstateRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("RealEstate not found id={}", id);
+                    return new EntityNotFoundException("RealEstate with ID " + id + " not found");
+                });
+        log.debug("Fetched RealEstate id={} name={}", found.getId(), found.getName());
+        return found;
     }
 
     /**
@@ -194,7 +217,10 @@ public class RealEstateService {
      */
     @Transactional(readOnly = true)
     public Page<RealEstate> searchRealEstates(RealEstateFilterDto filter, Pageable pageable) {
+        log.info("Searching RealEstates filter={} pageable={}", filter, pageable);
         Specification<RealEstate> spec = RealEstateSpecification.filterBy(filter);
-        return realEstateRepository.findAll(spec, pageable);
+        Page<RealEstate> page = realEstateRepository.findAll(spec, pageable);
+        log.debug("Found {} real estates", page.getNumberOfElements());
+        return page;
     }
 }

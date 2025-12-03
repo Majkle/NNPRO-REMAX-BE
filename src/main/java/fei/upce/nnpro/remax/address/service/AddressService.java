@@ -22,6 +22,8 @@ public class AddressService {
     }
 
     public void update(Address newAddrData, Address existingAddr) {
+        log.info("Updating address id={} with new data: {}", existingAddr.getId(), newAddrData);
+
         existingAddr.setCity(newAddrData.getCity());
         existingAddr.setStreet(newAddrData.getStreet());
         existingAddr.setPostalCode(newAddrData.getPostalCode());
@@ -29,7 +31,9 @@ public class AddressService {
         existingAddr.setFlatNumber(newAddrData.getFlatNumber());
         existingAddr.setRegion(newAddrData.getRegion());
 
-        addressRepository.save(existingAddr);
+        // persist and log outcome
+        Address saved = addressRepository.save(existingAddr);
+        log.info("Updated address id={} street={} city={}", saved.getId(), saved.getStreet(), saved.getCity());
     }
 
     public Address createFrom(RegisterRequest request) {
