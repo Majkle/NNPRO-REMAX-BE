@@ -3,6 +3,11 @@ package fei.upce.nnprop.remax.images.controller;
 import fei.upce.nnprop.remax.images.dto.ImageDto;
 import fei.upce.nnprop.remax.images.service.ImageService;
 import fei.upce.nnprop.remax.model.image.Image;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/images")
 @RequiredArgsConstructor
+@Tag(name = "Images", description = "Endpoints for uploading and retrieving images")
 public class ImageController {
 
     private final ImageService imageService;
@@ -24,6 +30,12 @@ public class ImageController {
      * Upload an image.
      * Use form-data with key 'file'.
      */
+    @Operation(summary = "Upload an image", description = "Uploads a file and saves it to the database.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid file"),
+            @ApiResponse(responseCode = "500", description = "Server error during upload")
+    })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageDto> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -40,6 +52,9 @@ public class ImageController {
      * Retrieve the raw image data.
      * This endpoint is used in HTML <img src="/api/images/{id}"> tags.
      */
+    @Operation(summary = "Get image content", description = "Returns the raw byte content of the image. Used for <img src>.")
+    @ApiResponse(responseCode = "200", description = "Image found", content = @Content(mediaType = "image/*"))
+    @ApiResponse(responseCode = "404", description = "Image not found")
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
         Image image = imageService.getImageEntity(id);
@@ -53,6 +68,9 @@ public class ImageController {
     /**
      * Delete an image by ID.
      */
+    @Operation(summary = "Delete an image")
+    @ApiResponse(responseCode = "204", description = "Image deleted")
+    @ApiResponse(responseCode = "404", description = "Image not found")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
         imageService.deleteImage(id);

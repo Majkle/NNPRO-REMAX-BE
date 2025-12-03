@@ -35,7 +35,7 @@
 		<h2.version>2.3.232</h2.version>
 		<postgresql.version>42.7.7</postgresql.version>
 		<lombok.version>1.18.40</lombok.version>
-		<springdoc.version>2.6.0</springdoc.version>
+		<springdoc.version>2.8.14</springdoc.version>
 
 		<!-- TRANSITIVE DEPENDENCIES FROZEN VERSIONS (Extracted from your tree) -->
 		<!-- Freezing these prevents internal drifts even if Parent POM changes -->
