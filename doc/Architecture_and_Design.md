@@ -93,7 +93,7 @@ classDiagram
 
 ---
 
-### New Section: 14. Entity-Relationship Diagram (ERD)
+### 14. Entity-Relationship Diagram (ERD)
 
 Schéma databáze generované na základě JPA entit. Zvýrazňuje vztahy mezi tabulkami a cizí klíče.
 
@@ -134,7 +134,7 @@ erDiagram
 
 ---
 
-### New Section: 15. Sequence Diagrams (Toky Aplikace)
+### 15. Sequence Diagrams (Toky Aplikace)
 
 #### 15.1 Authentication Flow (Login)
 Ukázka procesu přihlášení, validace a vydání JWT tokenu.
@@ -189,7 +189,7 @@ sequenceDiagram
 
 ---
 
-### New Section: 16. State Machine Diagrams (Stavové diagramy)
+### 16. State Machine Diagrams (Stavové diagramy)
 
 #### 16.1 Meeting Lifecycle
 Stavový diagram pro entitu `Meeting` (`PENDING`, `CONFIRMED`, `CANCELED`).
@@ -206,7 +206,7 @@ stateDiagram-v2
 
 ---
 
-### New Section: 17. Deployment Architecture
+### 17. Deployment Architecture
 
 Vizualizace nasazení pomocí Docker Compose.
 
