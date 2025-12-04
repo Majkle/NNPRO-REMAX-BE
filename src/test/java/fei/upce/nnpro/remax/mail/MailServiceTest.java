@@ -1,5 +1,7 @@
 package fei.upce.nnpro.remax.mail;
 
+import fei.upce.nnpro.remax.mail.config.MailProperties;
+import fei.upce.nnpro.remax.mail.service.MailService;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

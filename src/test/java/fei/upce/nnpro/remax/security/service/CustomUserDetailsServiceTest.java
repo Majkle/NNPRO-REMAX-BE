@@ -4,7 +4,7 @@ import fei.upce.nnpro.remax.profile.entity.Client;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
-import fei.upce.nnpro.remax.security.auth.CustomUserDetailsService;
+import fei.upce.nnpro.remax.security.auth.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.userdetails.UserDetails;

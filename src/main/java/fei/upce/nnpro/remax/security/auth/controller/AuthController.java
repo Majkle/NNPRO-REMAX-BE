@@ -1,7 +1,8 @@
-package fei.upce.nnpro.remax.security.auth;
+package fei.upce.nnpro.remax.security.auth.controller;
 
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import fei.upce.nnpro.remax.security.auth.request.AuthRequest;
 import fei.upce.nnpro.remax.security.auth.request.PasswordResetConfirmRequest;
 import fei.upce.nnpro.remax.security.auth.request.PasswordResetRequest;
@@ -50,7 +51,7 @@ public class AuthController {
     @PostMapping("/password-reset/request")
     public ResponseEntity<?> requestPasswordReset(@Valid @RequestBody PasswordResetRequest request) {
         authService.requestPasswordReset(request.getEmail());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnM0dDl2czd1YXdjY3NpMDNtNTlmcTJvMXV0NDBuaTVib2c1eDhnMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XZgeQHl4zAnmmh1vi3/giphy.gif");
     }
 
     @PostMapping("/password-reset/confirm")

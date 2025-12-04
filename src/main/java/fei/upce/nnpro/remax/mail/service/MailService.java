@@ -1,5 +1,6 @@
-package fei.upce.nnpro.remax.mail;
+package fei.upce.nnpro.remax.mail.service;
 
+import fei.upce.nnpro.remax.mail.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +11,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -28,7 +28,7 @@ public class MailService {
 
     public void sendPasswordResetCode(String to, String code) {
         log.info("Preparing password reset email to={}", to);
-        String subject = "Password reset request";
+        String subject = "Žádost o obnovení hesla";
         try {
             String body = renderTemplate("templates/password-reset.html", Map.of("code", code, "email", to));
 

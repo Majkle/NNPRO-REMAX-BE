@@ -1,10 +1,10 @@
-package fei.upce.nnpro.remax.mail;
+package fei.upce.nnpro.remax.mail.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "app.mail")
+@ConfigurationProperties(prefix = "remax.mail")
 public class MailProperties {
     private String from;
     private String replyTo;

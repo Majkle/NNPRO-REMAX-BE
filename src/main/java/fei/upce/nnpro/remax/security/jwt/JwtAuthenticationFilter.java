@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.security.jwt;
 
-import fei.upce.nnpro.remax.security.auth.CustomUserDetailsService;
+import fei.upce.nnpro.remax.security.auth.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

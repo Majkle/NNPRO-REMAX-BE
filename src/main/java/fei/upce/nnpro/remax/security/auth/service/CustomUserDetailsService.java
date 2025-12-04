@@ -1,4 +1,4 @@
-package fei.upce.nnpro.remax.security.auth;
+package fei.upce.nnpro.remax.security.auth.service;
 
 import fei.upce.nnpro.remax.profile.entity.Admin;
 import fei.upce.nnpro.remax.profile.entity.Realtor;

@@ -1,4 +1,4 @@
-package fei.upce.nnpro.remax.security.auth;
+package fei.upce.nnpro.remax.security.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

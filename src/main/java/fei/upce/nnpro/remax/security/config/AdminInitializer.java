@@ -20,12 +20,12 @@ import java.time.ZonedDateTime;
 @Configuration
 @Slf4j
 public class AdminInitializer {
-    @Value("${app.default-admin.username}")
+    @Value("${remax.default-admin.username}")
     private String username;
 
     private String email = "admin@remax.cz";
 
-    @Value("${app.default-admin.password}")
+    @Value("${remax.default-admin.password}")
     private String password;
 
     @Bean

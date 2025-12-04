@@ -1,8 +1,8 @@
-package fei.upce.nnpro.remax.security.auth;
+package fei.upce.nnpro.remax.security.auth.service;
 
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.address.service.AddressService;
-import fei.upce.nnpro.remax.mail.MailService;
+import fei.upce.nnpro.remax.mail.service.MailService;
 import fei.upce.nnpro.remax.profile.dto.RemaxUserResponse;
 import fei.upce.nnpro.remax.profile.entity.Client;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
@@ -16,6 +16,7 @@ import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import fei.upce.nnpro.remax.security.jwt.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,6 +53,7 @@ public class AuthService {
         this(userRepository, addressService, personalInformationService, authenticationManager, jwtUtil, passwordEncoder, securityProperties, null);
     }
 
+    @Autowired
     public AuthService(RemaxUserRepository userRepository,
                        AddressService addressService,
                        PersonalInformationService personalInformationService,

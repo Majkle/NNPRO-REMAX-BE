@@ -6,6 +6,7 @@ import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
+import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import fei.upce.nnpro.remax.security.jwt.JwtUtil;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;

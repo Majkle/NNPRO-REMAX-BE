@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.security.config;
 
-import fei.upce.nnpro.remax.security.auth.CustomUserDetailsService;
+import fei.upce.nnpro.remax.security.auth.service.CustomUserDetailsService;
 import fei.upce.nnpro.remax.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
