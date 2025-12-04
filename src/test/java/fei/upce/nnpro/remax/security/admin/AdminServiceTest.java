@@ -1,11 +1,11 @@
 package fei.upce.nnpro.remax.security.admin;
 
 import fei.upce.nnpro.remax.address.entity.Address;
-import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
 import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.Realtor;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import org.junit.jupiter.api.Test;

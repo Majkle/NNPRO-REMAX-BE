@@ -2,6 +2,7 @@ package fei.upce.nnpro.remax.security.jwt;
 
 import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JwtUtilTest {

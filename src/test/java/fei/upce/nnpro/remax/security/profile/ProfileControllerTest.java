@@ -1,11 +1,11 @@
 package fei.upce.nnpro.remax.security.profile;
 
 import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.profile.controller.ProfileController;
+import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
-import fei.upce.nnpro.remax.profile.controller.ProfileController;
 import fei.upce.nnpro.remax.profile.service.ProfileService;
-import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,8 @@ import org.springframework.security.core.Authentication;
 
 import java.time.ZonedDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ProfileControllerTest {
 

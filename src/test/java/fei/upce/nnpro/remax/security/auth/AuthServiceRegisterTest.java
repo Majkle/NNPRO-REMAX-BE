@@ -5,11 +5,11 @@ import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
 import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import fei.upce.nnpro.remax.security.jwt.JwtUtil;
-import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AuthServiceRegisterTest {
 

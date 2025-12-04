@@ -150,21 +150,25 @@ public class AuthService {
             return;
         }
         RemaxUser user = maybe.get();
-        String code = java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase(); // FIXME more user-friendly and secure code - in DB encrypted/hashed
-        user.setPasswordResetCode(code);
+        String rawCode = java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase();
+        // encode the code before storing it
+        String encoded = passwordEncoder.encode(rawCode);
+        user.setPasswordResetCode(encoded);
         user.setPasswordResetCodeDeadline(ZonedDateTime.now().plus(securityProperties.getPasswordResetTokenExpirationMs(), ChronoUnit.MILLIS));
         userRepository.save(user);
 
         if (mailService != null) {
-            mailService.sendPasswordResetCode(user.getEmail(), code);
-            log.info("Password reset code generated for email={}", email);
+            // send raw code to user via email
+            mailService.sendPasswordResetCode(user.getEmail(), rawCode);
+            log.info("Password reset code generated and email sent for email={}", email);
         } else {
-            log.info("Password reset code generated but mailService not available for email={} code={}", email, code);
+            // in absence of mail service log existence but avoid printing sensitive raw code in logs
+            log.info("Password reset code generated but mailService not available for email={}", email);
         }
     }
 
     public void resetPassword(String username, String code, String newPassword) {
-        log.info("Attempting password reset with code={}", code);
+        log.info("Attempting password reset for username={}", username);
 
         Optional<RemaxUser> maybe = userRepository.findByUsername(username);
         if (maybe.isEmpty()) {
@@ -172,8 +176,8 @@ public class AuthService {
             throw new IllegalArgumentException("Invalid username");
         }
         RemaxUser user = maybe.get();
-        if (user.getPasswordResetCode() == null || !user.getPasswordResetCode().equals(code)) {
-            log.warn("Invalid password reset code={}", code);
+        if (user.getPasswordResetCode() == null || !passwordEncoder.matches(code, user.getPasswordResetCode())) {
+            log.warn("Invalid password reset code for user={}", user.getEmail());
             throw new IllegalArgumentException("Code invalid");
         }
 

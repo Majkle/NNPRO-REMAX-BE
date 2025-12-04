@@ -1,14 +1,15 @@
 package fei.upce.nnpro.remax.security.auth;
 
 import fei.upce.nnpro.remax.address.service.AddressService;
+import fei.upce.nnpro.remax.mail.service.MailService;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import fei.upce.nnpro.remax.security.config.SecurityProperties;
 import fei.upce.nnpro.remax.security.jwt.JwtUtil;
-import fei.upce.nnpro.remax.mail.service.MailService;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 public class AuthServicePasswordResetTest {
 
     @Test
-    void requestPasswordReset_sendsEmailAndSavesCode() {
+    void requestPasswordReset_sendsEmailAndSavesEncodedCode() {
         RemaxUserRepository userRepo = Mockito.mock(RemaxUserRepository.class);
         AddressService addressService = Mockito.mock(AddressService.class);
         PersonalInformationService piService = Mockito.mock(PersonalInformationService.class);
@@ -41,12 +42,21 @@ public class AuthServicePasswordResetTest {
 
         when(userRepo.findByEmail("u@example.com")).thenReturn(Optional.of(user));
         when(userRepo.save(any(RemaxUser.class))).thenAnswer(i -> i.getArgument(0));
+        // simulate encoder producing encoded value
+        when(encoder.encode(anyString())).thenAnswer(i -> "ENC:" + i.getArgument(0));
 
         svc.requestPasswordReset("u@example.com");
 
-        verify(mailService, times(1)).sendPasswordResetCode(eq("u@example.com"), anyString());
+        ArgumentCaptor<String> codeCaptor = ArgumentCaptor.forClass(String.class);
+        verify(mailService, times(1)).sendPasswordResetCode(eq("u@example.com"), codeCaptor.capture());
+        String rawSent = codeCaptor.getValue();
+        assertNotNull(rawSent);
+
         verify(userRepo, times(1)).save(any(RemaxUser.class));
         assertNotNull(user.getPasswordResetCode());
+        // ensure stored code is encoded, not equal to raw
+        assertNotEquals(rawSent, user.getPasswordResetCode());
+        assertTrue(user.getPasswordResetCode().startsWith("ENC:"));
         assertNotNull(user.getPasswordResetCodeDeadline());
         assertTrue(user.getPasswordResetCodeDeadline().isAfter(ZonedDateTime.now()));
     }
@@ -68,7 +78,9 @@ public class AuthServicePasswordResetTest {
         };
         user.setUsername("pepazdepa");
         user.setEmail("u@example.com");
-        user.setPasswordResetCode("ABC12345");
+        // store encoded code as it would be in DB
+        when(encoder.matches(eq("ABC12345"), anyString())).thenReturn(true);
+        user.setPasswordResetCode("ENC_ABC");
         user.setPasswordResetCodeDeadline(ZonedDateTime.now().plusHours(1));
 
         when(userRepo.findByUsername("pepazdepa")).thenReturn(Optional.of(user));
@@ -125,4 +137,3 @@ public class AuthServicePasswordResetTest {
         assertThrows(IllegalArgumentException.class, () -> svc.resetPassword("pepazdepa", "OLD12345", "p"));
     }
 }
-

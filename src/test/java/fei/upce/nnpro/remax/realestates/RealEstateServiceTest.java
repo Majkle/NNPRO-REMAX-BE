@@ -1,11 +1,12 @@
 package fei.upce.nnpro.remax.realestates;
 
+import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.address.repository.AddressRepository;
 import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateFilterDto;
-import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateMapper;
 import fei.upce.nnpro.remax.realestates.entity.Apartment;
 import fei.upce.nnpro.remax.realestates.entity.PriceHistory;
@@ -44,6 +45,9 @@ class RealEstateServiceTest {
     private AddressService addressService;
 
     @Mock
+    private AddressRepository addressRepository;
+
+    @Mock
     private RealEstateMapper realEstateMapper;
 
     @Mock
@@ -72,6 +76,7 @@ class RealEstateServiceTest {
 
         when(realEstateMapper.toEntity(dto)).thenReturn(mappedEntity);
         when(realEstateRepository.save(any(RealEstate.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(addressService.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
         RealEstate result = realEstateService.createRealEstate(dto);

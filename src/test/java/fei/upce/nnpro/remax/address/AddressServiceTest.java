@@ -55,6 +55,8 @@ class AddressServiceTest {
         newAddressData.setFlatNumber("10");
         newAddressData.setRegion(AddressRegion.PRAHA);
 
+        when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
         // Act
         addressService.update(newAddressData, existingAddress);
 

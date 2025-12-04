@@ -2,12 +2,12 @@ package fei.upce.nnpro.remax.security.auth.controller;
 
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
-import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import fei.upce.nnpro.remax.security.auth.request.AuthRequest;
 import fei.upce.nnpro.remax.security.auth.request.PasswordResetConfirmRequest;
 import fei.upce.nnpro.remax.security.auth.request.PasswordResetRequest;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
 import fei.upce.nnpro.remax.security.auth.response.AuthResponse;
+import fei.upce.nnpro.remax.security.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

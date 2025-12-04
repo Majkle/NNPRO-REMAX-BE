@@ -1,9 +1,9 @@
 package fei.upce.nnpro.remax.security.service;
 
 import fei.upce.nnpro.remax.profile.entity.Client;
-import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
+import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.security.auth.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomUserDetailsServiceTest {
 

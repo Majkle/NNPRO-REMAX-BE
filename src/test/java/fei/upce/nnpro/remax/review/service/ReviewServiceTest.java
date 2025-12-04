@@ -1,13 +1,13 @@
 package fei.upce.nnpro.remax.review.service;
 
-import fei.upce.nnpro.remax.review.entity.Review;
 import fei.upce.nnpro.remax.profile.entity.Client;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.Realtor;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
-import fei.upce.nnpro.remax.review.dto.ReviewMapper;
 import fei.upce.nnpro.remax.review.dto.ReviewDto;
+import fei.upce.nnpro.remax.review.dto.ReviewMapper;
 import fei.upce.nnpro.remax.review.dto.ReviewStatisticsDto;
+import fei.upce.nnpro.remax.review.entity.Review;
 import fei.upce.nnpro.remax.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
