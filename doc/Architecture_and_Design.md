@@ -10,13 +10,12 @@ classDiagram
     class RealEstate {
         +Long id
         +String name
-        +Double price
         +Double usableArea
         +Status status
         +ContractType contractType
         +Address address
         +List~Image~ images
-        +List~PriceHistory~ history
+        +List~PriceHistory~ priceHistory
     }
 
     class Apartment {
@@ -122,7 +121,9 @@ erDiagram
     real_estate {
         bigint id PK
         string name
-        double price
+        string description
+        string status
+        double usable_area
     }
 
     meeting {
@@ -144,7 +145,7 @@ sequenceDiagram
     participant Client as Frontend/Client
     participant AC as AuthController
     participant AS as AuthService
-    participant UR as UserRepository
+    participant UR as RemaxUserRepository
     participant JWT as JwtUtil
     
     Client->>AC: POST /api/auth/login (username, pass)
