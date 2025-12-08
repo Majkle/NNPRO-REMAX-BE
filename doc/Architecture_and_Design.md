@@ -3,26 +3,35 @@
 Tato sekce vizualizuje klíčové struktury a toky v aplikaci pomocí UML diagramů.
 
 #### 13.1 Class Diagram - Domain Model (Nemovitosti)
-Diagram znázorňuje polymorfismus u entit nemovitostí (`RealEstate`) využívající strategii `JOINED` inheritance.
-
+Diagram znázorňuje polymorfismus u entit nemovitostí (`RealEstate`) využívající strategii `JOINED` inheritance. Společná data jsou v abstraktní třídě, specifická v podtřídách. Cena je řešena historií vývoje (`PriceHistory`).
 ```mermaid
 classDiagram
     class RealEstate {
+        <<Abstract>>
         +Long id
         +String name
-        +Double usableArea
+        +String description
         +Status status
+        +Double usableArea
         +ContractType contractType
+        +PriceDisclosure priceDisclosure
+        +Commission commission
+        +Taxes taxes
+        +ZonedDateTime listedAt
         +Address address
-        +List~Image~ images
+        +BuildingProperties buildingProperties
+        +Utilities utilities
         +List~PriceHistory~ priceHistory
+        +List~Image~ image
     }
 
     class Apartment {
         +Integer floor
+        +Integer totalFloors
         +Boolean elevator
         +Boolean balcony
-        +ApartmentOwnershipType ownership
+        +Integer rooms
+        +ApartmentOwnershipType ownershipType
     }
 
     class House {
@@ -42,14 +51,26 @@ classDiagram
         +AddressRegion region
     }
 
+    class PriceHistory {
+        +Double price
+        +ZonedDateTime timestamp
+    }
+
+    class Image {
+        +String filename
+        +byte[] data
+    }
+
     RealEstate <|-- Apartment : extends
     RealEstate <|-- House : extends
     RealEstate <|-- Land : extends
-    RealEstate *-- Address : composition (OneToOne)
+    RealEstate *-- Address : OneToOne
+    RealEstate *-- PriceHistory : OneToMany
+    RealEstate *-- Image : OneToMany
 ```
 
 #### 13.2 Class Diagram - User Hierarchy (Uživatelé)
-Systém rolí je řešen dědičností `SINGLE_TABLE`.
+Systém rolí je řešen dědičností `SINGLE_TABLE`. Osobní údaje jsou odděleny do entity `PersonalInformation` pro lepší modularitu.
 
 ```mermaid
 classDiagram
@@ -59,7 +80,7 @@ classDiagram
         +String email
         +String password
         +AccountStatus accountStatus
-        +PersonalInformation personalInfo
+        +PersonalInformation personalInformation
     }
 
     class Admin {
@@ -70,52 +91,62 @@ classDiagram
     class Realtor {
         +int licenseNumber
         +String about
-        +List~Meeting~ meetings
     }
 
     class Client {
-        +List~Review~ reviewsWritten
+
     }
 
     class PersonalInformation {
         +String firstName
         +String lastName
         +String phoneNumber
+        +ZonedDateTime birthDate
         +Address address
+        +Image image
     }
 
     RemaxUser <|-- Admin
     RemaxUser <|-- Realtor
     RemaxUser <|-- Client
-    RemaxUser *-- PersonalInformation
+    RemaxUser *-- PersonalInformation : OneToOne
+    PersonalInformation *-- Address : OneToOne
 ```
 
 ---
 
 ### 14. Entity-Relationship Diagram (ERD)
 
-Schéma databáze generované na základě JPA entit. Zvýrazňuje vztahy mezi tabulkami a cizí klíče.
-
+Schéma databáze odpovídající `Liquibase` changelogům.
+- **Inheritance (RealEstate):** JOINED (tabulky `real_estate`, `apartment`, `house`, `land`).
+- **Inheritance (User):** SINGLE_TABLE (pouze tabulka `remax_user` s diskriminátorem `user_type`).
+- 
 ```mermaid
 erDiagram
-    remax_user ||--|| personal_information : "has details"
-    personal_information ||--|| address : "lives at"
-    
-    real_estate ||--|| address : "located at"
-    real_estate ||--|{ image : "contains"
-    real_estate ||--|{ price_history : "tracks"
-    real_estate ||--|{ meeting : "has appointments"
-    
+    remax_user ||--|| personal_information : "has details (FK)"
+    personal_information ||--|| address : "lives at (FK)"
+    personal_information ||--|{ image : "avatar (FK)"
+
+    real_estate ||--|| address : "located at (FK)"
+    real_estate ||--|{ image : "gallery (FK)"
+    real_estate ||--|{ price_history : "tracks price (FK)"
+
+    real_estate ||--o| apartment : "subtype (Joined)"
+    real_estate ||--o| house : "subtype (Joined)"
+    real_estate ||--o| land : "subtype (Joined)"
+
     meeting }|--|| remax_user : "realtor assigned"
     meeting }|--|| remax_user : "client requests"
-    
-    review }|--|| remax_user : "author (client)"
-    review }|--|| remax_user : "target (realtor)"
+    meeting }|--|| real_estate : "concerns"
+
+    review }|--|| remax_user : "author (Client)"
+    review }|--|| remax_user : "target (Realtor)"
 
     remax_user {
         bigint id PK
         string username
-        string user_type "Discriminator"
+        string user_type "Discriminator (ADMIN, REALTOR, CLIENT)"
+        string account_status
     }
 
     real_estate {
@@ -123,13 +154,19 @@ erDiagram
         string name
         string description
         string status
-        double usable_area
+    }
+
+    price_history {
+        bigint id PK
+        double price
+        timestamp timestamp
     }
 
     meeting {
         bigint id PK
-        timestamp time
-        string status
+        timestamp meeting_time
+        string meeting_status
+        string meeting_type
     }
 ```
 
@@ -138,7 +175,7 @@ erDiagram
 ### 15. Sequence Diagrams (Toky Aplikace)
 
 #### 15.1 Authentication Flow (Login)
-Ukázka procesu přihlášení, validace a vydání JWT tokenu.
+Proces přihlášení, validace účtu (zda není blokován) a vydání JWT tokenu.
 
 ```mermaid
 sequenceDiagram
@@ -146,26 +183,29 @@ sequenceDiagram
     participant AC as AuthController
     participant AS as AuthService
     participant UR as RemaxUserRepository
+    participant AM as AuthManager
     participant JWT as JwtUtil
-    
+
     Client->>AC: POST /api/auth/login (username, pass)
     AC->>AS: login(username, pass)
     AS->>UR: findByUsername(username)
     UR-->>AS: RemaxUser entity
-    
-    alt Invalid Password or Blocked
+
+    alt User Blocked
         AS-->>AC: Throw BadCredentialsException
-        AC-->>Client: 401 Unauthorized
-    else Valid Credentials
+    else Valid User
+        AS->>AM: authenticate(token)
+        AM-->>AS: Authentication Success
+        AS->>UR: resetFailedLoginAttempts()
         AS->>JWT: generateToken(username)
         JWT-->>AS: String (JWT)
-        AS-->>AC: AuthResponse (token, role)
+        AS-->>AC: AuthResponse (token, role, expiresAt)
         AC-->>Client: 200 OK + JSON
     end
 ```
 
 #### 15.2 Real Estate Filtering Flow
-Ukázka dynamického filtrování pomocí JPA Specification.
+Ukázka dynamického filtrování pomocí `RealEstateSpecification` a JPA Criteria API.
 
 ```mermaid
 sequenceDiagram
@@ -176,16 +216,17 @@ sequenceDiagram
     participant Repo as RealEstateRepository
     participant DB as PostgreSQL
 
-    Client->>Controller: GET /api/real-estates?city=Prague&minPrice=2M
-    Controller->>Service: searchRealEstates(filterDto)
+    Client->>Controller: GET /api/real-estates?city=Prague&minPrice=5M&rooms=3
+    Controller->>Service: searchRealEstates(filterDto, pageable)
     Service->>Spec: filterBy(filterDto)
+    Note right of Spec: Builds predicates for<br/>Type, PriceHistory, Address, etc.
     Spec-->>Service: Specification<RealEstate>
     Service->>Repo: findAll(Specification, Pageable)
-    Repo->>DB: SQL Select with Where Clauses
+    Repo->>DB: SQL Select with JOINs & WHERE
     DB-->>Repo: Result Set
     Repo-->>Service: Page<RealEstate>
-    Service-->>Controller: Page<RealEstate>
-    Controller->>Client: JSON List
+    Service->>Controller: Page<RealEstate> (Mapped to DTOs)
+    Controller->>Client: JSON Page<RealEstateDto>
 ```
 
 ---
@@ -193,15 +234,15 @@ sequenceDiagram
 ### 16. State Machine Diagrams (Stavové diagramy)
 
 #### 16.1 Meeting Lifecycle
-Stavový diagram pro entitu `Meeting` (`PENDING`, `CONFIRMED`, `CANCELED`).
+Životní cyklus schůzky řízený přes `MeetingService`.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> PENDING: Client creates request
-    PENDING --> CONFIRMED: Realtor accepts
-    PENDING --> CANCELED: Realtor/Client declines
+    [*] --> PENDING: Client creates Meeting
+    PENDING --> CONFIRMED: Realtor/Admin accepts
+    PENDING --> CANCELED: Realtor/Client cancels
     CONFIRMED --> CANCELED: Unexpected event
-    CONFIRMED --> [*]: Meeting happened
+    CONFIRMED --> [*]: Meeting date passes
     CANCELED --> [*]
 ```
 
@@ -209,7 +250,7 @@ stateDiagram-v2
 
 ### 17. Deployment Architecture
 
-Vizualizace nasazení pomocí Docker Compose.
+Vizualizace nasazení definovaná v `docker-compose.yml`.
 
 ```mermaid
 graph TD
@@ -218,14 +259,17 @@ graph TD
             FE[Frontend Container<br/>React + Nginx<br/>Port: 3000]
             BE[Backend Container<br/>Spring Boot<br/>Port: 8080]
             DB[Database Container<br/>PostgreSQL 17<br/>Port: 5432]
+            MH[MailHog Container<br/>SMTP Mock<br/>Ports: 1025/8025]
         end
-        
+
         Browser[User Browser]
     end
 
     Browser -->|HTTP/80| FE
     Browser -->|REST API/8080| BE
+    Browser -->|Web UI/8025| MH
     BE -->|JDBC/5432| DB
+    BE -->|SMTP/1025| MH
     FE -.->|AJAX Calls| BE
 ```
 
