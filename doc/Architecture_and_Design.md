@@ -112,7 +112,111 @@ classDiagram
     RemaxUser *-- PersonalInformation : OneToOne
     PersonalInformation *-- Address : OneToOne
 ```
+### 13.3 Use Case Diagrams (Případy užití)
 
+Tato sekce definuje, jaké akce mohou jednotliví aktéři v systému provádět. Diagramy vycházejí z nastavení `SecurityConfig` a anotací `@PreAuthorize` v kontrolerech.
+
+#### 13.3.1 Public & Client Actors (Veřejnost a Klienti)
+Neregistrovaný uživatel (Guest) má přístup pouze k prohlížení a registraci. Po přihlášení získává Klient (`ROLE_USER`) možnost interagovat se systémem.
+
+**Důležité:** Klient má přístup ke **statistikám makléře** (hodnocení), což je klíčové pro rozhodování, kterého makléře oslovit.
+
+```mermaid
+graph LR
+    %% Actors
+    Guest((Návštěvník))
+    Client((Klient / User))
+
+    %% Use Cases
+    subgraph "Autentizace & Profil"
+        UC_Reg(Registrace)
+        UC_Log(Přihlášení)
+        UC_Reset(Reset hesla)
+        UC_Profile(Editace profilu)
+    end
+
+    subgraph "Nemovitosti"
+        UC_Search(Vyhledávání & Filtrace)
+        UC_Detail(Zobrazení detailu)
+    end
+
+    subgraph "Interakce a Důvěra"
+        UC_ReqMeet(Žádost o prohlídku)
+        UC_MyMeet(Správa mých schůzek)
+        UC_Review(Napsat recenzi makléři)
+        UC_EditReview(Editace vlastní recenze)
+        UC_Stats(Zobrazení hodnocení makléře)
+    end
+
+    %% Relations Guest
+    Guest --> UC_Search
+    Guest --> UC_Detail
+    Guest --> UC_Reg
+    Guest --> UC_Log
+    Guest --> UC_Reset
+
+    %% Relations Client
+    Client -.->|extends| Guest
+    Client --> UC_Profile
+    Client --> UC_ReqMeet
+    Client --> UC_MyMeet
+    Client --> UC_Review
+    Client --> UC_EditReview
+    Client --> UC_Stats
+
+    style Guest fill:#f9f,stroke:#333,stroke-width:2px
+    style Client fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+#### 13.3.2 Management Actors (Makléři a Administrátoři)
+Makléř (`ROLE_REALTOR`) spravuje své portfolio. Statistiky (UC_Stats) vidí také, ale v kontextu zpětné vazby na svou vlastní práci. Administrátor (`ROLE_ADMIN`) zajišťuje technickou správu.
+
+```mermaid
+graph LR
+    %% Actors
+    Realtor((Makléř))
+    Admin((Admin))
+
+    %% Use Cases Realtor
+    subgraph "Správa Portfolia (Realtor)"
+        UC_CreateRE(Vytvořit nemovitost)
+        UC_EditRE(Editovat nemovitost)
+        UC_Img(Upload/Delete fotek)
+        UC_ManageMeet(Potvrzování schůzek)
+        UC_Stats_Own(Zobrazení vlastních statistik)
+    end
+
+    %% Use Cases Admin
+    subgraph "Administrace (Admin)"
+        UC_Block(Blokace/Odblokování uživatele)
+        UC_CreatePro(Manuální registrace Makléře/Admina)
+        UC_DelUser(Smazání uživatele)
+        UC_ModReview(Smazání nevhodné recenze)
+        UC_ListUsers(Výpis všech uživatelů)
+    end
+
+    %% Relations Realtor
+    Realtor --> UC_CreateRE
+    Realtor --> UC_EditRE
+    Realtor --> UC_Img
+    Realtor --> UC_ManageMeet
+    Realtor --> UC_Stats_Own
+
+    %% Relations Admin
+    Admin --> UC_Block
+    Admin --> UC_CreatePro
+    Admin --> UC_DelUser
+    Admin --> UC_ModReview
+    Admin --> UC_ListUsers
+
+    style Realtor fill:#dfd,stroke:#333,stroke-width:2px
+    style Admin fill:#faa,stroke:#333,stroke-width:2px
+```
+
+**Vysvětlení oprávnění:**
+*   **Klient:** Může editovat pouze své vlastní údaje a recenze. Statistiky makléřů (`GET /api/reviews/stats/{id}`) jsou přístupné všem přihlášeným uživatelům.
+*   **Makléř:** Má právo manipulovat s entitami `RealEstate`, `Image` a potvrzovat schůzky.
+*   **Admin:** Má nejvyšší oprávnění pro správu účtů, včetně blokování uživatelů a mazání recenzí (moderace), ale standardně nezasahuje do obchodních dat nemovitostí.
 ---
 
 ### 14. Entity-Relationship Diagram (ERD)
