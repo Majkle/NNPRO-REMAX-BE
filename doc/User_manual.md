@@ -1,10 +1,7 @@
-Zde je **Provozní Příručka (User/Operator Manual)** pro backendovou část projektu. Je koncipována pro DevOps inženýry, administrátory serverů nebo vývojáře, kteří potřebují aplikaci nasadit a spravovat.
-
----
-
 # Provozní Příručka - Backend Realitního Portálu
 
 Tento dokument slouží jako manuál pro nasazení, konfiguraci a správu backendové části realitního portálu (NNPRO-REMAX-BE).
+Je koncipována pro DevOps inženýry, administrátory serverů nebo vývojáře, kteří potřebují aplikaci nasadit a spravovat.
 
 Backend je REST API aplikace postavená na **Java 21** a **Spring Boot 3.5.6**, využívající databázi **PostgreSQL 17**.
 
@@ -193,4 +190,3 @@ Tato dokumentace umožňuje zkoušet endpointy přímo z prohlížeče (tlačít
 - **Řešení:** Zkontrolujte nastavení `spring.servlet.multipart.max-file-size` v `application.properties`.
 
 ---
-**© 2025 Backend Operations Team**
