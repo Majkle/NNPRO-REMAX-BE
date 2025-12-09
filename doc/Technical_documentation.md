@@ -3,53 +3,52 @@
 Tento dokument poskytuje kompletní technický přehled backendové části realitního portálu. Aplikace je postavena na **Java 21** a frameworku **Spring Boot**, využívá relační databázi **PostgreSQL** a komunikuje prostřednictvím **REST API**.
 
 ## Obsah
-1. [Přehled Projektu](#1-přehled-projektu)
-2. [Technologický Stack](#2-technologický-stack)
-3. [Architektura Aplikace](#3-architektura-aplikace)
-4. [Struktura Projektu](#4-struktura-projektu)
-5. [Datové Modely a Databáze](#5-datové-modely-a-databáze)
-6. [REST API a Kontrolery](#6-rest-api-a-kontrolery)
-7. [Security a Autentizace](#7-security-a-autentizace)
-8. [Pokročilé Funkcionality](#8-pokročilé-funkcionality)
-9. [Vývojové Prostředí](#9-vývojové-prostředí)
-10. [Docker a Deployment](#10-docker-a-deployment)
-11. [Testování](#11-testování)
-12. [Databázové Migrace](#12-databázové-migrace)
+1. [Úvod a Technologie](#1-úvod-a-technologie)
+2. [Architektura a Struktura Kódu](#2-architektura-a-struktura-kódu)
+3. [Datová Vrstva a Migrace](#3-datová-vrstva-a-migrace)
+4. [Zabezpečení (Security)](#4-zabezpečení-security)
+5. [REST API a Kontrolery](#5-rest-api-a-kontrolery)
+6. [Klíčové Funkcionality](#6-klíčové-funkcionality)
+7. [Testování a Kvalita Kódu](#7-testování-a-kvalita-kódu)
+8. [Instalace, Docker a Spuštění](#8-instalace-docker-a-spuštění)
 
+> 📄 **Externí dokumentace:** Detailní diagramy a technické graphy se nacházejí v souboru [Architecture_and_Design.md](./Architecture_and_Design.md).
+
+9. [Strukturální pohled (Structural View)](./Architecture_and_Design.md#9-strukturální-pohled-structural-view)
+10. [Behaviorální pohled (Behavioral View)](./Architecture_and_Design.md#10-behaviorální-pohled-behavioral-view)
+11. [Infrastruktura a Nasazení (Deployment)](./Architecture_and_Design.md#11-infrastruktura-a-nasazení-deployment)
 ---
 
-## 1. Přehled Projektu
+## 1. Úvod a Technologie
 
+### 1.1 Přehled Projektu
 Backend slouží jako centrální bod pro správu dat a logiky realitního portálu. Zajišťuje perzistenci dat o nemovitostech, uživatelích, schůzkách a recenzích. Poskytuje zabezpečené API pro frontendovou aplikaci a spravuje složitější byznys logiku, jako je filtrování nemovitostí nebo správa oprávnění.
 
----
-
-## 2. Technologický Stack
-
-### 2.1 Core
+### 1.2 Technologický Stack
+**Core & Frameworks**
 - **Java 21** - Programovací jazyk
-- **Spring Boot 3.5.6** - Aplikační framework
+- **Spring Boot 3.5.6** - Aplikační framework (Web, Data JPA, Security, Validation)
 - **Maven** - Build tool a dependency management
+- **Lombok** - Redukce boilerplate kódu
 
-### 2.2 Data a Perzistence
+**Data & Storage**
 - **PostgreSQL 17** - Relační databáze
 - **Spring Data JPA (Hibernate)** - ORM vrstva
-- **Liquibase 5.0.1** - Verzování databázového schématu (migrations)
+- **Liquibase 5.0.1** - Verzování databázového schématu
 
-### 2.3 Security
+**Security**
 - **Spring Security** - Autentizace a autorizace
 - **JWT (JSON Web Token)** - Stateless autentizace
 - **BCrypt** - Hashování hesel
 
-### 2.4 Dokumentace a Utility
+**Dokumentace**
 - **SpringDoc OpenAPI (Swagger UI)** - Automatická dokumentace API
-- **Lombok** - Redukce boilerplate kódu
-- **ModelMapper (Custom)** - Mapování mezi Entity a DTO
 
 ---
 
-## 3. Architektura Aplikace
+## 2. Architektura a Struktura Kódu
 
+### 2.1 Architektonický Vzor
 Projekt dodržuje klasickou **vrstvenou architekturu** (Layered Architecture):
 
 ```
@@ -64,15 +63,12 @@ Projekt dodržuje klasickou **vrstvenou architekturu** (Layered Architecture):
 └───────────────────────────────┘
 ```
 
-### 3.1 Klíčové Principy
+**Klíčové Principy:**
 - **Dependency Injection**: Využití Spring IoC kontejneru (`@Service`, `@RestController`, `@RequiredArgsConstructor`).
 - **DTO Pattern**: Oddělení interních entit od veřejného API (`Meeting` vs `MeetingDto`).
 - **Exception Handling**: Centralizovaná správa chyb pomocí `@ControllerAdvice` (`RestApiExceptionHandler`).
 
----
-
-## 4. Struktura Projektu
-
+### 2.2 Struktura Adresářů
 Zdrojový kód je organizován podle **doménových balíčků** (feature-based packaging), což usnadňuje orientaci.
 
 ```
@@ -105,133 +101,100 @@ src/main/java/cz/upce/nnpro/remax/
 
 ---
 
-## 5. Datové Modely a Databáze
+## 3. Datová Vrstva a Migrace
 
-Datová vrstva je postavena na **JPA (Hibernate)** a využívá relační databázi PostgreSQL. Entity nejsou centralizovány v jednom balíčku, ale jsou umístěny v příslušných doménových modulech (např. `realestates/entity`, `profile/entity`).
-
-### 5.1 Polymorfismus Entit
-Aplikace využívá pokročilé mapování dědičnosti:
+### 3.1 Datové Modely (Entity)
+Datová vrstva je postavena na **JPA (Hibernate)**. Entity využívají pokročilé mapování dědičnosti:
 
 #### Nemovitosti (`RealEstate`)
-Používá strategii **`InheritanceType.JOINED`**. To znamená, že existuje hlavní tabulka pro společná data a samostatné tabulky pro specifické atributy podtříd. Při dotazování Hibernate automaticky provádí `JOIN`.
-- **Tabulka `real_estate`:** ID, název, popis, adresa, základní parametry.
-    - **Cena:** Není uložena přímo v tabulce `real_estate`, ale dynamicky se načítá z relace `OneToMany` do tabulky `price_history`.
-- **Podtabulky:**
-    - `apartment` (patro, výtah, balkon...)
-    - `house` (plocha pozemku, typ domu...)
-    - `land` (určeno k bydlení)
+Používá strategii **`InheritanceType.JOINED`**.
+- **Tabulka `real_estate`:** Společná data (název, popis, adresa).
+- **Podtabulky:** `apartment`, `house`, `land` (specifické atributy).
+- **Cena:** Uložena odděleně v `price_history` (OneToMany) pro sledování vývoje v čase.
 
 #### Uživatelé (`RemaxUser`)
-Používá strategii **`InheritanceType.SINGLE_TABLE`**. Všechna data jsou v jedné tabulce `remax_user`, což zajišťuje vysoký výkon při přihlašování (není třeba joinovat).
-- **Diskriminátor:** Sloupec `user_type` (hodnoty: `ADMIN`, `REALTOR`, `CLIENT`).
-- **Tabulka `remax_user`:** Login, heslo, email, ale i specifické sloupce jako `license_number` (pro makléře), které jsou u ostatních rolí `NULL`.
+Používá strategii **`InheritanceType.SINGLE_TABLE`**.
+- **Tabulka `remax_user`:** Všechna data v jedné tabulce pro rychlé přihlašování.
+- **Diskriminátor:** Sloupec `user_type` (ADMIN, REALTOR, CLIENT).
 
-### 5.2 Správa Obrázků (`Image`)
-Obrázky jsou řešeny jako samostatná entita `Image` (tabulka `image`).
-- **Uložení:** Binární data (`byte[]`) jsou uložena ve sloupci typu `OID` (Postgres) / `@Lob` (JPA).
+#### Obrázky (`Image`)
+- Binární data (`byte[]`) uložena v DB jako `OID` / `@Lob`.
 - **Vazby:**
     - `RealEstate` má vazbu `OneToMany` na `Image` (galerie nemovitosti).
     - `PersonalInformation` má vazbu `OneToOne` na `Image` (profilová fotka).
 
-### 5.3 Klíčové Vztahy (ERD)
+#### Klíčové Vztahy (ERD)
 - **RealEstate ↔ PriceHistory:** Historie vývoje ceny v čase (`OneToMany`).
 - **RemaxUser ↔ PersonalInformation:** Oddělení přihlašovacích údajů od osobních dat (`OneToOne`).
 - **PersonalInformation ↔ Address:** Adresa bydliště uživatele.
 - **RealEstate ↔ Address:** Adresa nemovitosti.
 - **Meeting:** Vazební entita propojující `Client`, `Realtor` a `RealEstate`.
 
----
+### 3.2 Databázové Migrace (Liquibase)
+Správa schématu je plně automatizovaná. Změny jsou definovány v YAML souborech v `src/main/resources/db/changelog/`.
 
-## 6. REST API a Kontrolery
+- **Master Changelog:** `db.changelog-master.yaml`
+- **Change Sets:**
+    1. **`001-initial-schema.yaml`**:
+        - Vytvoření základního schématu (tabulky `address`, `remax_user`, `real_estate`, `meeting`, `review`, `image`).
+        - Definice tabulek pro dědičnost (`apartment`, `house`, `land`).
+        - Nastavení sekvencí, primárních klíčů a vazeb (Foreign Keys).
+    2. **`002-password-reset.yaml`**:
+        - Dodatečná migrace, která rozšiřuje tabulku `remax_user` o sloupce `password_reset_code` a `password_reset_code_deadline`.
 
-API je navrženo jako RESTful a komunikuje pomocí formátu JSON. Všechny endpointy (kromě veřejných) vyžadují v hlavičce `Authorization: Bearer <token>`.
-
-### 6.1 Hlavní Endpointy
-
-#### **Autentizace (`AuthController`)**
-- `POST /api/auth/login` – Přihlášení uživatele (vrací JWT token).
-- `POST /api/auth/register` – Registrace nového klienta.
-- `GET /api/auth/me` – Získání informací o aktuálně přihlášeném uživateli.
-- `POST /api/auth/password-reset/request` – Žádost o reset hesla (odeslání e-mailu s kódem).
-- `POST /api/auth/password-reset/confirm` – Nastavení nového hesla pomocí obdrženého kódu.
-
-#### **Profil (`ProfileController`)**
-- `GET /api/profile` – Získání detailu profilu přihlášeného uživatele.
-- `PATCH /api/profile` – Aktualizace osobních údajů a adresy.
-- `DELETE /api/profile` – Smazání vlastního účtu.
-
-#### **Nemovitosti (`RealEstateController`)**
-- `GET /api/real-estates` – Vyhledávání s filtrováním (cena, plocha, lokalita, typ).
-- `GET /api/real-estates/{id}` – Detail nemovitosti.
-- `POST /api/real-estates` – Vytvoření nemovitosti (pouze `ROLE_REALTOR`).
-- `PUT /api/real-estates/{id}` – Editace nemovitosti (pouze `ROLE_REALTOR`).
-
-#### **Obrázky (`ImageController`)**
-- `POST /api/images` – Upload obrázku (Multipart File).
-- `GET /api/images/{id}` – Stažení binárních dat obrázku (pro `<img>` tagy).
-- `DELETE /api/images/{id}` – Smazání obrázku.
-
-#### **Schůzky (`MeetingController`)**
-- `POST /api/meetings` – Vytvoření žádosti o schůzku.
-- `GET /api/meetings` – Seznam schůzek uživatele.
-- `PUT /api/meetings/{id}` – Úprava stavu schůzky (potvrzení/zrušení).
-
-#### **Recenze (`ReviewController`)**
-- `POST /api/reviews` – Vytvoření recenze na makléře (pouze `ROLE_USER` - Client).
-- `GET /api/reviews/realtor/{id}` – Seznam recenzí pro konkrétního makléře.
-- `GET /api/reviews/stats/{id}` – Agregované statistiky makléře (průměrná hodnocení).
-
-#### **Admin (`AdminController`)**
-- `POST /api/admin/block/{username}` – Zablokování uživatele.
-- `POST /api/admin/unblock/{username}` – Odblokování uživatele.
-- `POST /api/admin/realtors` – Manuální vytvoření účtu makléře.
-
-### 6.2 Validace a Chyby
-Vstupy jsou validovány pomocí **Jakarta Validation** (`@Valid`, `@NotNull`, `@NotBlank`) v DTO objektech.
-- Chyby validace vrací status `400 Bad Request` s mapou chybových polí.
-- Nenalezené entity vrací `404 Not Found`.
-- Neautorizovaný přístup vrací `401 Unauthorized` nebo `403 Forbidden`.
+Při startu aplikace Liquibase automaticky porovná definice s aktuálním stavem databáze a provede chybějící SQL příkazy.
 
 ---
 
-## 7. Security a Autentizace
+## 4. Zabezpečení (Security)
 
 Zabezpečení zajišťuje `SecurityConfig` a `JwtAuthenticationFilter`. Aplikace využívá bezstavovou (Stateless) architekturu.
 
-### 7.1 Flow Autentizace
-1. Klient pošle přihlašovací údaje na `/api/auth/login`.
-2. `AuthService` ověří údaje a zkontroluje stav účtu (zda není `BLOCKED`).
-3. Při úspěchu vygeneruje **JWT Access Token** (podepsaný pomocí `HMAC-SHA256`).
-4. Klient posílá token v hlavičce `Authorization: Bearer <token>` při každém dalším requestu.
-5. `JwtAuthenticationFilter` validuje token a nastaví `SecurityContext`.
+### 4.1 Autentizační Flow
+1. Klient pošle credentials na `/api/auth/login`.
+2. `AuthService` ověří údaje a stav účtu (blokace).
+3. Server vrátí **JWT Access Token**.
+4. Klient posílá token v hlavičce `Authorization: Bearer <token>` u každého requestu.
 
-### 7.2 Role a Oprávnění (`CustomUserDetailsService`)
-Systém rolí je dynamický a odvozený od typu entity uživatele.
-- **Všichni uživatelé** mají automaticky roli `ROLE_USER`.
-- **Admin** (`Admin` entity) získává navíc `ROLE_ADMIN`.
-- **Makléř** (`Realtor` entity) získává navíc `ROLE_REALTOR`.
-- **Anonymní endpointy** (Swagger, Login) jsou explicitně povoleny v `SecurityConfig`.
+### 4.2 Role a Oprávnění
+Systém rolí je odvozen od typu entity uživatele (`CustomUserDetailsService`):
+- **ROLE_USER**: Základní role pro všechny přihlášené.
+- **ROLE_ADMIN**: Pro entity typu `Admin`.
+- **ROLE_REALTOR**: Pro entity typu `Realtor` (správa nemovitostí).
 
-### 7.3 Ochrana proti Brute-force
-Systém počítá neúspěšné pokusy o přihlášení (`failedLoginAttempts`).
-- Pokud počet pokusů překročí limit (nastaveno v `SecurityProperties`, defaultně 3), účet je automaticky zablokován (`blockedUntil`) na definovanou dobu (defaultně 24 hodin).
-- Odblokování nastane automaticky po uplynutí doby, nebo manuálním zásahem admina.
+### 4.3 Ochrana účtu
+- **Brute-force protection:** Po 3 neúspěšných pokusech se účet na 24 hodin zablokuje.
+- **Reset hesla:** Bezpečný proces pomocí e-mailového kódu (hashovaného v DB).
 
-### 7.4 Obnova Hesla
-Aplikace implementuje bezpečný proces resetu hesla:
-1. Uživatel požádá o reset zadáním e-mailu.
-2. Vygeneruje se unikátní kód, který je **hashován** a uložen do databáze (`password_reset_code`).
-3. Uživatel obdrží e-mail (via `MailService`) s nehashovaným kódem.
-4. Endpoint pro potvrzení ověří shodu hashe a platnost časového razítka (`deadline`).
-
-### 7.5 Inicializace (`AdminInitializer`)
-Při startu aplikace se kontroluje existence administrátorského účtu. Pokud neexistuje, vytvoří se výchozí admin (credentials definovány v `application.properties`), což zajišťuje, že systém není nikdy bez správce.
+### 4.4 Inicializace (`AdminInitializer`)
+- Při startu aplikace se kontroluje existence administrátorského účtu. Pokud neexistuje, vytvoří se výchozí admin (credentials definovány v `application.properties`), což zajišťuje, že systém není nikdy bez správce.
 
 ---
 
-## 8. Pokročilé Funkcionality
+## 5. REST API a Kontrolery
 
-### 8.1 Dynamické Filtrování Nemovitostí
+API je navrženo jako RESTful a komunikuje ve formátu JSON. Většina endpointů vyžaduje autentizaci.
+
+### 5.1 Přehled hlavních modulů
+| Modul | Base Path | Popis |
+|-------|-----------|-------|
+| **Auth** | `/api/auth` | Login, Register, Reset hesla |
+| **Profile** | `/api/profile` | Správa vlastního profilu, změna údajů |
+| **RealEstate**| `/api/real-estates`| CRUD nemovitostí, filtrování, detail |
+| **Meeting** | `/api/meetings` | Žádosti o prohlídky, schvalování |
+| **Review** | `/api/reviews` | Hodnocení makléřů |
+| **Image** | `/api/images` | Upload a stahování obrázků |
+| **Admin** | `/api/admin` | Blokování uživatelů, správa rolí |
+
+### 5.2 Validace a Chyby
+- Vstupy validovány pomocí **Jakarta Validation** (`@Valid`, `@NotNull`).
+- **HTTP Status kódy:** `200 OK`, `201 Created`, `400 Bad Request` (validace), `401/403` (auth), `404 Not Found`.
+
+---
+
+## 6. Klíčové Funkcionality
+
+### 6.1 Dynamické Filtrování
 Třída `RealEstateSpecification` implementuje dynamické sestavování SQL dotazů pomocí **JPA Criteria API**. To umožňuje filtrovat podle libovolné kombinace parametrů:
 - Cena (od-do)
 - Plocha
@@ -239,46 +202,55 @@ Třída `RealEstateSpecification` implementuje dynamické sestavování SQL dota
 - Vnořené atributy (Adresa -> Město)
 - Kolekce (vybavení, inženýrské sítě - `isMember`)
 
-### 8.2 Historie Cen
-Při aktualizaci ceny nemovitosti (`RealEstateService.updateRealEstate`) systém automaticky detekuje změnu a vytvoří nový záznam v `PriceHistory` s časovým razítkem.
+### 6.2 Historie Cen
+Metoda `updateRealEstate` automaticky detekuje změnu ceny. Stará cena zůstává v historii, nová se zapíše do tabulky `price_history` s aktuálním timestampem.
+
+### 6.3 Inicializace Admina
+Komponenta `AdminInitializer` při startu aplikace kontroluje existenci admina. Pokud chybí, vytvoří defaultního super-uživatele (credentials v `application.properties`).
 
 ---
 
-## 9. Vývojové Prostředí
+## 7. Testování a Kvalita Kódu
 
-### 9.1 Prerekvizity
+Projekt využívá `spring-boot-starter-test` pro Unit a Integrační testy.
+
+### 7.1 Konfigurace Testů
+- **Databáze:** In-memory **H2 Database** (`jdbc:h2:mem:testdb`). Rychlá, izolovaná, po testech se smaže.
+- **Liquibase:** V testech vypnuto, schéma generuje Hibernate (`ddl-auto=create-drop`).
+
+### 7.2 Typy testů
+- **Unit Testy (Service):** Izolované testy byznys logiky s využitím **Mockito**.
+- **Controller Testy (API):** Testy endpointů pomocí **MockMvc** (ověření status kódů, JSON struktury).
+- **Integrační Testy:** `@SpringBootTest` pro ověření celého kontextu (např. Auth flow).
+- **Mail Mocking:** `TestMailConfig` zabraňuje odesílání skutečných e-mailů během testů.
+
+---
+
+## 8. Instalace, Docker a Spuštění
+
+Projekt je připraven pro lokální vývoj i kontejnerizované nasazení.
+
+### 8.1 Prerekvizity (Lokální vývoj)
 - JDK 21
-- Docker & Docker Compose (pro DB)
-- Maven (volitelně, wrapper je součástí)
+- Docker (pro databázi)
+- Maven
 
-### 9.2 Spuštění Lokálně
-1. **Databáze:** Spusťte PostgreSQL přes Docker:
-   ```bash
-   docker-compose up -d db
-   ```
-2. **Aplikace:** Spusťte Spring Boot:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-   Aplikace poběží na `http://localhost:8080`.
+Pro lokální spuštění bez Dockeru:
+1. Spusťte DB: `docker-compose up -d db`
+2. Spusťte aplikaci: `./mvnw spring-boot:run`
+3. Aplikace běží na: `http://localhost:8080`
 
-### 9.3 Konfigurace (`application.properties`)
-Klíčové proměnné lze přepsat:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/remax_db
-spring.datasource.username=remax_user
-remax.security.jwt-secret=...
-```
+### 8.2 Docker Deployment (Full Stack)
+Orchestrace celého řešení je řízena přes **Docker Compose** ve složce `deployment/`.
 
----
+**Služby v stacku:**
+1.  **Backend:** Java 21 image (Multi-stage build: Maven build -> JRE Alpine runtime).
+2.  **Frontend:** React aplikace (sestavena ze sousedního adresáře `../../NNPRO-REMAX-FE`).
+3.  **Databáze:** PostgreSQL 17 (data uložena ve volume).
+4.  **MailHog:** Fake SMTP server pro testování e-mailů.
 
-## 10. Docker a Deployment
-
-Projekt je plně kontejnerizován pro zajištění konzistentního prostředí pro vývoj i produkci. Orchestrace je řízena pomocí **Docker Compose**, který spouští backend, frontend, databázi i mailový server.
-
-### 10.1 Dockerfile (Backend)
+#### 8.2.1. Dockerfile (Backend)
 Backend využívá **Multi-stage build** pro minimalizaci výsledné velikosti image:
-
 1.  **Builder Stage (`maven:3.9.9-eclipse-temurin-21-alpine`)**:
     *   Kopíruje `pom.xml` a stahuje závislosti (využívá cache Docker vrstev).
     *   Kopíruje zdrojový kód (`src`) a kompiluje aplikaci (`mvn package -DskipTests`).
@@ -288,7 +260,7 @@ Backend využívá **Multi-stage build** pro minimalizaci výsledné velikosti i
     *   Kopíruje zkompilovaný JAR soubor z první fáze.
     *   Exponuje port `8080`.
 
-### 10.2 Struktura Docker Compose
+#### 8.2.2. Struktura Docker Compose
 Soubor `deployment/docker-compose.yml` definuje čtyři služby:
 
 1.  **db (`postgres:17-alpine`)**:
@@ -313,39 +285,19 @@ Soubor `deployment/docker-compose.yml` definuje čtyři služby:
     *   **SMTP Port:** `1025` (pro backend).
     *   **Web UI:** `8025` (pro vývojáře).
 
-### 10.3 Příprava prostředí (Frontend skripty)
+### 8.3 Příprava prostředí a Spuštění
 Protože `docker-compose.yml` odkazuje na relativní cestu k frontendu (`../../NNPRO-REMAX-FE`), je nutné zajistit, aby tato složka existovala. K tomu slouží pomocné skripty ve složce `deployment/`.
 
 Skripty zkontrolují existenci složky a pokud chybí, automaticky naklonují repozitář frontendu.
 
 **Postup spuštění:**
+1.  Přejděte do složky: `cd deployment`
+2.  Inicializujte frontend (stáhne repo, pokud chybí):
+    - Windows: `.\init-frontend.ps1`
+    - Linux/Mac: `./init-frontend.sh`
+3.  Spusťte stack: `docker-compose up --build`
 
-1.  Přejděte do složky deployment:
-    ```bash
-    cd deployment
-    ```
-
-2.  Spusťte inicializační skript dle vašeho OS:
-    *   **Windows (PowerShell):**
-        ```powershell
-        .\init-frontend.ps1
-        ```
-    *   **Linux / macOS (Bash):**
-        ```bash
-        chmod +x init-frontend.sh
-        ./init-frontend.sh
-        ```
-
-### 10.4 Spuštění celého stacku
-Po inicializaci frontendu spusťte aplikaci příkazem (stále ve složce `deployment/`):
-
-```bash
-  docker-compose up --build
-```
-
-### 10.5 Dostupné služby
-Po nastartování jsou služby dostupné na těchto adresách:
-
+### 8.4 Dostupné URL
 | Služba | URL / Port | Popis |
 |--------|------------|-------|
 | **Frontend** | [http://localhost:3000](http://localhost:3000) | Klientská aplikace (React) |
@@ -353,52 +305,3 @@ Po nastartování jsou služby dostupné na těchto adresách:
 | **Swagger UI** | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) | Dokumentace API |
 | **MailHog** | [http://localhost:8025](http://localhost:8025) | Inbox pro testovací e-maily |
 | **Databáze** | `localhost:5432` | PostgreSQL (user: `remax_user`, pass: `secret_password`) |
----
-
-## 11. Testování
-
-Projekt klade důraz na Unit a Integrační testování s využitím `spring-boot-starter-test`. Testy jsou konfigurovány tak, aby byly nezávislé na běžící instanci PostgreSQL.
-
-### 11.1 Konfigurace Testů
-Testy využívají separátní konfiguraci v `src/test/resources/application.properties`:
-- **Databáze:** Používá se in-memory databáze **H2** (`jdbc:h2:mem:testdb`), která emuluje chování SQL databáze, ale je rychlejší a po skončení testů se smaže.
-- **Liquibase:** Je pro testy vypnutý (`spring.liquibase.enabled=false`). Schéma se generuje automaticky pomocí Hibernate (`ddl-auto=create-drop`), což zrychluje start testů.
-
-### 11.2 Unit Testy (Service Layer)
-Testování byznys logiky probíhá v izolaci pomocí knihovny **Mockito**.
-- Třídy jsou anotovány `@ExtendWith(MockitoExtension.class)`.
-- Závislosti (Repository, Mappers) jsou mockovány (`@Mock`).
-- Příklad: `RealEstateServiceTest`, `AddressServiceTest`.
-
-### 11.3 Controller Testy (API Layer)
-REST endpointy jsou testovány pomocí **MockMvc**.
-- Většina testů používá `MockMvcBuilders.standaloneSetup()`, což umožňuje testovat kontroler izolovaně bez nastartování celého Spring kontextu.
-- Ověřují se HTTP status kódy, JSON struktura odpovědi a mapování DTO.
-- Příklad: `MeetingControllerTest`, `ImageControllerTest`.
-
-### 11.4 Integrační Testy
-Pro komplexní scénáře (např. Auth flow) se využívá `@SpringBootTest`, který nastartuje plný aplikační kontext s H2 databází.
-- Příklad: `ProfileControllerTest` nebo `RemaxApplicationTests` (sanity check kontextu).
-- **Mail:** Odesílání e-mailů je v testech mockováno pomocí `TestMailConfig`, aby se zabránilo pokusům o spojení s SMTP serverem.
-
----
-
-## 12. Databázové Migrace
-
-Správa databázového schématu je řešena nástrojem **Liquibase**. Veškeré změny struktury databáze jsou verzovány a aplikovány automaticky při startu aplikace.
-
-### Struktura Changelogů
-- **Master Changelog:** `src/main/resources/db/changelog/db.changelog-master.yaml`
-    - Tento soubor slouží jako hlavní rozcestník a postupně načítá jednotlivé změnové sady (change sets).
-
-- **Definice Změn (Changes):**
-  Jednotlivé migrace jsou uloženy ve složce `src/main/resources/db/changelog/changes/`:
-    1. **`001-initial-schema.yaml`**:
-        - Vytvoření základního schématu (tabulky `address`, `remax_user`, `real_estate`, `meeting`, `review`, `image`).
-        - Definice tabulek pro dědičnost (`apartment`, `house`, `land`).
-        - Nastavení sekvencí, primárních klíčů a vazeb (Foreign Keys).
-    2. **`002-password-reset.yaml`**:
-        - Dodatečná migrace, která rozšiřuje tabulku `remax_user` o sloupce `password_reset_code` a `password_reset_code_deadline`.
-
-### Proces Migrace
-Při každém spuštění aplikace (lokálně i v Dockeru) Liquibase zkontroluje systémovou tabulku `DATABASECHANGELOG`. Pokud najde v YAML souborech nové change sety, které v databázi chybí, automaticky provede příslušné SQL příkazy (`CREATE TABLE`, `ALTER TABLE`, atd.), čímž udržuje schéma aktuální.
