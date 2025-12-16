@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changes/004-correct-image-schema.yaml
   - include:
       file: db/changelog/changes/005-add-realtor-to-real-estate.yaml
+  - include:
+      file: db/changelog/changes/006-add-gps-to-address.yaml

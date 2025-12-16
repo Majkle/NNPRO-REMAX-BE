@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 005_add_realtor_to_real_estate
-      author: your_name
+      author: st67084
       changes:
         - addColumn:
             tableName: real_estate

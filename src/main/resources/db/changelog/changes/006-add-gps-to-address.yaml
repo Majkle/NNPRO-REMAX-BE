@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-gps-to-address
+      author: st67084
+      changes:
+        - addColumn:
+            tableName: address
+            columns:
+              - column:
+                  name: latitude
+                  type: FLOAT8
+                  constraints:
+                    nullable: true
+              - column:
+                  name: longitude
+                  type: FLOAT8
+                  constraints:
+                    nullable: true
