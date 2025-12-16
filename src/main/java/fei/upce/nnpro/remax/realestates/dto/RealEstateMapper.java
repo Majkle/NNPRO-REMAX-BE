@@ -123,17 +123,17 @@ public class RealEstateMapper {
         // 5. Map Subtype Specific Fields
         if (entity instanceof Apartment apt) {
             apt.setOwnershipType(dto.getOwnershipType());
-            apt.setFloor(dto.getFloor());
-            apt.setTotalFloors(dto.getTotalFloors());
-            apt.setElevator(dto.getElevator());
-            apt.setBalcony(dto.getBalcony());
-            apt.setRooms(dto.getRooms());
+            if (dto.getFloor() != null) apt.setFloor(dto.getFloor());
+            if (dto.getTotalFloors() != null) apt.setTotalFloors(dto.getTotalFloors());
+            if (dto.getElevator() != null) apt.setElevator(dto.getElevator());
+            if (dto.getBalcony() != null) apt.setBalcony(dto.getBalcony());
+            if (dto.getRooms() != null) apt.setRooms(dto.getRooms());
         } else if (entity instanceof House house) {
-            house.setPlotArea(dto.getPlotArea());
+            if (dto.getPlotArea() != null) house.setPlotArea(dto.getPlotArea());
             house.setHouseType(dto.getHouseType());
-            house.setStories(dto.getStories());
+            if (dto.getStories() != null) house.setStories(dto.getStories());
         } else if (entity instanceof Land land) {
-            land.setForHousing(dto.getIsForHousing());
+            if (dto.getIsForHousing() != null) land.setForHousing(dto.getIsForHousing());
         }
 
         return entity;

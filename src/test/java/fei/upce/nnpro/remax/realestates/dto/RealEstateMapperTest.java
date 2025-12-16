@@ -222,7 +222,7 @@ class RealEstateMapperTest {
         RealEstateDto dto = mapper.toDto(apartment);
 
         assertThat(dto).isNotNull();
-        assertThat(dto.getImages()).isNull();
+        assertThat(dto.getImages()).isEmpty();
     }
 
     @Test
@@ -399,6 +399,6 @@ class RealEstateMapperTest {
         RealEstate entity = mapper.toEntity(dto);
 
         assertThat(entity).isNotNull();
-        assertThat(entity.getImages()).isNull();
+        assertThat(entity.getImages()).isEmpty();
     }
 }
