@@ -1,5 +1,6 @@
 package fei.upce.nnpro.remax.images.entity;
 
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.realestates.entity.RealEstate;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,7 +27,11 @@ public class Image {
     @Column(name = "data", nullable = false)
     private byte[] data;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "real_estate_id")
     private RealEstate realEstate;
+
+    @ManyToOne
+    @JoinColumn(name = "personal_information_id")
+    private PersonalInformation personalInformation;
 }
