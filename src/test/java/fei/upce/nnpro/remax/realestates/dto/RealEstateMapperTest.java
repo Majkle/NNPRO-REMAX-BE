@@ -84,7 +84,7 @@ class RealEstateMapperTest {
         assertThat(dto.getTaxes()).isEqualTo(Taxes.INCLUDED);
         assertThat(dto.isBasement()).isTrue();
         assertThat(dto.getPrice()).isEqualTo(250000.0);
-        assertThat(dto.getRealEstateType()).isEqualTo(RealEstateType.APARTMENT);
+        assertThat(dto.getType()).isEqualTo(RealEstateType.APARTMENT);
         assertThat(dto.getOwnershipType()).isEqualTo(ApartmentOwnershipType.OWNERSHIP);
         assertThat(dto.getFloor()).isEqualTo(3);
         assertThat(dto.getTotalFloors()).isEqualTo(5);
@@ -123,7 +123,7 @@ class RealEstateMapperTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getId()).isEqualTo(2L);
-        assertThat(dto.getRealEstateType()).isEqualTo(RealEstateType.HOUSE);
+        assertThat(dto.getType()).isEqualTo(RealEstateType.HOUSE);
         assertThat(dto.getPlotArea()).isEqualTo(500.0);
         assertThat(dto.getHouseType()).isEqualTo(HouseType.DETACHED);
         assertThat(dto.getStories()).isEqualTo(2);
@@ -153,7 +153,7 @@ class RealEstateMapperTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getId()).isEqualTo(3L);
-        assertThat(dto.getRealEstateType()).isEqualTo(RealEstateType.LAND);
+        assertThat(dto.getType()).isEqualTo(RealEstateType.LAND);
         assertThat(dto.getIsForHousing()).isTrue();
     }
 
@@ -228,7 +228,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithApartmentDto_ShouldCreateApartment() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.APARTMENT);
+        dto.setType(RealEstateType.APARTMENT);
         dto.setName("Test Apartment");
         dto.setDescription("Test Description");
         dto.setStatus(Status.AVAILABLE);
@@ -260,7 +260,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithHouseDto_ShouldCreateHouse() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.HOUSE);
+        dto.setType(RealEstateType.HOUSE);
         dto.setName("Test House");
         dto.setDescription("Test Description");
         dto.setUsableArea(120.0);
@@ -284,7 +284,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithLandDto_ShouldCreateLand() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.LAND);
+        dto.setType(RealEstateType.LAND);
         dto.setName("Test Land");
         dto.setDescription("Test Description");
         dto.setUsableArea(800.0);
@@ -307,7 +307,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithNullStatus_ShouldSetDefaultStatus() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.APARTMENT);
+        dto.setType(RealEstateType.APARTMENT);
         dto.setName("Test");
         dto.setDescription("Description");
         dto.setUsableArea(50.0);
@@ -328,7 +328,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithImageIds_ShouldFetchAndSetImages() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.APARTMENT);
+        dto.setType(RealEstateType.APARTMENT);
         dto.setName("Test");
         dto.setDescription("Description");
         dto.setUsableArea(50.0);
@@ -361,7 +361,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithEmptyImageIds_ShouldSetEmptyImageList() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.APARTMENT);
+        dto.setType(RealEstateType.APARTMENT);
         dto.setName("Test");
         dto.setDescription("Description");
         dto.setUsableArea(50.0);
@@ -384,7 +384,7 @@ class RealEstateMapperTest {
     @Test
     void toEntity_WithNullImageIds_ShouldNotSetImages() {
         RealEstateDto dto = new RealEstateDto();
-        dto.setRealEstateType(RealEstateType.APARTMENT);
+        dto.setType(RealEstateType.APARTMENT);
         dto.setName("Test");
         dto.setDescription("Description");
         dto.setUsableArea(50.0);
