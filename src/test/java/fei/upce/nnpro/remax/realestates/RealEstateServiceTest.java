@@ -85,7 +85,7 @@ class RealEstateServiceTest {
 
         // Assert
         verify(addressService).save(address);
-        verify(realEstateRepository).save(mappedEntity);
+        verify(realEstateRepository, times(2)).save(mappedEntity);
 
         // Verify Price History initialization
         assertThat(result.getPriceHistory()).isNotNull().hasSize(1);
@@ -362,7 +362,7 @@ class RealEstateServiceTest {
 
         // Assert
         verify(addressService, never()).save(any());
-        verify(realEstateRepository).save(mappedEntity);
+        verify(realEstateRepository, times(2)).save(mappedEntity);
         assertThat(result.getPriceHistory()).isNotNull().hasSize(1);
     }
 
@@ -812,7 +812,7 @@ class RealEstateServiceTest {
 
         // Assert
         verify(addressService).save(address);
-        verify(realEstateRepository).save(mappedEntity);
+        verify(realEstateRepository, times(2)).save(mappedEntity);
         assertThat(result.getPriceHistory()).isNotNull().hasSize(1);
         assertThat(result.getPriceHistory().getFirst().getPrice()).isEqualTo(10000000.0);
         assertThat(result.getId()).isEqualTo(123L);

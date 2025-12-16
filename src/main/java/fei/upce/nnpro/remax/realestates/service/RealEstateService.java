@@ -48,24 +48,28 @@ public class RealEstateService {
         // 2. Persist Address first (OneToOne)
         if (realEstate.getAddress() != null) {
             Address savedAddr = addressService.save(realEstate.getAddress());
+            realEstate.setAddress(savedAddr); // Ensure the entity has the saved address
             log.debug("Saved address id={} for new realEstate", savedAddr.getId());
         }
 
-        // 3. Initialize Price History
+        // 3. Save RealEstate
+        RealEstate savedRealEstate = realEstateRepository.save(realEstate);
+
+        // 4. Initialize Price History
         if (dto.getPrice() != null) {
             PriceHistory initialPrice = new PriceHistory();
             initialPrice.setPrice(dto.getPrice());
             initialPrice.setTimestamp(ZonedDateTime.now());
-            initialPrice.setRealEstate(realEstate);
+            initialPrice.setRealEstate(savedRealEstate);
+            savedRealEstate.setPriceHistory(new ArrayList<>());
+            savedRealEstate.getPriceHistory().add(initialPrice);
 
-            realEstate.getPriceHistory().add(initialPrice);
+            savedRealEstate = realEstateRepository.save(savedRealEstate);
             log.debug("Initialized price history with price={}", dto.getPrice());
         }
 
-        // 4. Save and Return Entity
-        RealEstate saved = realEstateRepository.save(realEstate);
-        log.info("Created RealEstate id={} name={}", saved.getId(), saved.getName());
-        return saved;
+        log.info("Created RealEstate id={} name={}", savedRealEstate.getId(), savedRealEstate.getName());
+        return savedRealEstate;
     }
 
     /**
