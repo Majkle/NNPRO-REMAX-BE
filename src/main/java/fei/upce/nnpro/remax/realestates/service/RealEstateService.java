@@ -72,14 +72,15 @@ public class RealEstateService {
 
         // 5. Image
         if (!dto.getImages().isEmpty()) {
-
             List<Image> images = new LinkedList<>();
             for (Long imageId : dto.getImages()) {
                 Image image = imageService.getImageEntity(imageId);
                 images.add(image);
             }
 
+            // set both sides and persist images to update the foreign key in the image table
             savedRealEstate.setImages(images);
+            imageRepository.saveAll(savedRealEstate.getImages());
             savedRealEstate = realEstateRepository.save(savedRealEstate);
         }
 
