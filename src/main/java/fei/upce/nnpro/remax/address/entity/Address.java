@@ -2,9 +2,7 @@ package fei.upce.nnpro.remax.address.entity;
 
 import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,4 +42,10 @@ public class Address {
     @Enumerated(EnumType.STRING)
     @Column(name = "region", nullable = false)
     private AddressRegion region;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
 }

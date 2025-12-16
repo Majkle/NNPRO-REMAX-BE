@@ -5,3 +5,9 @@ databaseChangeLog:
       file: db/changelog/changes/002-password-reset.yaml
   - include:
       file: db/changelog/changes/003-correct-price-history-schema.yaml
+  - include:
+      file: db/changelog/changes/004-correct-image-schema.yaml
+  - include:
+      file: db/changelog/changes/005-add-realtor-to-real-estate.yaml
+  - include:
+      file: db/changelog/changes/006-add-gps-to-address.yaml

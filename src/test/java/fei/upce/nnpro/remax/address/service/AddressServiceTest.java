@@ -31,14 +31,21 @@ class AddressServiceTest {
     void save_shouldDelegateToRepository_andReturnSaved() {
         Address in = new Address();
         in.setCity("City");
+        in.setLatitude(50.0);
+        in.setLongitude(14.0);
+
         Address out = new Address();
         out.setId(1L);
         out.setCity("City");
+        out.setLatitude(50.0);
+        out.setLongitude(14.0);
+
         when(addressRepository.save(in)).thenReturn(out);
 
         Address saved = sut.save(in);
 
         assertThat(saved).isSameAs(out);
+        assertThat(saved.getLatitude()).isEqualTo(50.0);
         verify(addressRepository).save(in);
     }
 
@@ -47,6 +54,7 @@ class AddressServiceTest {
         Address existing = new Address();
         existing.setId(10L);
         existing.setCity("Old");
+        existing.setLatitude(10.0);
 
         Address newer = new Address();
         newer.setCity("NewCity");
@@ -54,6 +62,9 @@ class AddressServiceTest {
         newer.setPostalCode("11111");
         newer.setCountry("CZ");
         newer.setFlatNumber("5");
+        // Update GPS
+        newer.setLatitude(50.0755);
+        newer.setLongitude(14.4378);
 
         when(addressRepository.save(existing)).thenReturn(existing);
 
@@ -62,8 +73,12 @@ class AddressServiceTest {
         ArgumentCaptor<Address> cap = ArgumentCaptor.forClass(Address.class);
         verify(addressRepository).save(cap.capture());
         Address saved = cap.getValue();
+
         assertThat(saved.getCity()).isEqualTo("NewCity");
         assertThat(saved.getStreet()).isEqualTo("Street A");
+        // Check GPS update
+        assertThat(saved.getLatitude()).isEqualTo(50.0755);
+        assertThat(saved.getLongitude()).isEqualTo(14.4378);
     }
 
     @Test

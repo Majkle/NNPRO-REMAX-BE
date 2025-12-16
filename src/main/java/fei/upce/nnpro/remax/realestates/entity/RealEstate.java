@@ -2,6 +2,7 @@ package fei.upce.nnpro.remax.realestates.entity;
 
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.images.entity.Image;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.realestates.entity.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public abstract class RealEstate {
 
     @Column(name = "description", nullable = false, length = 4000)
     private String description;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "realtor_id", nullable = false)
+    private RemaxUser realtor;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -87,8 +92,11 @@ public abstract class RealEstate {
 
     @Column(name = "basement", nullable = false)
     private boolean basement;
-    
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "real_estate_id", nullable = false)
+
+    @OneToMany(
+            mappedBy = "realEstate",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Image> images = new ArrayList<>();
 }

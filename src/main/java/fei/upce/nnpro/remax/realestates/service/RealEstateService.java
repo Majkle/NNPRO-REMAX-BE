@@ -4,6 +4,7 @@ import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
+import fei.upce.nnpro.remax.images.service.ImageService;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateMapper;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -29,11 +31,11 @@ import java.util.List;
 public class RealEstateService {
 
     private final RealEstateRepository realEstateRepository;
-    private final PriceHistoryRepository priceHistoryRepository;
     private final AddressService addressService;
     private final RealEstateMapper realEstateMapper;
     private final ImageRepository imageRepository;
     private static final Logger log = LoggerFactory.getLogger(RealEstateService.class);
+    private final ImageService imageService;
 
     /**
      * Creates a new Real Estate property.
@@ -66,6 +68,20 @@ public class RealEstateService {
 
             savedRealEstate = realEstateRepository.save(savedRealEstate);
             log.debug("Initialized price history with price={}", dto.getPrice());
+        }
+
+        // 5. Image
+        if (!dto.getImages().isEmpty()) {
+            List<Image> images = new LinkedList<>();
+            for (Long imageId : dto.getImages()) {
+                Image image = imageService.getImageEntity(imageId);
+                images.add(image);
+                image.setRealEstate(savedRealEstate);
+            }
+
+            // set both sides and persist images to update the foreign key in the image table
+            savedRealEstate.setImages(images);
+            savedRealEstate = realEstateRepository.save(savedRealEstate);
         }
 
         log.info("Created RealEstate id={} name={}", savedRealEstate.getId(), savedRealEstate.getName());

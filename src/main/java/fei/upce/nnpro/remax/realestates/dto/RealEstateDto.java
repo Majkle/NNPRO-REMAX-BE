@@ -40,6 +40,8 @@ public class RealEstateDto {
     @Schema(description = "Detailed description of the property", example = "A beautiful renovated apartment with a large balcony...")
     private String description;
 
+    private Long realtorId;
+
     @Schema(description = "Current availability status", example = "AVAILABLE")
     private Status status;
 

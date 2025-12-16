@@ -31,6 +31,9 @@ public class AddressService {
         existingAddr.setFlatNumber(newAddrData.getFlatNumber());
         existingAddr.setRegion(newAddrData.getRegion());
 
+        existingAddr.setLatitude(newAddrData.getLatitude());
+        existingAddr.setLongitude(newAddrData.getLongitude());
+
         // persist and log outcome
         Address saved = addressRepository.save(existingAddr);
         log.info("Updated address id={} street={} city={}", saved.getId(), saved.getStreet(), saved.getCity());

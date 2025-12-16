@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,8 +40,11 @@ public class PersonalInformation {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "image_id")
+    @OneToOne(
+            mappedBy = "personalInformation",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Image image;
 
 }
