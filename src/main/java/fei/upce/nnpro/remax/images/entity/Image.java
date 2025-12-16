@@ -27,6 +27,6 @@ public class Image {
     private byte[] data;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "real_estate_id", nullable = false)
+    @JoinColumn(name = "real_estate_id")
     private RealEstate realEstate;
 }

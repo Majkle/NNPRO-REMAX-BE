@@ -16,8 +16,6 @@ databaseChangeLog:
               - column:
                   name: real_estate_id
                   type: BIGINT
-                  constraints:
-                    nullable: false
 
         # 2. Foreign key constraint
         - addForeignKeyConstraint:
