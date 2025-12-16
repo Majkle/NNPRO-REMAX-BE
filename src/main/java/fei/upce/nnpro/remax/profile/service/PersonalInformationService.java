@@ -1,6 +1,7 @@
 package fei.upce.nnpro.remax.profile.service;
 
 import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.images.service.ImageService;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.repository.PersonalInformationRepository;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
@@ -17,9 +18,11 @@ public class PersonalInformationService {
     private static final Logger log = LoggerFactory.getLogger(PersonalInformationService.class);
 
     private final PersonalInformationRepository personalInformationRepository;
+    private final ImageService imageService;
 
-    public PersonalInformationService(PersonalInformationRepository personalInformationRepository) {
+    public PersonalInformationService(PersonalInformationRepository personalInformationRepository, ImageService imageService) {
         this.personalInformationRepository = personalInformationRepository;
+        this.imageService = imageService;
     }
 
     public PersonalInformation save(PersonalInformation pi) {
@@ -33,6 +36,10 @@ public class PersonalInformationService {
         pi.setFirstName(request.getFirstName());
         pi.setLastName(request.getLastName());
         pi.setPhoneNumber(request.getPhoneNumber());
+
+        if (request.getImage() != null)
+            pi.setImage(imageService.getImageEntity(request.getImage()));
+
         try {
             pi.setBirthDate(ZonedDateTime.parse(request.getBirthDate()));
         } catch (DateTimeParseException e) {

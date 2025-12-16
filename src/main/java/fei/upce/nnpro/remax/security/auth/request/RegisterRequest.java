@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Schema(description = "Client registration request")
@@ -64,4 +67,7 @@ public class RegisterRequest {
     @NotBlank
     @Schema(description = "Region enum value", example = "PRAHA")
     private String region; // should match fei.upce.nnpro.remax.model.realestates.enums.AddressRegion
+
+    @Schema(description = "Image ID associated with this profile", example = "1")
+    private Long image;
 }

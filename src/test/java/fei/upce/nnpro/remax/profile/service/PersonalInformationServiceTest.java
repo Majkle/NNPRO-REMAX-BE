@@ -1,6 +1,8 @@
 package fei.upce.nnpro.remax.profile.service;
 
 import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.images.repository.ImageRepository;
+import fei.upce.nnpro.remax.images.service.ImageService;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.repository.PersonalInformationRepository;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
@@ -22,11 +24,16 @@ class PersonalInformationServiceTest {
     @Mock
     private PersonalInformationRepository repo;
 
+    @Mock
+    private ImageRepository imageRepo;
+
     private PersonalInformationService sut;
+
+    private ImageService imageService;
 
     @BeforeEach
     void setUp() {
-        sut = new PersonalInformationService(repo);
+        sut = new PersonalInformationService(repo, imageService);
     }
 
     @Test
