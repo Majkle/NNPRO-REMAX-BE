@@ -1,4 +1,4 @@
-package fei.upce.nnprop.remax.config;
+package fei.upce.nnpro.remax.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
