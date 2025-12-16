@@ -76,11 +76,11 @@ public class RealEstateService {
             for (Long imageId : dto.getImages()) {
                 Image image = imageService.getImageEntity(imageId);
                 images.add(image);
+                image.setRealEstate(savedRealEstate);
             }
 
             // set both sides and persist images to update the foreign key in the image table
             savedRealEstate.setImages(images);
-            imageRepository.saveAll(savedRealEstate.getImages());
             savedRealEstate = realEstateRepository.save(savedRealEstate);
         }
 
