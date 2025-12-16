@@ -4,6 +4,7 @@ import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.address.service.AddressService;
 import fei.upce.nnpro.remax.profile.entity.Admin;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
+import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
 import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
@@ -62,6 +63,7 @@ public class AdminInitializer {
                 admin.setPassword(passwordEncoder.encode(password));
                 admin.setPersonalInformation(pi);
                 admin.setCreatedAt(OffsetDateTime.now());
+                admin.setAccountStatus(AccountStatus.NORMAL);
 
                 userRepository.save(admin);
                 log.info("Registered default admin username={} id={}", admin.getUsername(), admin.getId());

@@ -22,4 +22,8 @@ public class PriceHistory {
 
     @Column(name = "price")
     private double price;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "real_estate_id", nullable = false)
+    private RealEstate realEstate;
 }

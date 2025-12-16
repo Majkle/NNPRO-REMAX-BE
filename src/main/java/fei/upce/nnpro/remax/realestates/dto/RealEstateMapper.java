@@ -6,6 +6,7 @@ import fei.upce.nnpro.remax.realestates.entity.*;
 import fei.upce.nnpro.remax.realestates.entity.enums.RealEstateType;
 import fei.upce.nnpro.remax.realestates.entity.enums.Status;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RealEstateMapper {
 
     private final ImageRepository imageRepository;
@@ -50,14 +52,14 @@ public class RealEstateMapper {
             dto.setPrice(history.getLast().getPrice());
         }
 
-        if (entity.getImage() != null && !entity.getImage().isEmpty()) {
-            dto.setImageIds(entity.getImage().stream()
+        if (entity.getImages() != null && !entity.getImages().isEmpty()) {
+            dto.setImages(entity.getImages().stream()
                     .map(Image::getId)
                     .collect(Collectors.toList()));
         }
 
         if (entity instanceof Apartment apt) {
-            dto.setRealEstateType(RealEstateType.APARTMENT);
+            dto.setType(RealEstateType.APARTMENT);
             dto.setOwnershipType(apt.getOwnershipType());
             dto.setFloor(apt.getFloor());
             dto.setTotalFloors(apt.getTotalFloors());
@@ -65,12 +67,12 @@ public class RealEstateMapper {
             dto.setBalcony(apt.isBalcony());
             dto.setRooms(apt.getRooms());
         } else if (entity instanceof House house) {
-            dto.setRealEstateType(RealEstateType.HOUSE);
+            dto.setType(RealEstateType.HOUSE);
             dto.setPlotArea(house.getPlotArea());
             dto.setHouseType(house.getHouseType());
             dto.setStories(house.getStories());
         } else if (entity instanceof Land land) {
-            dto.setRealEstateType(RealEstateType.LAND);
+            dto.setType(RealEstateType.LAND);
             dto.setIsForHousing(land.isForHousing());
         }
 
@@ -83,7 +85,7 @@ public class RealEstateMapper {
      * If 'existingEntity' is provided, updates it.
      */
     public RealEstate toEntity(RealEstateDto dto) {
-        RealEstate entity = switch (dto.getRealEstateType()) {
+        RealEstate entity = switch (dto.getType()) {
             case APARTMENT -> new Apartment();
             case HOUSE -> new House();
             case LAND -> new Land();
@@ -107,13 +109,13 @@ public class RealEstateMapper {
         entity.setCivicAmenities(dto.getCivicAmenities());
 
 
-        if (dto.getImageIds() != null) {
-            if (!dto.getImageIds().isEmpty()) {
-                List<Image> images = imageRepository.findAllById(dto.getImageIds());
-                entity.setImage(images);
+        if (dto.getImages() != null) {
+            if (!dto.getImages().isEmpty()) {
+                List<Image> images = imageRepository.findAllById(dto.getImages());
+                entity.setImages(images);
             } else {
                 // If empty list is sent, clear the images
-                entity.setImage(new ArrayList<>());
+                entity.setImages(new ArrayList<>());
             }
         }
 
@@ -122,21 +124,18 @@ public class RealEstateMapper {
 
         // 5. Map Subtype Specific Fields
         if (entity instanceof Apartment apt) {
-            dto.setRealEstateType(RealEstateType.APARTMENT);
-            dto.setOwnershipType(apt.getOwnershipType());
-            dto.setFloor(apt.getFloor());
-            dto.setTotalFloors(apt.getTotalFloors());
-            dto.setElevator(apt.isElevator());
-            dto.setBalcony(apt.isBalcony());
-            dto.setRooms(apt.getRooms());
+            apt.setOwnershipType(dto.getOwnershipType());
+            apt.setFloor(dto.getFloor());
+            apt.setTotalFloors(dto.getTotalFloors());
+            apt.setElevator(dto.getElevator());
+            apt.setBalcony(dto.getBalcony());
+            apt.setRooms(dto.getRooms());
         } else if (entity instanceof House house) {
-            dto.setRealEstateType(RealEstateType.HOUSE);
-            dto.setPlotArea(house.getPlotArea());
-            dto.setHouseType(house.getHouseType());
-            dto.setStories(house.getStories());
+            house.setPlotArea(dto.getPlotArea());
+            house.setHouseType(dto.getHouseType());
+            house.setStories(dto.getStories());
         } else if (entity instanceof Land land) {
-            dto.setRealEstateType(RealEstateType.LAND);
-            dto.setIsForHousing(land.isForHousing());
+            land.setForHousing(dto.getIsForHousing());
         }
 
         return entity;

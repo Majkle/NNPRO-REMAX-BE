@@ -8,6 +8,7 @@ import fei.upce.nnpro.remax.realestates.dto.RealEstateDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateFilterDto;
 import fei.upce.nnpro.remax.realestates.dto.RealEstateMapper;
 import fei.upce.nnpro.remax.realestates.entity.*;
+import fei.upce.nnpro.remax.realestates.repository.PriceHistoryRepository;
 import fei.upce.nnpro.remax.realestates.repository.RealEstateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.List;
 public class RealEstateService {
 
     private final RealEstateRepository realEstateRepository;
+    private final PriceHistoryRepository priceHistoryRepository;
     private final AddressService addressService;
     private final RealEstateMapper realEstateMapper;
     private final ImageRepository imageRepository;
@@ -54,10 +56,9 @@ public class RealEstateService {
             PriceHistory initialPrice = new PriceHistory();
             initialPrice.setPrice(dto.getPrice());
             initialPrice.setTimestamp(ZonedDateTime.now());
+            initialPrice.setRealEstate(realEstate);
 
-            List<PriceHistory> history = new ArrayList<>();
-            history.add(initialPrice);
-            realEstate.setPriceHistory(history);
+            realEstate.getPriceHistory().add(initialPrice);
             log.debug("Initialized price history with price={}", dto.getPrice());
         }
 
@@ -168,12 +169,12 @@ public class RealEstateService {
         }
 
         // Images
-        if (dto.getImageIds() != null) {
-            if (dto.getImageIds().isEmpty()) {
-                existing.setImage(new ArrayList<>());
+        if (dto.getImages() != null) {
+            if (dto.getImages().isEmpty()) {
+                existing.setImages(new ArrayList<>());
             } else {
-                List<Image> images = imageRepository.findAllById(dto.getImageIds());
-                existing.setImage(images);
+                List<Image> images = imageRepository.findAllById(dto.getImages());
+                existing.setImages(images);
             }
         }
     }
@@ -220,7 +221,8 @@ public class RealEstateService {
         log.info("Searching RealEstates filter={} pageable={}", filter, pageable);
         Specification<RealEstate> spec = RealEstateSpecification.filterBy(filter);
         Page<RealEstate> page = realEstateRepository.findAll(spec, pageable);
-        log.debug("Found {} real estates", page.getNumberOfElements());
+
+        log.info("Found {} real estates", page.getNumberOfElements());
         return page;
     }
 }

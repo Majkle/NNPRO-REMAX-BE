@@ -12,6 +12,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,7 +24,7 @@ public class RealEstateDto {
 
     @NotNull(message = "Real Estate Type is required")
     @Schema(description = "Type of the property. Determines which specific fields (like floor vs. plot area) are relevant.", example = "APARTMENT")
-    private RealEstateType realEstateType;
+    private RealEstateType type;
 
     // ==========================
     // Common Fields
@@ -146,5 +147,5 @@ public class RealEstateDto {
     // ==========================
 
     @Schema(description = "List of Image IDs associated with this property", example = "[10, 25, 32]")
-    private List<Long> imageIds;
+    private List<Long> images = new ArrayList<>();
 }

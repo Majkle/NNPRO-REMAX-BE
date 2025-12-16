@@ -68,7 +68,7 @@ class RealEstateMapperTest {
         image1.setId(10L);
         Image image2 = new Image();
         image2.setId(20L);
-        apartment.setImage(Arrays.asList(image1, image2));
+        apartment.setImages(Arrays.asList(image1, image2));
 
         RealEstateDto dto = mapper.toDto(apartment);
 
@@ -91,7 +91,7 @@ class RealEstateMapperTest {
         assertThat(dto.getElevator()).isTrue();
         assertThat(dto.getBalcony()).isTrue();
         assertThat(dto.getRooms()).isEqualTo(3);
-        assertThat(dto.getImageIds()).containsExactly(10L, 20L);
+        assertThat(dto.getImages()).containsExactly(10L, 20L);
     }
 
     @Test
@@ -222,7 +222,7 @@ class RealEstateMapperTest {
         RealEstateDto dto = mapper.toDto(apartment);
 
         assertThat(dto).isNotNull();
-        assertThat(dto.getImageIds()).isNull();
+        assertThat(dto.getImages()).isNull();
     }
 
     @Test
@@ -340,7 +340,7 @@ class RealEstateMapperTest {
         Address address = new Address();
         dto.setAddress(address);
 
-        dto.setImageIds(Arrays.asList(1L, 2L, 3L));
+        dto.setImages(Arrays.asList(1L, 2L, 3L));
 
         Image img1 = new Image();
         img1.setId(1L);
@@ -354,8 +354,8 @@ class RealEstateMapperTest {
         RealEstate entity = mapper.toEntity(dto);
 
         assertThat(entity).isNotNull();
-        assertThat(entity.getImage()).hasSize(3);
-        assertThat(entity.getImage()).extracting(Image::getId).containsExactly(1L, 2L, 3L);
+        assertThat(entity.getImages()).hasSize(3);
+        assertThat(entity.getImages()).extracting(Image::getId).containsExactly(1L, 2L, 3L);
     }
 
     @Test
@@ -373,12 +373,12 @@ class RealEstateMapperTest {
         Address address = new Address();
         dto.setAddress(address);
 
-        dto.setImageIds(Collections.emptyList());
+        dto.setImages(Collections.emptyList());
 
         RealEstate entity = mapper.toEntity(dto);
 
         assertThat(entity).isNotNull();
-        assertThat(entity.getImage()).isEmpty();
+        assertThat(entity.getImages()).isEmpty();
     }
 
     @Test
@@ -399,6 +399,6 @@ class RealEstateMapperTest {
         RealEstate entity = mapper.toEntity(dto);
 
         assertThat(entity).isNotNull();
-        assertThat(entity.getImage()).isNull();
+        assertThat(entity.getImages()).isNull();
     }
 }

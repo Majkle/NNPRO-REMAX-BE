@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -42,9 +43,12 @@ public abstract class RealEstate {
     @Column(name = "contract_type", nullable = false)
     private ContractType contractType;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "price_history_id", nullable = false)
-    private List<PriceHistory> priceHistory;
+    @OneToMany(
+            mappedBy = "realEstate",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<PriceHistory> priceHistory = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "price_disclosure", nullable = false)
@@ -86,5 +90,5 @@ public abstract class RealEstate {
     
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "real_estate_id", nullable = false)
-    private List<Image> image;
+    private List<Image> images = new ArrayList<>();
 }

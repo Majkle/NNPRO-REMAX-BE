@@ -250,11 +250,11 @@ class RealEstateServiceTest {
         Long id = 1L;
         RealEstate existing = new Apartment();
         existing.setId(id);
-        existing.setImage(new ArrayList<>());
+        existing.setImages(new ArrayList<>());
 
         List<Long> imageIds = List.of(100L, 101L);
         RealEstateDto dto = new RealEstateDto();
-        dto.setImageIds(imageIds);
+        dto.setImages(imageIds);
 
         List<Image> mockImages = List.of(new Image(), new Image());
         when(imageRepository.findAllById(imageIds)).thenReturn(mockImages);
@@ -265,7 +265,7 @@ class RealEstateServiceTest {
         RealEstate result = realEstateService.updateRealEstate(id, dto);
 
         // Assert
-        assertThat(result.getImage()).hasSize(2);
+        assertThat(result.getImages()).hasSize(2);
         verify(imageRepository).findAllById(imageIds);
     }
 
@@ -491,10 +491,10 @@ class RealEstateServiceTest {
         Long id = 1L;
         RealEstate existing = new Apartment();
         existing.setId(id);
-        existing.setImage(new ArrayList<>(List.of(new Image(), new Image())));
+        existing.setImages(new ArrayList<>(List.of(new Image(), new Image())));
 
         RealEstateDto dto = new RealEstateDto();
-        dto.setImageIds(new ArrayList<>());
+        dto.setImages(new ArrayList<>());
 
         when(realEstateRepository.findById(id)).thenReturn(Optional.of(existing));
         when(realEstateRepository.save(existing)).thenReturn(existing);
@@ -503,7 +503,7 @@ class RealEstateServiceTest {
         RealEstate result = realEstateService.updateRealEstate(id, dto);
 
         // Assert
-        assertThat(result.getImage()).isEmpty();
+        assertThat(result.getImages()).isEmpty();
         verify(imageRepository, never()).findAllById(any());
     }
 
@@ -515,10 +515,10 @@ class RealEstateServiceTest {
         RealEstate existing = new Apartment();
         existing.setId(id);
         List<Image> originalImages = new ArrayList<>(List.of(new Image(), new Image()));
-        existing.setImage(originalImages);
+        existing.setImages(originalImages);
 
         RealEstateDto dto = new RealEstateDto();
-        dto.setImageIds(null);
+        dto.setImages(null);
 
         when(realEstateRepository.findById(id)).thenReturn(Optional.of(existing));
         when(realEstateRepository.save(existing)).thenReturn(existing);
@@ -527,7 +527,7 @@ class RealEstateServiceTest {
         RealEstate result = realEstateService.updateRealEstate(id, dto);
 
         // Assert
-        assertThat(result.getImage()).hasSize(2);
+        assertThat(result.getImages()).hasSize(2);
         verify(imageRepository, never()).findAllById(any());
     }
 

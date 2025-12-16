@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @Tag(name = "Admin Operations", description = "User management and administrative tasks. Requires ROLE_ADMIN.")
 @SecurityRequirement(name = "bearerAuth")
 public class AdminController {

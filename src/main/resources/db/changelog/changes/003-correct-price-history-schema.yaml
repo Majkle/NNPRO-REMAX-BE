@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2003_correct_price_history_schema
+      author: STAGAJE
+      changes:
+
+        # 1. Drop existing table completely (data loss acknowledged)
+        - dropTable:
+            tableName: price_history
+            cascadeConstraints: true
+
+        # 2. Recreate table with correct structure
+        - createTable:
+            tableName: price_history
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: real_estate_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: price
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: timestamp
+                  type: TIMESTAMPTZ
+                  constraints:
+                    nullable: false
+
+        # 3. Foreign key constraint
+        - addForeignKeyConstraint:
+            constraintName: fk_price_history_real_estate
+            baseTableName: price_history
+            baseColumnNames: real_estate_id
+            referencedTableName: real_estate
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 4. Index for performance
+        - createIndex:
+            tableName: price_history
+            indexName: idx_price_history_real_estate_id
+            columns:
+              - column:
+                  name: real_estate_id
