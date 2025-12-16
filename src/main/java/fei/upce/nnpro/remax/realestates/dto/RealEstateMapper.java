@@ -2,6 +2,8 @@ package fei.upce.nnpro.remax.realestates.dto;
 
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
+import fei.upce.nnpro.remax.profile.service.ProfileService;
 import fei.upce.nnpro.remax.realestates.entity.*;
 import fei.upce.nnpro.remax.realestates.entity.enums.RealEstateType;
 import fei.upce.nnpro.remax.realestates.entity.enums.Status;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 public class RealEstateMapper {
 
     private final ImageRepository imageRepository;
+    private final ProfileService profileService;
 
     /**
      * Converts a RealEstate Entity to a DTO.
@@ -44,6 +48,10 @@ public class RealEstateMapper {
         dto.setUtilities(entity.getUtilities());
         dto.setTransportPossibilities(entity.getTransportPossibilities());
         dto.setCivicAmenities(entity.getCivicAmenities());
+
+        if (entity.getRealtor() != null) {
+            dto.setRealtorId(entity.getRealtor().getId());
+        }
 
         List<PriceHistory> history = entity.getPriceHistory();
         if (history != null && !history.isEmpty()) {
@@ -115,6 +123,11 @@ public class RealEstateMapper {
                 // If empty list is sent, clear the images
                 entity.setImages(new ArrayList<>());
             }
+        }
+
+        if (dto.getRealtorId() != null) {
+            Optional<RemaxUser> realtor = profileService.getProfile(dto.getRealtorId());
+            realtor.ifPresent(entity::setRealtor);
         }
 
         // 4. Map Address

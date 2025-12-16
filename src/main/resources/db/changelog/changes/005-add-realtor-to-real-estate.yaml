@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005_add_realtor_to_real_estate
+      author: your_name
+      changes:
+        - addColumn:
+            tableName: real_estate
+            columns:
+              - column:
+                  name: realtor_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_real_estate_realtor_owner
+                    references: remax_user(id)
+
+        - createIndex:
+            tableName: real_estate
+            indexName: idx_real_estate_realtor_owner
+            columns:
+              - column:
+                  name: realtor_id
