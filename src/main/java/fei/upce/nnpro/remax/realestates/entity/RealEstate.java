@@ -87,8 +87,11 @@ public abstract class RealEstate {
 
     @Column(name = "basement", nullable = false)
     private boolean basement;
-    
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "real_estate_id", nullable = false)
+
+    @OneToMany(
+            mappedBy = "realEstate",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Image> images = new ArrayList<>();
 }

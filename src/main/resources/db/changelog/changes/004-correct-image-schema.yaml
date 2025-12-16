@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002_image_schema
+      author: Majkle
+      changes:
+
+        # Truncate tabe
+        - delete:
+            tableName: image
+            where: 1=1
+
+        # 1. Add column
+        - addColumn:
+            tableName: image
+            columns:
+              - column:
+                  name: real_estate_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        # 2. Foreign key constraint
+        - addForeignKeyConstraint:
+            constraintName: fk_image_real_estate
+            baseTableName: image
+            baseColumnNames: real_estate_id
+            referencedTableName: real_estate
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 3. Index for performance
+        - createIndex:
+            tableName: image
+            indexName: idx_image_real_estate_id
+            columns:
+              - column:
+                  name: real_estate_id

@@ -1,5 +1,6 @@
 package fei.upce.nnpro.remax.images.entity;
 
+import fei.upce.nnpro.remax.realestates.entity.RealEstate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,7 @@ public class Image {
     @Column(name = "data", nullable = false)
     private byte[] data;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "real_estate_id", nullable = false)
+    private RealEstate realEstate;
 }
