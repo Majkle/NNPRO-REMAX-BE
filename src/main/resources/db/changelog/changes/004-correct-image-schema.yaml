@@ -14,12 +14,6 @@ databaseChangeLog:
             tableName: image
             columns:
               - column:
-                  name: real_estate_id
-                  type: BIGINT
-        - addColumn:
-            tableName: image
-            columns:
-              - column:
                   name: personal_information_id
                   type: BIGINT
 
