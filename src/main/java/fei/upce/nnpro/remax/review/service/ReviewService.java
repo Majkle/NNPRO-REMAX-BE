@@ -1,9 +1,11 @@
 package fei.upce.nnpro.remax.review.service;
 
 import fei.upce.nnpro.remax.profile.entity.Client;
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.Realtor;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
+import fei.upce.nnpro.remax.review.dto.RealtorSimplifiedDto;
 import fei.upce.nnpro.remax.review.dto.ReviewDto;
 import fei.upce.nnpro.remax.review.dto.ReviewMapper;
 import fei.upce.nnpro.remax.review.dto.ReviewStatisticsDto;
@@ -82,6 +84,20 @@ public class ReviewService {
         }
 
         reviewRepository.delete(review);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RealtorSimplifiedDto> getAllRealtors() {
+        return userRepository.findAllRealtors().stream()
+                .map((r) -> {
+                    PersonalInformation pi = r.getPersonalInformation();
+                    RealtorSimplifiedDto rs = new RealtorSimplifiedDto();
+                    rs.setId(r.getId());
+                    rs.setDegree(pi.getDegree());
+                    rs.setFirstName(pi.getFirstName());
+                    rs.setLastName(pi.getLastName());
+                    return rs;
+                }).toList();
     }
 
     @Transactional(readOnly = true)

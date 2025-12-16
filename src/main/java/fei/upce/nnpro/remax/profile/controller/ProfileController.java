@@ -36,6 +36,20 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+    @Operation(summary = "Get user profile", description = "Retrieves the profile details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Profile retrieved successfully",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = RemaxUserResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Profile not found", content = @Content)
+    })
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserProfile(@Parameter(description = "ID of the user") @PathVariable Long userId) {
+        log.info("Loading specific profile");
+        return profileService.getProfile(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @Operation(summary = "Get current user profile", description = "Retrieves the profile details of the authenticated user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Profile retrieved successfully",

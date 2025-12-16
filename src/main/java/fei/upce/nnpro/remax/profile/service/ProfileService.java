@@ -31,6 +31,11 @@ public class ProfileService {
         this.personalInformationService = personalInformationService;
     }
 
+    public Optional<RemaxUser> getProfile(Long userId) {
+        log.info("Fetching profile for userId={}", userId);
+        return userRepository.findById(userId);
+    }
+
     public Optional<RemaxUser> getProfile(String username) {
         log.info("Fetching profile for username={}", username);
         return userRepository.findByUsername(username);

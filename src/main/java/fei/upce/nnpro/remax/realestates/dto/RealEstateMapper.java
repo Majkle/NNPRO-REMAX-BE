@@ -6,7 +6,6 @@ import fei.upce.nnpro.remax.realestates.entity.*;
 import fei.upce.nnpro.remax.realestates.entity.enums.RealEstateType;
 import fei.upce.nnpro.remax.realestates.entity.enums.Status;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class RealEstateMapper {
 
     private final ImageRepository imageRepository;

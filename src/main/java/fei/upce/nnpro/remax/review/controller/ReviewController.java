@@ -1,5 +1,6 @@
 package fei.upce.nnpro.remax.review.controller;
 
+import fei.upce.nnpro.remax.review.dto.RealtorSimplifiedDto;
 import fei.upce.nnpro.remax.review.dto.ReviewDto;
 import fei.upce.nnpro.remax.review.dto.ReviewStatisticsDto;
 import fei.upce.nnpro.remax.review.service.ReviewService;
@@ -80,8 +81,21 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "List of reviews retrieved")
     })
     @GetMapping("/realtor/{realtorId}")
-    public ResponseEntity<List<ReviewDto>> getReviewsByRealtor(@Parameter(description = "ID of the realtor") @PathVariable Long realtorId) {
+        public ResponseEntity<List<ReviewDto>> getReviewsByRealtor(@Parameter(description = "ID of the realtor") @PathVariable Long realtorId) {
         return ResponseEntity.ok(reviewService.getReviewsByRealtor(realtorId));
+    }
+
+    @Operation(summary = "Get all Realtors", description = "Retrieves a list of all all Realtors.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of Realtors retrieved")
+    })
+    @GetMapping("/realtors")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<List<RealtorSimplifiedDto>> getAllRealtors(@Parameter(hidden = true) Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).build();
+        }
+        return ResponseEntity.ok(reviewService.getAllRealtors());
     }
 
     @Operation(summary = "Get Realtor statistics", description = "Calculates aggregated statistics (average ratings) for a specific Realtor.")
