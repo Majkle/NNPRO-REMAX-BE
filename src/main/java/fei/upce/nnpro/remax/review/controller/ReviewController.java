@@ -85,9 +85,10 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getReviewsByRealtor(realtorId));
     }
 
-    @Operation(summary = "Get all Realtors", description = "Retrieves a list of all all Realtors.")
+    @Operation(summary = "Get all Realtors simplified", description = "Retrieves a list of all Realtors simplified.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of Realtors retrieved")
+            @ApiResponse(responseCode = "200", description = "List of simplified Realtors retrieved"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/realtors")
     @PreAuthorize("hasRole('ROLE_USER')")
