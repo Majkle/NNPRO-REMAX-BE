@@ -2,12 +2,16 @@ package fei.upce.nnpro.remax.meetings.service;
 
 import fei.upce.nnpro.remax.meetings.dto.MeetingDto;
 import fei.upce.nnpro.remax.meetings.dto.MeetingMapper;
+import fei.upce.nnpro.remax.meetings.dto.RealEstateSimplifiedDto;
 import fei.upce.nnpro.remax.meetings.entity.Meeting;
 import fei.upce.nnpro.remax.meetings.repository.MeetingRepository;
 import fei.upce.nnpro.remax.profile.entity.Client;
+import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.Realtor;
+import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.realestates.repository.RealEstateRepository;
+import fei.upce.nnpro.remax.review.dto.RealtorSimplifiedDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -16,6 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -122,5 +129,31 @@ public class MeetingService {
         Page<Meeting> page = meetingRepository.findAll(pageable);
         log.debug("Found {} meetings in page", page.getNumberOfElements());
         return page;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RealEstateSimplifiedDto> listRealEstatesSimplified() {
+        return realEstateRepository.findAll().stream()
+                .map((r) -> {
+                    RealEstateSimplifiedDto rs = new RealEstateSimplifiedDto();
+                    rs.setId(r.getId());
+                    rs.setTitle(r.getName());
+                    return rs;
+                }).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MeetingDto> listMyMeetings(String username) {
+        log.debug("Searching for user {}", username);
+        var user = remaxUserRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            log.debug("User {} not found", username);
+            return new ArrayList<MeetingDto>();
+        }
+
+        RemaxUser remaxUser = user.get();
+        log.info("Searching meetings of {}", remaxUser);
+        return meetingRepository.findAllByClientIdOrRealtorId(remaxUser.getId(), remaxUser.getId())
+                .stream().map(meetingMapper::toDto).toList();
     }
 }
