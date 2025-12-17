@@ -47,6 +47,13 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+
+                        // Public GET endpoints requested by the anonymous users
+                        .requestMatchers(HttpMethod.GET, "/api/profile/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/images/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews", "/api/reviews/realtor/*", "/api/reviews/realtors", "/api/reviews/stats/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/real-estates/*").permitAll()
+
                         .anyRequest().authenticated()
                 );
 

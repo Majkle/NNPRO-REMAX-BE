@@ -103,7 +103,7 @@ public class ProfileController {
             @ApiResponse(responseCode = "404", description = "Profile not found", content = @Content)
     })
     @DeleteMapping
-    @PreAuthorize("hasRole('ROLE_USER')") //FIXME can do only admin for REALTOR
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> deleteProfile(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();

@@ -91,7 +91,6 @@ public class ReviewController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/realtors")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<RealtorSimplifiedDto>> getAllRealtors(@Parameter(hidden = true) Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
