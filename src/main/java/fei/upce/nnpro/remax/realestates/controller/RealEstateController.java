@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/real-estates")
 @RequiredArgsConstructor
@@ -92,5 +94,19 @@ public class RealEstateController {
         Page<RealEstateDto> dtos = entities.map(realEstateMapper::toDto);
 
         return ResponseEntity.ok(dtos);
+    }
+
+    @Operation(summary = "Get all properties of a given Realtor",
+            description = "Public endpoint to retrieve details of properties of a given Realtor.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Properties found")
+    })
+    @GetMapping("/by-realtor/{id}")
+    public ResponseEntity<List<RealEstateDto>> listRealEstatesByRealtor(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                realEstateService.listRealEstatesByRealtor(id)
+                        .stream()
+                        .map(realEstateMapper::toDto)
+                        .toList());
     }
 }
