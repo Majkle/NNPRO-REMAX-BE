@@ -1,6 +1,6 @@
 package fei.upce.nnpro.remax.realestates.dto;
 
-import fei.upce.nnpro.remax.address.entity.Address;
+import fei.upce.nnpro.remax.address.dto.AddressDto;
 import fei.upce.nnpro.remax.realestates.entity.BuildingProperties;
 import fei.upce.nnpro.remax.realestates.entity.CivicAmenities;
 import fei.upce.nnpro.remax.realestates.entity.TransportPossibilities;
@@ -82,7 +82,7 @@ public class RealEstateDto {
     @NotNull(message = "Address is required")
     @Valid
     @Schema(description = "Physical address of the property")
-    private Address address;
+    private AddressDto address;
 
     @Valid
     @Schema(description = "Structural and energy properties of the building")

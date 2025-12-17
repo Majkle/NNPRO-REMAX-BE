@@ -1,5 +1,6 @@
 package fei.upce.nnpro.remax.realestates.dto;
 
+import fei.upce.nnpro.remax.address.dto.AddressMapper;
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
@@ -21,6 +22,7 @@ public class RealEstateMapper {
 
     private final ImageRepository imageRepository;
     private final ProfileService profileService;
+    private final AddressMapper addressMapper;
 
     /**
      * Converts a RealEstate Entity to a DTO.
@@ -42,7 +44,7 @@ public class RealEstateMapper {
         dto.setAvailableFrom(entity.getAvailableFrom());
         dto.setBasement(entity.isBasement());
 
-        dto.setAddress(entity.getAddress());
+        dto.setAddress(addressMapper.toDto(entity.getAddress()));
         dto.setBuildingProperties(entity.getBuildingProperties());
         dto.setEquipment(entity.getEquipment());
         dto.setUtilities(entity.getUtilities());
@@ -131,7 +133,7 @@ public class RealEstateMapper {
         }
 
         // 4. Map Address
-        entity.setAddress(dto.getAddress());
+        entity.setAddress(addressMapper.toEntity(dto.getAddress()));
 
         // 5. Map Subtype Specific Fields
         if (entity instanceof Apartment apt) {

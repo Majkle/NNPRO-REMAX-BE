@@ -1,5 +1,7 @@
 package fei.upce.nnpro.remax.realestates.dto;
 
+import fei.upce.nnpro.remax.address.dto.AddressDto;
+import fei.upce.nnpro.remax.address.dto.AddressMapper;
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.images.repository.ImageRepository;
@@ -28,6 +30,9 @@ class RealEstateMapperTest {
 
     @InjectMocks
     private RealEstateMapper mapper;
+
+    @Mock
+    private AddressMapper addressMapper;
 
     @Test
     void toDto_WithNullEntity_ShouldReturnNull() {
@@ -239,8 +244,13 @@ class RealEstateMapperTest {
         dto.setTaxes(Taxes.INCLUDED);
         dto.setBasement(false);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto instead of Address
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock the AddressMapper behavior
+        Address addressEntity = new Address();
+        when(addressMapper.toEntity(addressDto)).thenReturn(addressEntity);
 
         RealEstate entity = mapper.toEntity(dto);
 
@@ -255,6 +265,7 @@ class RealEstateMapperTest {
         assertThat(entity.getCommission()).isEqualTo(Commission.INCLUDED);
         assertThat(entity.getTaxes()).isEqualTo(Taxes.INCLUDED);
         assertThat(entity.isBasement()).isFalse();
+        assertThat(entity.getAddress()).isEqualTo(addressEntity); // Verify address mapping
     }
 
     @Test
@@ -270,8 +281,12 @@ class RealEstateMapperTest {
         dto.setTaxes(Taxes.EXCLUDED);
         dto.setBasement(true);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         RealEstate entity = mapper.toEntity(dto);
 
@@ -294,8 +309,12 @@ class RealEstateMapperTest {
         dto.setTaxes(Taxes.INCLUDED);
         dto.setBasement(false);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         RealEstate entity = mapper.toEntity(dto);
 
@@ -316,8 +335,12 @@ class RealEstateMapperTest {
         dto.setCommission(Commission.INCLUDED);
         dto.setTaxes(Taxes.INCLUDED);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         RealEstate entity = mapper.toEntity(dto);
 
@@ -337,8 +360,12 @@ class RealEstateMapperTest {
         dto.setCommission(Commission.INCLUDED);
         dto.setTaxes(Taxes.INCLUDED);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         dto.setImages(Arrays.asList(1L, 2L, 3L));
 
@@ -370,8 +397,12 @@ class RealEstateMapperTest {
         dto.setCommission(Commission.INCLUDED);
         dto.setTaxes(Taxes.INCLUDED);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         dto.setImages(Collections.emptyList());
 
@@ -393,12 +424,48 @@ class RealEstateMapperTest {
         dto.setCommission(Commission.INCLUDED);
         dto.setTaxes(Taxes.INCLUDED);
 
-        Address address = new Address();
-        dto.setAddress(address);
+        // Change: Use AddressDto
+        AddressDto addressDto = new AddressDto();
+        dto.setAddress(addressDto);
+
+        // Change: Mock AddressMapper
+        when(addressMapper.toEntity(addressDto)).thenReturn(new Address());
 
         RealEstate entity = mapper.toEntity(dto);
 
         assertThat(entity).isNotNull();
         assertThat(entity.getImages()).isEmpty();
+    }
+
+    @Test
+    void toDto_WithApartment_ShouldMapAddressUsingMapper() {
+        Apartment apartment = new Apartment();
+        apartment.setId(1L);
+        Address address = new Address();
+        apartment.setAddress(address);
+
+        AddressDto addrDto = new AddressDto();
+        when(addressMapper.toDto(address)).thenReturn(addrDto);
+
+        RealEstateDto dto = mapper.toDto(apartment);
+
+        assertThat(dto).isNotNull();
+        assertThat(dto.getAddress()).isEqualTo(addrDto);
+    }
+
+    @Test
+    void toEntity_WithApartmentDto_ShouldMapAddressUsingMapper() {
+        RealEstateDto dto = new RealEstateDto();
+        dto.setType(RealEstateType.APARTMENT);
+        AddressDto addrDto = new AddressDto();
+        dto.setAddress(addrDto);
+
+        Address addressEntity = new Address();
+        when(addressMapper.toEntity(addrDto)).thenReturn(addressEntity);
+
+        RealEstate entity = mapper.toEntity(dto);
+
+        assertThat(entity).isNotNull();
+        assertThat(entity.getAddress()).isEqualTo(addressEntity);
     }
 }

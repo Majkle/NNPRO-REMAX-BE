@@ -1,5 +1,7 @@
 package fei.upce.nnpro.remax.realestates;
 
+import fei.upce.nnpro.remax.address.dto.AddressDto;
+import fei.upce.nnpro.remax.address.dto.AddressMapper;
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.address.repository.AddressRepository;
 import fei.upce.nnpro.remax.address.service.AddressService;
@@ -58,6 +60,9 @@ class RealEstateServiceTest {
     @InjectMocks
     private RealEstateService realEstateService;
 
+    @Mock
+    private AddressMapper addressMapper;
+
     // --------------------------------------------------------------------------------------
     // CREATE TESTS
     // --------------------------------------------------------------------------------------
@@ -68,12 +73,11 @@ class RealEstateServiceTest {
         // Arrange
         RealEstateDto dto = new RealEstateDto();
         dto.setPrice(5000000.0);
-        Address address = new Address();
-        dto.setAddress(address);
+        dto.setAddress(new AddressDto());
 
+        Address addressEntity = new Address();
         RealEstate mappedEntity = new Apartment();
-        mappedEntity.setAddress(address);
-        // The mapper returns an entity. The service is responsible for creating the history list if null.
+        mappedEntity.setAddress(addressEntity);
         mappedEntity.setPriceHistory(null);
 
         when(realEstateMapper.toEntity(dto)).thenReturn(mappedEntity);
@@ -84,7 +88,7 @@ class RealEstateServiceTest {
         RealEstate result = realEstateService.createRealEstate(dto);
 
         // Assert
-        verify(addressService).save(address);
+        verify(addressService).save(addressEntity);
         verify(realEstateRepository, times(2)).save(mappedEntity);
 
         // Verify Price History initialization
@@ -146,17 +150,23 @@ class RealEstateServiceTest {
         existing.setAddress(existingAddr);
 
         RealEstateDto dto = new RealEstateDto();
-        Address newAddrData = new Address();
-        dto.setAddress(newAddrData);
+        AddressDto newAddrDto = new AddressDto();
+        dto.setAddress(newAddrDto);
+
+        Address mappedAddrEntity = new Address();
 
         when(realEstateRepository.findById(id)).thenReturn(Optional.of(existing));
         when(realEstateRepository.save(existing)).thenReturn(existing);
+
+        // Mock AddressMapper to return an entity
+        when(addressMapper.toEntity(newAddrDto)).thenReturn(mappedAddrEntity);
 
         // Act
         realEstateService.updateRealEstate(id, dto);
 
         // Assert
-        verify(addressService).update(newAddrData, existingAddr);
+        verify(addressMapper).toEntity(newAddrDto);
+        verify(addressService).update(mappedAddrEntity, existingAddr);
     }
 
     @Test
@@ -372,11 +382,12 @@ class RealEstateServiceTest {
         // Arrange
         RealEstateDto dto = new RealEstateDto();
         dto.setPrice(null);
-        Address address = new Address();
-        dto.setAddress(address);
+        AddressDto newAddrDto = new AddressDto();
+        dto.setAddress(newAddrDto);
 
+        Address addressEntity = new Address();
         RealEstate mappedEntity = new Apartment();
-        mappedEntity.setAddress(address);
+        mappedEntity.setAddress(addressEntity);
         mappedEntity.setPriceHistory(null);
 
         when(realEstateMapper.toEntity(dto)).thenReturn(mappedEntity);
@@ -387,7 +398,7 @@ class RealEstateServiceTest {
         RealEstate result = realEstateService.createRealEstate(dto);
 
         // Assert
-        verify(addressService).save(address);
+        verify(addressService).save(addressEntity);
         verify(realEstateRepository).save(mappedEntity);
         assertThat(result.getPriceHistory()).isNull();
     }
@@ -424,9 +435,10 @@ class RealEstateServiceTest {
         existing.setId(id);
         existing.setAddress(null);
 
+
         RealEstateDto dto = new RealEstateDto();
-        Address newAddrData = new Address();
-        dto.setAddress(newAddrData);
+        AddressDto newAddrDto = new AddressDto();
+        dto.setAddress(newAddrDto);
 
         when(realEstateRepository.findById(id)).thenReturn(Optional.of(existing));
         when(realEstateRepository.save(existing)).thenReturn(existing);
@@ -783,40 +795,7 @@ class RealEstateServiceTest {
         assertThat(result.isBasement()).isTrue();
     }
 
-    @Test
-    @DisplayName("Create: Should handle entity with both address and price")
-    void createRealEstate_WithBothAddressAndPrice() {
-        // Arrange
-        RealEstateDto dto = new RealEstateDto();
-        dto.setPrice(10000000.0);
-        dto.setName("Luxury Apartment");
-        Address address = new Address();
-        dto.setAddress(address);
 
-        RealEstate mappedEntity = new Apartment();
-        mappedEntity.setAddress(address);
-        mappedEntity.setName("Luxury Apartment");
-        mappedEntity.setPriceHistory(null);
-
-        Address savedAddress = new Address();
-        when(realEstateMapper.toEntity(dto)).thenReturn(mappedEntity);
-        when(addressService.save(any(Address.class))).thenReturn(savedAddress);
-        when(realEstateRepository.save(any(RealEstate.class))).thenAnswer(invocation -> {
-            RealEstate re = invocation.getArgument(0);
-            re.setId(123L);
-            return re;
-        });
-
-        // Act
-        RealEstate result = realEstateService.createRealEstate(dto);
-
-        // Assert
-        verify(addressService).save(address);
-        verify(realEstateRepository, times(2)).save(mappedEntity);
-        assertThat(result.getPriceHistory()).isNotNull().hasSize(1);
-        assertThat(result.getPriceHistory().getFirst().getPrice()).isEqualTo(10000000.0);
-        assertThat(result.getId()).isEqualTo(123L);
-    }
 
     @Test
     @DisplayName("Search: Should handle empty filter")
