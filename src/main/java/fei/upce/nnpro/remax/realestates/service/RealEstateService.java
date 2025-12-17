@@ -134,21 +134,7 @@ public class RealEstateService {
         // 4. Update Subclass Specific Fields (Apartment, House, Land)
         updateSubclassFields(existing, dto);
 
-        // 5. Image
-        if (!dto.getImages().isEmpty()) {
-            List<Image> images = new LinkedList<>();
-            for (Long imageId : dto.getImages()) {
-                Image image = imageService.getImageEntity(imageId);
-                images.add(image);
-                image.setRealEstate(existing);
-            }
-
-            // set both sides and persist images to update the foreign key in the image table
-            existing.setImages(images);
-            existing = realEstateRepository.save(existing);
-        }
-
-        // 6. Save and Return Entity
+        // 5. Save and Return Entity
         RealEstate saved = realEstateRepository.save(existing);
         log.info("Updated RealEstate id={} name={}", saved.getId(), saved.getName());
         return saved;
@@ -203,13 +189,17 @@ public class RealEstateService {
         }
 
         // Images
+        // Never call existing.setImages(...)! That breaks because off orphanRemoval=true.
+        // Instead, you must get the existing image list and update that.
         if (dto.getImages() != null) {
-            if (dto.getImages().isEmpty()) {
-                existing.setImages(new ArrayList<>());
-            } else {
-                List<Image> images = imageRepository.findAllById(dto.getImages());
-                existing.setImages(images);
+            List<Image> images = existing.getImages();
+            images.clear();
+
+            log.info("There are {} images in the DTO", dto.getImages().size());
+            if (!dto.getImages().isEmpty()) {
+                images.addAll(imageRepository.findAllById(dto.getImages()));
             }
+            log.info("There are {} images in the RealEstate", images.size());
         }
     }
 
