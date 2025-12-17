@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-cascade-user-deletes
+      author: st67084
+      changes:
+        # 1. Meeting -> Client
+        - dropForeignKeyConstraint:
+            baseTableName: meeting
+            constraintName: fk9tiiqi2r711r9trhs8ymi2csk
+        - addForeignKeyConstraint:
+            constraintName: fk_meeting_client_cascade
+            baseTableName: meeting
+            baseColumnNames: client_id
+            referencedTableName: remax_user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 2. Meeting -> Realtor
+        - dropForeignKeyConstraint:
+            baseTableName: meeting
+            constraintName: fkrsbha24y00psr577pf9b40c5e
+        - addForeignKeyConstraint:
+            constraintName: fk_meeting_realtor_cascade
+            baseTableName: meeting
+            baseColumnNames: realtor_id
+            referencedTableName: remax_user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 3. Review -> Author (Client)
+        - dropForeignKeyConstraint:
+            baseTableName: review
+            constraintName: fkgnnia0ub3591h9ypceajcx2ly
+        - addForeignKeyConstraint:
+            constraintName: fk_review_author_cascade
+            baseTableName: review
+            baseColumnNames: author_client_id
+            referencedTableName: remax_user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 4. Review -> Realtor (Target)
+        - dropForeignKeyConstraint:
+            baseTableName: review
+            constraintName: fklhww57evdti82iq2paq6nxe7t
+        - addForeignKeyConstraint:
+            constraintName: fk_review_realtor_cascade
+            baseTableName: review
+            baseColumnNames: reviewed_realtor_id
+            referencedTableName: remax_user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 5. RealEstate -> Realtor (Owner)
+        # Note: constraint name from 005-add-realtor-to-real-estate.yaml
+        - dropForeignKeyConstraint:
+            baseTableName: real_estate
+            constraintName: fk_real_estate_realtor_owner
+        - addForeignKeyConstraint:
+            constraintName: fk_real_estate_realtor_cascade
+            baseTableName: real_estate
+            baseColumnNames: realtor_id
+            referencedTableName: remax_user
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        # 6. Meeting -> RealEstate
+        # Required because if a Realtor is deleted, their Estate is deleted (rule #5),
+        # which requires Meetings on that Estate to be deleted as well.
+        - dropForeignKeyConstraint:
+            baseTableName: meeting
+            constraintName: fk92qtlct9ugyhkcj8fbu915kyr
+        - addForeignKeyConstraint:
+            constraintName: fk_meeting_real_estate_cascade
+            baseTableName: meeting
+            baseColumnNames: real_estate_id
+            referencedTableName: real_estate
+            referencedColumnNames: id
+            onDelete: CASCADE

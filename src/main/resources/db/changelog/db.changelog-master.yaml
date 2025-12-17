@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/005-add-realtor-to-real-estate.yaml
   - include:
       file: db/changelog/changes/006-add-gps-to-address.yaml
+  - include:
+      file: db/changelog/changes/007-cascade-user-deletes.yaml
