@@ -29,17 +29,17 @@ public class AdminInitializer {
     private String adminUsername;
     @Value("${remax.default-admin.password}")
     private String adminPassword;
-    private final String adminEmail = "admin@remax.XXX";
+    private final String adminEmail = "admin@remax.cz";
 
     // Test Realtor constants
     private final String realtorUsername = "realtor";
     private final String realtorPassword = "password";
-    private final String realtorEmail = "realtor@remax.XXX";
+    private final String realtorEmail = "realtor@remax.cz";
 
     // Test Client constants
     private final String clientUsername = "client";
     private final String clientPassword = "password";
-    private final String clientEmail = "client@remax.XXX";
+    private final String clientEmail = "client@remax.cz";
 
     @Bean
     public ApplicationRunner applicationRunner(
