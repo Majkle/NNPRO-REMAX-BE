@@ -224,6 +224,27 @@ Projekt využívá `spring-boot-starter-test` pro Unit a Integrační testy.
 - **Integrační Testy:** `@SpringBootTest` pro ověření celého kontextu (např. Auth flow).
 - **Mail Mocking:** `TestMailConfig` zabraňuje odesílání skutečných e-mailů během testů.
 
+### 7.3 End-to-End (E2E) Testování
+Pro ověření funkčnosti celého systému (Frontend + Backend + Databáze) se využívají E2E testy spouštěné v Dockeru. Tyto testy simulují reálné chování uživatele v prohlížeči.
+
+Testy jsou definovány ve frontendové části projektu, ale spouští se přes orchestraci v backend repozitáři pomocí Docker Compose.
+
+**Postup spuštění:**
+1. Přejděte do složky `deployment` v kořenovém adresáři.
+2. Spusťte následující příkaz:
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.e2e.yml up --build --exit-code-from e2e
+```
+
+**Vysvětlení příkazu:**
+- `-f docker-compose.yml -f docker-compose.e2e.yml`: Sloučí standardní konfiguraci s konfigurací pro E2E testy.
+- `up --build`: Sestaví a spustí kontejnery (Backend, Frontend, DB, MailHog a E2E runner).
+- `--exit-code-from e2e`: Klíčový parametr pro CI/CD. Docker Compose se ukončí ve chvíli, kdy doběhne kontejner `e2e`, a vrátí jeho návratový kód (0 = úspěch, 1 = chyba).
+
+**Výstupy:**
+Reporty z testování (včetně screenshotů a videí z chyb) se ukládají do složky `../../NNPRO-REMAX-FE/e2e/playwright-report` (relativně k `docker-compose` souboru).
+
 ---
 
 ## 8. Instalace, Docker a Spuštění
