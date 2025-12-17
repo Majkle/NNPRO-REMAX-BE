@@ -137,6 +137,7 @@ public class RealEstateService {
         // 5. Save and Return Entity
         RealEstate saved = realEstateRepository.save(existing);
         log.info("Updated RealEstate id={} name={}", saved.getId(), saved.getName());
+        log.debug("There are still {} images in the RealEstate", saved.getImages().size());
         return saved;
     }
 
@@ -193,13 +194,17 @@ public class RealEstateService {
         // Instead, you must get the existing image list and update that.
         if (dto.getImages() != null) {
             List<Image> images = existing.getImages();
-            images.clear();
 
-            log.info("There are {} images in the DTO", dto.getImages().size());
+            log.debug("There are {} images in the DTO", dto.getImages().size());
             if (!dto.getImages().isEmpty()) {
-                images.addAll(imageRepository.findAllById(dto.getImages()));
+                List<Image> newImages = imageRepository.findAllById(dto.getImages());
+                log.debug("The image repository finds {} images", newImages.size());
+                newImages.forEach((i) -> i.setRealEstate(existing));
+                images.addAll(newImages);
+            } else {
+                images.clear();
             }
-            log.info("There are {} images in the RealEstate", images.size());
+            log.debug("There are {} images in the RealEstate", images.size());
         }
     }
 
