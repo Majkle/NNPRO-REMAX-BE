@@ -149,12 +149,12 @@ Aplikace obsahuje `AdminInitializer`, který při startu automaticky vytvoří v
 - **Email:** `admin@remax.cz`
 - **Username:** `admin` (lze změnit přes `remax.default-admin.username`)
 - **Heslo:** `changeme1234` (lze změnit přes `remax.default-admin.password`)
+**Bezpečnostní varování:** Po prvním nasazení se ihned přihlaste a změňte heslo tomuto účtu, nebo vytvořte nového admina a tohoto smažte.
 
 #### 6.1.2. Realtor Účet
 - **Email:** `realtor@remax.cz`
 - **Username:** `realtor`
 - **Heslo:** `password`
-**Bezpečnostní varování:** Po prvním nasazení se ihned přihlaste a změňte heslo tomuto účtu, nebo vytvořte nového admina a tohoto smažte.
 
 #### 6.1.2. Client Účet
 - **Email:** `client@remax.cz`
