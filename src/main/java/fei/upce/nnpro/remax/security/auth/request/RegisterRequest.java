@@ -29,6 +29,10 @@ public class RegisterRequest {
 
     // personal information
     @NotBlank
+    @Schema(example = "Ing.")
+    private String degree;
+
+    @NotBlank
     @Schema(example = "Jan")
     private String firstName;
 

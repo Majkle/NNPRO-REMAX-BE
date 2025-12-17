@@ -34,6 +34,10 @@ public class CreateUserRequest {
 
     // personal information
     @NotBlank
+    @Schema(example = "Ing.")
+    private String degree;
+
+    @NotBlank
     @Schema(example = "John")
     private String firstName;
 

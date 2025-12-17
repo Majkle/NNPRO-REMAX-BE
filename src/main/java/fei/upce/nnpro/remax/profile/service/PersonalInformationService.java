@@ -33,6 +33,7 @@ public class PersonalInformationService {
 
     public PersonalInformation createFrom(RegisterRequest request, Address address) {
         PersonalInformation pi = new PersonalInformation();
+        pi.setDegree(request.getDegree());
         pi.setFirstName(request.getFirstName());
         pi.setLastName(request.getLastName());
         pi.setPhoneNumber(request.getPhoneNumber());

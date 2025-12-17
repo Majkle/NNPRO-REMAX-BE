@@ -90,6 +90,22 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Update a user", description = "Manually updates a user account.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Email already exists",
+                    content = @Content(schema = @Schema(implementation = Map.class))),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = Map.class)))
+    })
+    @PutMapping("/users/{username}")
+    public ResponseEntity<?> updateUser(
+            @Parameter(description = "Username of the user to update") @PathVariable String username,
+            @RequestBody UpdateUserRequest request) {
+        log.info("Admin request to update user {}", username);
+        return ResponseEntity.ok(adminService.updateUser(username, request));
+    }
+
     @Operation(summary = "Create a Realtor", description = "Manually registers a new Realtor account.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Realtor created successfully",
