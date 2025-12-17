@@ -6,10 +6,7 @@ import fei.upce.nnpro.remax.realestates.entity.*;
 import fei.upce.nnpro.remax.realestates.entity.enums.CivicAmenity;
 import fei.upce.nnpro.remax.realestates.entity.enums.TransportPossibility;
 import fei.upce.nnpro.remax.realestates.entity.enums.UtilityType;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -65,15 +62,19 @@ public class RealEstateSpecification {
             // 3. Price & Area Filters
             // ---------------------------------------------------------
 
-            // Price (searches against PriceHistory)
+            // Price Filter - FIXED: Uses subquery to get latest price only
             if (criteria.getMinPrice() != null || criteria.getMaxPrice() != null) {
-                Join<RealEstate, PriceHistory> priceJoin = root.join("priceHistory", JoinType.LEFT);
+                // Option 1: Subquery approach (if currentPrice field doesn't exist)
+                Subquery<Double> priceSubquery = query.subquery(Double.class);
+                Root<PriceHistory> priceRoot = priceSubquery.from(PriceHistory.class);
+                priceSubquery.select(priceRoot.get("price"))
+                        .where(cb.equal(priceRoot.get("realEstate"), root));
 
                 if (criteria.getMinPrice() != null) {
-                    predicates.add(cb.greaterThanOrEqualTo(priceJoin.get("price"), criteria.getMinPrice()));
+                    predicates.add(cb.greaterThanOrEqualTo(priceSubquery, criteria.getMinPrice()));
                 }
                 if (criteria.getMaxPrice() != null) {
-                    predicates.add(cb.lessThanOrEqualTo(priceJoin.get("price"), criteria.getMaxPrice()));
+                    predicates.add(cb.lessThanOrEqualTo(priceSubquery, criteria.getMaxPrice()));
                 }
             }
 
@@ -97,11 +98,14 @@ public class RealEstateSpecification {
             }
 
             // ---------------------------------------------------------
-            // 5. Embedded Collections Filters
+            // 5. Embedded Collections Filters (with null safety)
             // ---------------------------------------------------------
 
             // Civic Amenities: Property must have ALL selected amenities
             if (criteria.getCivicAmenities() != null && !criteria.getCivicAmenities().isEmpty()) {
+                // Add null check for the embedded object
+                predicates.add(cb.isNotNull(root.get("civicAmenities")));
+
                 Expression<Set<CivicAmenity>> amenitiesPath = root.get("civicAmenities").get("amenities");
                 for (CivicAmenity amenity : criteria.getCivicAmenities()) {
                     predicates.add(cb.isMember(amenity, amenitiesPath));
@@ -110,6 +114,8 @@ public class RealEstateSpecification {
 
             // Transport Possibilities: Property must have ALL selected options
             if (criteria.getTransportPossibilities() != null && !criteria.getTransportPossibilities().isEmpty()) {
+                predicates.add(cb.isNotNull(root.get("transportPossibilities")));
+
                 Expression<Set<TransportPossibility>> transportPath = root.get("transportPossibilities").get("possibilities");
                 for (TransportPossibility transport : criteria.getTransportPossibilities()) {
                     predicates.add(cb.isMember(transport, transportPath));
@@ -118,14 +124,17 @@ public class RealEstateSpecification {
 
             // Utilities: Property must have ALL selected utilities
             if (criteria.getUtilityTypes() != null && !criteria.getUtilityTypes().isEmpty()) {
+                predicates.add(cb.isNotNull(root.get("utilities")));
+
                 Expression<Set<UtilityType>> utilPath = root.get("utilities").get("availableUtilities");
                 for (UtilityType utility : criteria.getUtilityTypes()) {
                     predicates.add(cb.isMember(utility, utilPath));
                 }
             }
 
-            // Internet Connection: Exact match
+            // Internet Connection: Exact match (with null safety)
             if (criteria.getInternetConnection() != null) {
+                predicates.add(cb.isNotNull(root.get("utilities")));
                 predicates.add(cb.equal(root.get("utilities").get("internetConnection"), criteria.getInternetConnection()));
             }
 
@@ -133,10 +142,13 @@ public class RealEstateSpecification {
             // Final Query Construction
             // ---------------------------------------------------------
 
-            // Apply Distinct to avoid duplicates from Joins (especially priceHistory)
-            query.distinct(true);
+            // Only apply distinct if necessary (no longer needed if subquery is used for price)
+            if (query != null && query.getResultType() != null &&
+                    query.getResultType().equals(RealEstate.class)) {
+                query.distinct(true);
+            }
 
-            return cb.and(predicates.toArray(new Predicate[0]));
+            return predicates.isEmpty() ? cb.conjunction() : cb.and(predicates.toArray(new Predicate[0]));
         };
     }
 }
