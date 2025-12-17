@@ -144,13 +144,23 @@ Obrázky nemovitostí a profilové fotky se ukládají **přímo do databáze** 
 
 Aplikace obsahuje `AdminInitializer`, který při startu automaticky vytvoří výchozího administrátora, pokud v databázi žádný neexistuje.
 
-### 6.1 Výchozí Admin Účet
+### 6.1 Výchozí Účty
+#### 6.1.1. Admin Účet
 - **Email:** `admin@remax.cz`
 - **Username:** `admin` (lze změnit přes `remax.default-admin.username`)
 - **Heslo:** `changeme1234` (lze změnit přes `remax.default-admin.password`)
 
+#### 6.1.2. Realtor Účet
+- **Email:** `realtor@remax.cz`
+- **Username:** `realtor`
+- **Heslo:** `password`
 **Bezpečnostní varování:** Po prvním nasazení se ihned přihlaste a změňte heslo tomuto účtu, nebo vytvořte nového admina a tohoto smažte.
 
+#### 6.1.2. Client Účet
+- **Email:** `client@remax.cz`
+- **Username:** `client`
+- **Heslo:** `password`
+- 
 ### 6.2 Blokování Uživatelů
 Admin má právo zablokovat uživatele (např. při podezřelém chování) přes API:
 - **Endpoint:** `POST /api/admin/block/{username}`
