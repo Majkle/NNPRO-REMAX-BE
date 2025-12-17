@@ -259,4 +259,9 @@ public class RealEstateService {
         log.info("Found {} real estates", page.getNumberOfElements());
         return page;
     }
+
+    @Transactional(readOnly = true)
+    public List<RealEstate> listRealEstatesByRealtor(Long id) {
+        return realEstateRepository.findAllByRealtorId(id);
+    }
 }
