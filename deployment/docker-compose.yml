@@ -58,6 +58,13 @@ services:
     networks:
       - remax-network
 
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 8080 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   # ==============================
   # 3. Frontend (React + Nginx)
   # ==============================

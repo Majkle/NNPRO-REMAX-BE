@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -28,7 +29,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final SecurityProperties securityProperties;
+    private final SecurityProperties  securityProperties;
 
     public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, SecurityProperties securityProperties) {
         this.userDetailsService = userDetailsService;
@@ -76,16 +77,15 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        if (securityProperties.getCorsAllowedOrigins() == null || securityProperties.getCorsAllowedOrigins().equals("*") || securityProperties.getCorsAllowedOrigins().isBlank()) {
-            configuration.addAllowedOriginPattern("*");
-        } else {
-            Arrays.stream(securityProperties.getCorsAllowedOrigins().split(","))
-                    .map(String::trim)
-                    .forEach(configuration::addAllowedOrigin);
-        }
+
+        // Explicitly set allowed origins
+        List<String> allowedOrigins = Arrays.asList("http://frontend", "http://localhost:3000", "http://localhost:80", "http://127.0.0.1:80", "http://127.0.0.1");  // Add any other origins you need to support
+        configuration.setAllowedOrigins(allowedOrigins);
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true); // Allow sending cookies
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
