@@ -1,0 +1,23 @@
+services:
+  e2e:
+    container_name: remax-e2e
+    build:
+      context: ../../NNPRO-REMAX-FE/e2e
+      dockerfile: Dockerfile
+    environment:
+      # 'remax-frontend' is the service name/container alias on the network
+      - BASE_URL=http://remax-frontend:80
+      - CI=true
+    ipc: host
+    # We reference the network, but we DO NOT define it at the bottom of this file.
+    # It inherits the definition from the base docker-compose.yml.
+    networks:
+      - remax-network
+    volumes:
+      - ../../NNPRO-REMAX-FE/e2e/playwright-report:/e2e/playwright-report
+      - ../../NNPRO-REMAX-FE/e2e/test-results:/e2e/test-results
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_healthy
