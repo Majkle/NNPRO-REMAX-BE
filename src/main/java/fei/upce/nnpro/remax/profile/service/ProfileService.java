@@ -69,6 +69,7 @@ public class ProfileService {
 
         PersonalInformation pi = user.getPersonalInformation();
         if (pi == null) pi = new PersonalInformation();
+        pi.setDegree(request.getDegree());
         pi.setFirstName(request.getFirstName());
         pi.setLastName(request.getLastName());
         pi.setPhoneNumber(request.getPhoneNumber());
@@ -82,6 +83,7 @@ public class ProfileService {
         PersonalInformation savedPi = personalInformationService.save(pi);
         log.info("Saved personalInformation id={} for username={}", savedPi.getId(), username);
 
+        user.setEmail(request.getEmail());
         user.setPersonalInformation(savedPi);
         RemaxUser savedUser = userRepository.save(user);
         log.info("Updated profile for username={}", username);

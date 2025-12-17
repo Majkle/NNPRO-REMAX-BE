@@ -10,6 +10,7 @@ import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.entity.enums.AccountStatus;
 import fei.upce.nnpro.remax.profile.repository.RemaxUserRepository;
 import fei.upce.nnpro.remax.profile.service.PersonalInformationService;
+import fei.upce.nnpro.remax.realestates.entity.enums.AddressRegion;
 import fei.upce.nnpro.remax.security.auth.request.RegisterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -70,6 +72,59 @@ public class AdminService {
         if (maybe.isEmpty()) throw new IllegalArgumentException("User not found");
         userRepository.delete(maybe.get());
         log.info("Admin deleted user {}", username);
+    }
+
+    public RemaxUser updateUser(String username, UpdateUserRequest req) {
+        RemaxUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!Objects.equals(user.getEmail(), req.getEmail()) && userRepository.findByEmail(req.getEmail()).isPresent()) {
+            log.warn("Attempt to update a user with a new but already existing email={}", req.getEmail());
+            throw new IllegalArgumentException("Email exists");
+        }
+
+        // update or create address
+        Address address = null;
+        if (user.getPersonalInformation() != null) {
+            address = user.getPersonalInformation().getAddress();
+        }
+        if (address == null) address = new Address();
+
+        address.setStreet(req.getStreet());
+        address.setCity(req.getCity());
+        address.setPostalCode(req.getPostalCode());
+        address.setCountry(req.getCountry());
+        address.setFlatNumber(req.getFlatNumber());
+        try {
+            address.setRegion(AddressRegion.valueOf(req.getRegion().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            log.warn("Invalid region provided for username={}: {}", username, req.getRegion());
+            throw e;
+        }
+        Address savedAddress = addressService.save(address);
+        log.info("Saved address id={} for username={}", savedAddress.getId(), username);
+
+        PersonalInformation pi = user.getPersonalInformation();
+        if (pi == null) pi = new PersonalInformation();
+        pi.setDegree(req.getDegree());
+        pi.setFirstName(req.getFirstName());
+        pi.setLastName(req.getLastName());
+        pi.setPhoneNumber(req.getPhoneNumber());
+        try {
+            pi.setBirthDate(ZonedDateTime.parse(req.getBirthDate()));
+        } catch (Exception ex) {
+            log.warn("Invalid birthDate for username={}: {}", username, req.getBirthDate());
+            throw new IllegalArgumentException("Invalid birthDate: " + req.getBirthDate());
+        }
+        pi.setAddress(savedAddress);
+        PersonalInformation savedPi = personalInformationService.save(pi);
+        log.info("Saved personalInformation id={} for username={}", savedPi.getId(), username);
+
+        user.setEmail(req.getEmail());
+        user.setPersonalInformation(savedPi);
+        RemaxUser savedUser = userRepository.save(user);
+        log.info("Updated profile for username={}", username);
+        return savedUser;
     }
 
     public Realtor createRealtor(CreateUserRequest req) {
@@ -144,6 +199,7 @@ public class AdminService {
         reg.setUsername(r.getUsername());
         reg.setEmail(r.getEmail());
         reg.setPassword(r.getPassword());
+        reg.setDegree(r.getDegree());
         reg.setFirstName(r.getFirstName());
         reg.setLastName(r.getLastName());
         reg.setPhoneNumber(r.getPhoneNumber());
