@@ -79,7 +79,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Explicitly set allowed origins
-        List<String> allowedOrigins = Arrays.asList("http://frontend", "http://localhost:3000", "http://localhost:80", "http://127.0.0.1:80", "http://127.0.0.1");  // Add any other origins you need to support
+        List<String> allowedOrigins = securityProperties.getCorsAllowedOrigins();
         configuration.setAllowedOrigins(allowedOrigins);
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
