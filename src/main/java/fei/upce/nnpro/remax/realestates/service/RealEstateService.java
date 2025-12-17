@@ -122,6 +122,7 @@ public class RealEstateService {
                 PriceHistory newPrice = new PriceHistory();
                 newPrice.setPrice(dto.getPrice());
                 newPrice.setTimestamp(ZonedDateTime.now());
+                newPrice.setRealEstate(existing);
 
                 if (existing.getPriceHistory() == null) {
                     existing.setPriceHistory(new ArrayList<>());
