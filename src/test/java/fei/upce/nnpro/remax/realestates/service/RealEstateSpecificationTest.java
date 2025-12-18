@@ -39,7 +39,6 @@ class RealEstateSpecificationTest {
         RealEstateFilterDto criteria = new RealEstateFilterDto();
         criteria.setRealEstateType(RealEstateType.APARTMENT);
         when(cb.equal(root.type(), Apartment.class)).thenReturn(predicate);
-        when(cb.and(any(Predicate[].class))).thenReturn(predicate);
         specification = RealEstateSpecification.filterBy(criteria);
         Predicate result = specification.toPredicate(root, query, cb);
         assertNotNull(result);
