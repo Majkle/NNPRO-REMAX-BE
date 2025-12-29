@@ -6,11 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 public class Apartment extends RealEstate {
 
     @Enumerated(EnumType.STRING)
