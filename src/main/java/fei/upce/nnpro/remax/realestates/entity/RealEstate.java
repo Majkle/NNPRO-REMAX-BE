@@ -5,8 +5,11 @@ import fei.upce.nnpro.remax.images.entity.Image;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.realestates.entity.enums.*;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 @Setter
 @Entity
 @Table(name = "real_estate")
+@SuperBuilder
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class RealEstate {
 
@@ -24,6 +29,7 @@ public abstract class RealEstate {
     @Column(nullable = false)
     private Long id;
 
+    @Builder.Default
     @Column(name = "listed_at", nullable = false)
     private ZonedDateTime listedAt = ZonedDateTime.now();
 
@@ -48,6 +54,7 @@ public abstract class RealEstate {
     @Column(name = "contract_type", nullable = false)
     private ContractType contractType;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "realEstate",
             cascade = CascadeType.ALL,
@@ -93,6 +100,7 @@ public abstract class RealEstate {
     @Column(name = "basement", nullable = false)
     private boolean basement;
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "realEstate",
             cascade = CascadeType.ALL,
