@@ -8,8 +8,8 @@ services:
     restart: always
     environment:
       POSTGRES_DB: remax_db
-      POSTGRES_USER: remax_user
-      POSTGRES_PASSWORD: secret_password
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432" # Expose to host for local tools (DBeaver/pgAdmin)
     volumes:
@@ -17,7 +17,7 @@ services:
     networks:
       - remax-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U remax_user -d remax_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d remax_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -33,21 +33,10 @@ services:
     restart: on-failure
     ports:
       - "8080:8080"
-    environment:
-      # Override application.properties to use Postgres instead of H2
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/remax_db
-      SPRING_DATASOURCE_USERNAME: remax_user
-      SPRING_DATASOURCE_PASSWORD: secret_password
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
 
-      # Mail (send emails to MailHog testing container)
-      SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 1025
-      SPRING_MAIL_PROTOCOL: smtp
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "false"
-      # If your MailService reads a default sender, you can override here:
-      # MAIL_SENDER_ADDRESS: no-reply@example.com
+    # Load all variables from .env
+    env_file:
+      - .env
 
     depends_on:
       db:
