@@ -59,7 +59,7 @@ public class RealEstateFactory {
                 .commission(dto.getCommission())
                 .taxes(dto.getTaxes())
                 .availableFrom(dto.getAvailableFrom())
-                .basement(dto.isBasement())
+                .basement(Boolean.TRUE.equals(dto.getBasement()))
                 // Embedded Objects
                 .buildingProperties(dto.getBuildingProperties())
                 .equipment(dto.getEquipment())

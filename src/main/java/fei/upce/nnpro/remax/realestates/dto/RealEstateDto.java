@@ -69,7 +69,7 @@ public class RealEstateDto {
     private ZonedDateTime availableFrom;
 
     @Schema(description = "Indicates if the property has a basement", example = "true")
-    private boolean basement;
+    private Boolean basement;
 
     @PositiveOrZero(message = "Price cannot be negative")
     @Schema(description = "Listing price in local currency", example = "5500000.00")

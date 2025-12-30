@@ -38,7 +38,7 @@ public class RealEstateCommonUpdater {
     }
 
     private void updateFeatures(RealEstate entity, RealEstateDto dto) {
-        entity.setBasement(dto.isBasement());
+        updateIfNotNull(dto.getBasement(), entity::setBasement);
         updateIfNotNull(dto.getEquipment(), entity::setEquipment);
     }
 

@@ -150,7 +150,7 @@ class RealEstateFactoryTest {
         assertThat(entity.getCommission()).isEqualTo(dto.getCommission());
         assertThat(entity.getTaxes()).isEqualTo(dto.getTaxes());
         assertThat(entity.getAvailableFrom()).isEqualTo(dto.getAvailableFrom());
-        assertThat(entity.isBasement()).isEqualTo(dto.isBasement());
+        assertThat(entity.isBasement()).isEqualTo(dto.getBasement());
         assertThat(entity.getEquipment()).isEqualTo(dto.getEquipment());
     }
 }
