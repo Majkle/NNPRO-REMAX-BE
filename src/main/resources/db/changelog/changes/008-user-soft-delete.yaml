@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-user-soft-delete
+      author: STAGAJE
+      changes:
+        - addColumn:
+            tableName: remax_user
+            columns:
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  remarks: "Soft delete timestamp"
+        - createIndex:
+            tableName: remax_user
+            indexName: idx_remax_user_deleted_at
+            columns:
+              - column:
+                  name: deleted_at

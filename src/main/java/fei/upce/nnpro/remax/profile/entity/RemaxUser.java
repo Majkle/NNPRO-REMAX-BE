@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -15,6 +17,9 @@ import java.time.ZonedDateTime;
 @Table(name = "remax_user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+// soft delete configuration
+@SQLDelete(sql = "UPDATE remax_user SET deleted_at = now() WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
 public abstract class RemaxUser {
 
     @Id
@@ -38,6 +43,9 @@ public abstract class RemaxUser {
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
+
+    @Column(name = "deleted_at")
+    private OffsetDateTime deletedAt;
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "personal_information_id", nullable = false)

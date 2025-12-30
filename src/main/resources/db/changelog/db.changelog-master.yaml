@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changes/006-add-gps-to-address.yaml
   - include:
       file: db/changelog/changes/007-cascade-user-deletes.yaml
+  - include:
+      file: db/changelog/changes/008-user-soft-delete.yaml
