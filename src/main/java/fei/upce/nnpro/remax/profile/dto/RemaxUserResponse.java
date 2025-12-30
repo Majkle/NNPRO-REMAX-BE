@@ -56,7 +56,7 @@ public class RemaxUserResponse {
         rur.setId(user.getId());
         rur.setUsername(user.getUsername());
         rur.setEmail(user.getEmail());
-        rur.setPassword(user.getPassword());
+        rur.setPassword("********");
         rur.setCreatedAt(user.getCreatedAt());
         rur.setBlockedUntil(user.getBlockedUntil());
         rur.setIsBlocked(user.getBlockedUntil() != null);

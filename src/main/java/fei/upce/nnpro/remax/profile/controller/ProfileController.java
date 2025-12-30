@@ -46,6 +46,7 @@ public class ProfileController {
     public ResponseEntity<?> getUserProfile(@Parameter(description = "ID of the user") @PathVariable Long userId) {
         log.info("Loading specific profile");
         return profileService.getProfile(userId)
+                .map(RemaxUserResponse::createFrom)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -66,6 +67,7 @@ public class ProfileController {
         String username = authentication.getName();
         log.info("GET /api/profile for {}", username);
         return profileService.getProfile(username)
+                .map(RemaxUserResponse::createFrom)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -90,7 +92,7 @@ public class ProfileController {
         log.info("PATCH /api/profile for {}", username);
         try {
             RemaxUser updated = profileService.updateProfile(username, request);
-            return ResponseEntity.ok(updated);
+            return ResponseEntity.ok(RemaxUserResponse.createFrom(updated));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

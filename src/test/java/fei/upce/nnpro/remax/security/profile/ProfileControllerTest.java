@@ -3,6 +3,7 @@ package fei.upce.nnpro.remax.security.profile;
 import fei.upce.nnpro.remax.address.entity.Address;
 import fei.upce.nnpro.remax.profile.controller.ProfileController;
 import fei.upce.nnpro.remax.profile.dto.ProfileUpdateRequest;
+import fei.upce.nnpro.remax.profile.dto.RemaxUserResponse;
 import fei.upce.nnpro.remax.profile.entity.PersonalInformation;
 import fei.upce.nnpro.remax.profile.entity.RemaxUser;
 import fei.upce.nnpro.remax.profile.service.ProfileService;
@@ -55,7 +56,7 @@ class ProfileControllerTest {
 
         ResponseEntity<?> resp = controller.updateProfile(auth, req);
         assertEquals(200, resp.getStatusCode().value());
-        RemaxUser updated = (RemaxUser) resp.getBody();
+        RemaxUserResponse updated = (RemaxUserResponse) resp.getBody();
         assertNotNull(updated);
         assertNotNull(updated.getPersonalInformation());
         assertEquals("F", updated.getPersonalInformation().getFirstName());
